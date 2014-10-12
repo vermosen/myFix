@@ -20,7 +20,7 @@
 #include "quickfix/Log.h"
 #include "quickfix/SessionSettings.h"
 
-void myFunc() {}
+void myFunc() {};
 
 int main(int argc, char** argv) {
 
