@@ -20,6 +20,8 @@
 #include "quickfix/Log.h"
 #include "quickfix/SessionSettings.h"
 
+#include "quickfix/MySQLLog.h"
+
 void myFunc() {};
 
 int main(int argc, char** argv) {
@@ -27,11 +29,14 @@ int main(int argc, char** argv) {
 	int exit;														// exit code
 
 	try {
-		// some change
-		std::string file = "toto";
+
+		// some operations...
+		std::string file = "C:/temp/test.txt";
 		FIX::SessionSettings settings      (file    );				// settings
 		FIX::FileStoreFactory storeFactory (settings);				// store factory
 		FIX::ScreenLogFactory logFactory   (settings);				// log factory
+
+		FIX::Log * log = logFactory.create();
 
 		bool end = false;											// main exit indicator 
 		int test = 0    ;											// optional test
@@ -102,8 +107,8 @@ int main(int argc, char** argv) {
 			<< "an error occured: " 
 			<< e.what() 
 			<< std::endl;
-
 		exit = 1;
+		system("pause");
 
 	}
 	catch (...) {													// unknown error
@@ -111,12 +116,11 @@ int main(int argc, char** argv) {
 		std::cout 
 			<< "an unknown error occured..." 
 			<< std::endl;
-
 		exit = 1;
+		system("pause");
 
 	}
 
-	system("pause");
 	return exit;
 
 }
