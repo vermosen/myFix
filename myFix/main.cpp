@@ -27,7 +27,7 @@ int main(int argc, char** argv) {
 	int exit;														// exit code
 
 	try {
-
+		// some change
 		std::string file = "toto";
 		FIX::SessionSettings settings      (file    );				// settings
 		FIX::FileStoreFactory storeFactory (settings);				// store factory
