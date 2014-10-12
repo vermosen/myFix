@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "myFix", "myFix.vcxproj", "{BFC39B85-D877-4A9B-A13F-50039BCB28BB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D5D558EA-BBAC-4862-A946-D3881BACE3B7} = {D5D558EA-BBAC-4862-A946-D3881BACE3B7}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "quickfix", "..\..\quickfix\src\C++\quickfix_vs12.vcxproj", "{D5D558EA-BBAC-4862-A946-D3881BACE3B7}"
 EndProject

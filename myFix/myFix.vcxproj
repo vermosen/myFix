@@ -41,9 +41,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(IncludePath);$(BOOST);$(PYTHON)\include\;$(QUICKFIX)include\;</IncludePath>
+    <LibraryPath>$(LibraryPath);$(BOOST)\stage\lib;$(PYTHON)\libs\;$(QUICKFIX)lib\;</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(IncludePath);$(BOOST);$(PYTHON)\include\;$(QUICKFIX)include\;</IncludePath>
+    <LibraryPath>$(LibraryPath);$(BOOST)\stage\lib;$(PYTHON)\libs\;$(QUICKFIX)lib\;</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -78,6 +82,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
