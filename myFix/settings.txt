@@ -1,0 +1,25 @@
+# default settings for sessions
+[DEFAULT]
+ConnectionType=initiator
+ReconnectInterval=60
+SenderCompID=ME
+
+# session definition
+[SESSION]
+# inherit ConnectionType, ReconnectInterval and SenderCompID from default
+BeginString=FIXT.1.1
+DefaultApplVerID=FIX.5.0SP2
+TargetCompID=ARCA
+HeartBtInt=20
+
+# datadictionary
+UseDataDictionary=Y
+DataDictionary=C:/Users/vermosen/Documents/GitHub/quickfix/spec/FIX50SP2.xml
+
+# mysql settings
+#MySQLStoreDatabase=quickfix
+#MySQLStoreUser=user
+#MySQLStorePassword=password
+#MySQLStoreHost=localhost
+#MySQLStorePort=32XX
+#MySQLStoreUseConnectionPool=N

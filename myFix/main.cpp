@@ -20,9 +20,8 @@
 #include "quickfix/Log.h"
 #include "quickfix/SessionSettings.h"
 
-#include "quickfix/MySQLLog.h"
-
-void myFunc() {};
+#include "functions/fileImport.hpp"
+#include "Application.hpp"
 
 int main(int argc, char** argv) {
 
@@ -30,11 +29,16 @@ int main(int argc, char** argv) {
 
 	try {
 
-		// some operations...
-		std::string file = "C:/temp/test.txt";
+		// path to the setting file
+		std::string file = "C:/Users/vermosen/Documents/GitHub/myFix/myFix/settings.txt";
+
+		myFIX::Application application;
 		FIX::SessionSettings settings      (file    );				// settings
 		FIX::FileStoreFactory storeFactory (settings);				// store factory
 		FIX::ScreenLogFactory logFactory   (settings);				// log factory
+		
+		// acceptor
+		FIX::ThreadedSocketAcceptor acceptor(application, storeFactory, settings, logFactory);
 
 		FIX::Log * log = logFactory.create();
 
@@ -78,7 +82,7 @@ int main(int argc, char** argv) {
 
 			case 1:
 
-				myFunc();
+				fileImport();
 				break;
 
 			case 0:
