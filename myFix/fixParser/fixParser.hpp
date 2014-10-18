@@ -1,6 +1,10 @@
 #pragma once
 
 //#include <ats/message/messages.hpp>                   // incremental refresh message class
+
+#include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/date_time/posix_time/posix_time_io.hpp>
+
 #include <thOth/time/DateTime.hpp>
 
 #include <quickfix/DataDictionary.h>
@@ -13,42 +17,58 @@
 
 namespace myFix {
 
-	struct tradeMessage
-	{
-		std::string symbol;
-		thOth::dateTime time;
-		double price;
-		int quantity;
+	class message {
+	
+	public:
+
+		std::string		symbol_		= "";	// symbol name (FIX field 107)
+		thOth::dateTime time_			;	// quote time
+		double          price_		= .0;	// price
+		int             quantity_	= 0	;	// number of units (contracts, shares, etc.)
+		
 	};
 
-	struct bookMessage {
+	struct tradeMessage : public message {};
 
-		enum update_action { a_new = 1, a_change = 2, a_delete = 3 };
-		enum entry_type    { bid = 1, ask = 2, trade = 3 };
-		thOth::dateTime time;
-		update_action action;            // new, change, delete
-		entry_type type;                 // bid, ask, trade
-		double price = .0;
-		int quantity = 0;                // number of units (contracts, shares, etc.)
-		unsigned int order_count = 0;    // number of orders at the level
-		unsigned int level = 0;          // book level
-		std::string symbol = "";         // symbol name (FIX field 107)
-		unsigned long seq_number = 0;    // sequence number (FIX field 34)
-		std::string sender_id = "";      // firm sending message (FIX field 49), e.g., CME
+	struct bookMessage : public message {
 
-		bool operator<(const bookMessage& msg) const { return seq_number < msg.seq_number; }
+		enum update_action { new_ = 1, change_ = 2, delete_ = 3 };
+		enum entry_type    { bid_ = 1, ask_    = 2, trade_  = 3 };
 
-		std::string to_string() {
+		update_action   action_				;	// new, change, delete
+		entry_type      type_				;	// bid, ask, trade
+		unsigned int    order_count_ =  0	;	// number of orders at the level
+		unsigned int    level_       =	0	;	// book level
+		unsigned long   seq_number_  =	0	;	// sequence number (FIX field 34)
+		std::string     sender_id_	 =	""	;	// firm sending message (FIX field 49), e.g., CME
 
-			int act = static_cast<int>(action);
-			int etype = static_cast<int>(type);
+		bool operator<(const bookMessage& msg) const { return seq_number_ < msg.seq_number_; };
+
+		std::string to_string() const {
+
 			std::stringstream ss;
-			ss << symbol << " (" << sender_id << "); " << time.to_string("%Y-%m-%d %H:%M:%S%F")
-				<< "; SeqNo(" << seq_number << "); " << "UpdateAction(" << act
-				<< "); EntryType(" << etype << "); "
-				<< price << "; " << quantity << "; " << order_count << "; " << level;
-			std::string str = ss.str();
-			return str;
+			ss << symbol_
+			   << " (" 
+			   << sender_id_
+			   << "); " 
+			   << boost::posix_time::to_simple_string(time_)
+			   << "; SeqNo(" 
+			   << seq_number_ 
+			   << "); " 
+			   << "UpdateAction(" 
+			   << static_cast<int>(action_)
+			   << "); EntryType(" 
+			   << static_cast<int>(type_) 
+			   << "); "
+			   << price_
+			   << "; " 
+			   << quantity_
+			   << "; " 
+			   << order_count_
+			   << "; " 
+			   << level_;
+
+			return ss.str();
 		
 		}
 	};

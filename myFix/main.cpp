@@ -21,6 +21,7 @@
 #include "quickfix/SessionSettings.h"
 
 #include "functions/fileImport.hpp"
+#include "functions/testFixParser.hpp"
 #include "Application.hpp"
 
 int main(int argc, char** argv) {
@@ -31,16 +32,6 @@ int main(int argc, char** argv) {
 
 		// path to the setting file
 		std::string file = "C:/Users/vermosen/Documents/GitHub/myFix/myFix/settings.txt";
-
-		myFIX::Application application;
-		FIX::SessionSettings settings      (file    );				// settings
-		FIX::FileStoreFactory storeFactory (settings);				// store factory
-		FIX::ScreenLogFactory logFactory   (settings);				// log factory
-		
-		// acceptor
-		FIX::ThreadedSocketAcceptor acceptor(application, storeFactory, settings, logFactory);
-
-		FIX::Log * log = logFactory.create();
 
 		bool end = false;											// main exit indicator 
 		int test = 0    ;											// optional test
@@ -70,6 +61,8 @@ int main(int argc, char** argv) {
 					<< std::endl
 					<< "1 - CME file parsing"
 					<< std::endl
+					<< "2 - test file import"
+					<< std::endl
 					<< "0 - exit"
 					<< std::endl
 					<< std::endl;
@@ -83,6 +76,11 @@ int main(int argc, char** argv) {
 			case 1:
 
 				fileImport();
+				break;
+
+			case 2:
+
+				testFixParser();
 				break;
 
 			case 0:

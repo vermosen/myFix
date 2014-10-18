@@ -35,6 +35,9 @@
     <ClInclude Include="fixParser\fixParser.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="functions\testFixParser.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="settings.txt" />

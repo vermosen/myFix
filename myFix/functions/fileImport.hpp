@@ -1,6 +1,8 @@
-#pragma once 
+#ifndef functions_file_import_hpp
+#define functions_file_import_hpp
 
 #include <fstream>
+
 #include <boost/timer.hpp>
 
 #define PATH "C://Temp/"
@@ -17,9 +19,7 @@
 void fileImport() {
 
 	// create the data dictionary
-
 	boost::timer t;
-
 
 	//open file
 	std::ifstream infile(
@@ -54,3 +54,5 @@ void fileImport() {
 		<< std::endl;
 
 }
+
+#endif
