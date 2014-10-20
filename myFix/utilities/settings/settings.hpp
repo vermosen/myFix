@@ -29,6 +29,7 @@
 #define DB_ID       "fixdb"
 #define DB_PORT     3308
 #define LOGPATH		"C://Temp/"
+#define DICT        "C://Users/vermosen/Documents/GitHub/quickfix/spec/FIX50SP2.xml"
 
 namespace myFix {
 
@@ -39,12 +40,12 @@ namespace myFix {
 
 		private:
 
-			settings();									// c
-			void updateConnection ();					// update the mySQL connection
+			settings();										// ctor
+			void updateConnection ();						// update the mySQL connection
 
 		public: 
 
-			void verbosity  (const unsigned int  v);	//accessors
+			void verbosity  (const unsigned int  v);		//accessors
 			void port       (const unsigned int  v);
 			void server     (const std::string & s);
 			void user       (const std::string & s);
@@ -69,27 +70,27 @@ namespace myFix {
 		private:
 
 			// members
-			unsigned int          verbosity_ ;		// verbosity settings				
-			logger                log_       ;		// log file
-			MYSQL *               connect_   ;		// mysql connection object
-			FIX::DataDictionary * dictionary_;		// quickfix dictionary
+			unsigned int          verbosity_ ;			// verbosity settings				
+			logger                log_       ;			// log file
+			MYSQL *               connect_   ;			// mysql connection object
+			FIX::DataDictionary * dictionary_;			// quickfix dictionary
 
 			// dataBase settings
-			unsigned int port_     ;     			// db server port
-			std::string  server_   ;				// db server name
-			std::string  user_     ;				// user name
-			std::string  password_ ;				// user password
-			std::string  dataBase_ ;				// dataBase name
+			unsigned int port_     ;     				// db server port
+			std::string  server_   ;					// db server name
+			std::string  user_     ;					// user name
+			std::string  password_ ;					// user password
+			std::string  dataBase_ ;					// dataBase name
 
 			// mutexes
-			mutable boost::mutex verbosityMutex_  ;	// locks/unlocks the verbosity variable
-			mutable boost::mutex portMutex_       ;	// locks/unlocks the port variable
-			mutable boost::mutex serverMutex_     ;	// locks/unlocks the server variable
-			mutable boost::mutex userMutex_       ;	// locks/unlocks the user variable
-			mutable boost::mutex passwordMutex_   ;	// locks/unlocks the password variable
-			mutable boost::mutex dataBaseMutex_   ;	// locks/unlocks the database variable
-			mutable boost::mutex connectionMutex_ ;	// locks/unlocks the database variable
-			mutable boost::mutex dinctionaryMutex_;	// locks/unlocks the fix dictionary
+			mutable boost::mutex verbosityMutex_	;	// locks/unlocks the verbosity variable
+			mutable boost::mutex portMutex_			;	// locks/unlocks the port variable
+			mutable boost::mutex serverMutex_		;	// locks/unlocks the server variable
+			mutable boost::mutex userMutex_			;	// locks/unlocks the user variable
+			mutable boost::mutex passwordMutex_		;	// locks/unlocks the password variable
+			mutable boost::mutex dataBaseMutex_		;	// locks/unlocks the database variable
+			mutable boost::mutex connectionMutex_	;	// locks/unlocks the database variable
+			mutable boost::mutex dictionaryMutex_	;	// locks/unlocks the fix dictionary
 	
 	};
 

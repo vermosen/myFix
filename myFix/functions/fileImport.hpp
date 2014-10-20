@@ -13,30 +13,31 @@
 
 #include <boost/timer.hpp>
 
+#include "utilities/settings/settings.hpp"
 #include "fixParser/fixParser.hpp"
 
-void fileImport(
-	const std::string & dict_, 
-	const std::string & data_) {
+void fileImport(const std::string & data_) {
 
 	
 	boost::timer t;										// timer
 
-	myFix::fixParser parser(dict_);						// create the file parser
+	myFix::fixParser parser(							// create the file parser
+		myFix::settings::instance().dictionary());											
 
 	std::ifstream infile(data_);						// open data file
 
-	int nline = 1; std::string line;					// current line and counter
-	
-	std::vector<myFix::tradeMessage> tradeMsg;
 
-	int g = 0;											// record counter
+	// local variables 
+	int									n_valid = 0	;	// valid record counter
+	std::vector<myFix::tradeMessage>	tradeMsg	;
+	long								nline = 1	;	// line counter
+	std::string							line("")	;	// current line
+
 	while (std::getline(infile, line)) {				// get through the lines
 
 		std::istringstream iss(line);					// istringstream
-		std::string a;									// empty line
 		
-		if (!(iss >> a)) { break; }						// can't read the line
+		if (!(iss >> line)) { break; }					// can't read the line
 
 		if (nline++ % 1000 == 0)						// message every 1000 line
 			std::cout
@@ -45,19 +46,34 @@ void fileImport(
 				<< " lines."
 				<< std::endl;
 
+		// trying to convert into fix messages
 		try {
 		
-			std::vector<myFix::tradeMessage> msg = parser.parse_trade(a);
+			std::vector<myFix::tradeMessage> msg		// parse the line
+				= parser.parse_trade(line);
 		
 			if (msg.size() > 0) {
 			
-				std::cout << g++ << std::endl;
+				std::cout 
+					<< "valid records: " 
+					<< n_valid++ 
+					<< std::endl;
 			
 			}
 
 		}
 
-		catch (...) {}
+		// todo : exception management & log
+		catch (...) {
+		
+			//std::cout 
+			//	<< "parsing error on line " 
+			//	<< nline 
+			//	<< std::endl;
+		
+		}
+
+		line.clear();									// clears temporary line
 
 	}
 

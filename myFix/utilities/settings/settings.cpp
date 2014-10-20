@@ -18,7 +18,8 @@ namespace myFix {
 		dataBase_(DB_ID      ),
 		log_     (LOGPATH    ) {
 
-			dictionary_ = NULL;					// null pointer, safe ?
+												// null pointer, safe ?
+			dictionary_ = new FIX::DataDictionary(DICT);
 
 			connect_ = mysql_init(NULL);		// initialize a null connection
 
@@ -195,9 +196,10 @@ namespace myFix {
 
 	void settings::dictionary(const std::string & s) {
 	
-		boost::lock_guard<boost::mutex> guard(dinctionaryMutex_);
+		boost::lock_guard<boost::mutex> guard(dictionaryMutex_);
 
-		dictionary_ = &FIX::DataDictionary(s);	// update the pointer
+		delete dictionary_;
+		dictionary_ = new FIX::DataDictionary(s);// update the pointer
 	
 	}
 

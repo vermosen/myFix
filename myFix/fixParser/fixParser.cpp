@@ -4,18 +4,14 @@
 
 namespace myFix {
 
-	fixParser::fixParser(const std::string & specs_)				// provide dictionary path 
+	fixParser::fixParser(FIX::DataDictionary * d)					// provide dictionary ptr 
 		: symbols_() {
-	
-		dic_ = new FIX::DataDictionary(specs_);
-	
+
+		dic_ = d;
+
 	};
 
-	fixParser::~fixParser() {
-	
-		delete dic_;
-	
-	};
+	fixParser::~fixParser() {};
 
 		// @brief parse a FIX message and return its components that change the book + trades
 	std::vector<bookMessage> fixParser::parse(const FIX50SP2::MarketDataIncrementalRefresh& msg) const {
@@ -139,10 +135,11 @@ namespace myFix {
 		// Try to get the number of groups in the message. If not available, discard the message.
 		try {
 		
-			std::string count = msg.getField(268);
-			groups_count = boost::lexical_cast<size_t>(count);
+			groups_count = boost::lexical_cast<size_t>(msg.getField(268));
 			//groups_count = strtol(msg.getField(268).c_str(), nullptr, 10);
 			FIX::Header header = msg.getHeader();
+			
+			// parsing time
 			value = header.getField(52);
 			value = msg.getHeader().getField(52); // didn't work in GCC for some reason
 			long millis = strtol(&value[value.size() - 3], nullptr, 10);

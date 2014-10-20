@@ -81,15 +81,12 @@ int main(int argc, char** argv) {
 
 			case 1:
 
-				fileImport(
-					std::string(DICT),								// path to the dictionary file
-					std::string(PATH).append(DATA));				// path to the data file
-
+				fileImport(std::string(PATH).append(DATA));			// path to the data file
 				break;
 
 			case 2:
 
-				debug();
+				debug(std::string(PATH).append(DATA));				// path to the data file
 				break;
 
 			case 0:

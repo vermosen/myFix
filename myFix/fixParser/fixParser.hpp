@@ -22,10 +22,10 @@ namespace myFix {
 	public:
 
 		// common structure
-		std::string		symbol_		= "";	// symbol name (FIX field 107)
-		thOth::dateTime time_			;	// quote time
-		double          price_		= .0;	// price
-		int             quantity_	= 0	;	// number of units (contracts, shares, etc.)
+		std::string		symbol_		= "";		// symbol name (FIX field 107)
+		thOth::dateTime time_			;		// quote time
+		double          price_		= .0;		// price
+		int             quantity_	= 0	;		// number of units (contracts, shares, etc.)
 		
 	};
 
@@ -78,7 +78,7 @@ namespace myFix {
 
 	public:
 
-		fixParser(const std::string & specs_path);					// provide dictionary path
+		fixParser(FIX::DataDictionary *);		// provide dictionary ptr
 		~fixParser();
 
 		//parse a FIX message and return its components that change the book + trades
