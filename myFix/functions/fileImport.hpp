@@ -24,16 +24,13 @@ void fileImport(
 
 	myFix::fixParser parser(dict_);						// create the file parser
 
-	FIX::DataDictionary dict(dict_);
-
 	std::ifstream infile(data_);						// open data file
 
 	int nline = 1; std::string line;					// current line and counter
 	
 	std::vector<myFix::tradeMessage> tradeMsg;
-	std::vector<myFix::bookMessage>	 bookMsg;
 
-	int g = 0;
+	int g = 0;											// record counter
 	while (std::getline(infile, line)) {				// get through the lines
 
 		std::istringstream iss(line);					// istringstream
