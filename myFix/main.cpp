@@ -21,8 +21,14 @@
 #include "quickfix/SessionSettings.h"
 
 #include "functions/fileImport.hpp"
-#include "functions/testFixParser.hpp"
+#include "functions/debug.hpp"
 #include "Application.hpp"
+#include "utilities/settings/settings.hpp"
+
+#define PATH     "C://Temp/"
+#define SETTINGS "C://Users/vermosen/Documents/GitHub/myFix/myFix/settings.txt"
+#define DICT     "C://Users/vermosen/Documents/GitHub/quickfix/spec/FIX50SP2.xml"
+#define DATA     "XCME_MD_ES_20140303_20140307"
 
 int main(int argc, char** argv) {
 
@@ -30,8 +36,8 @@ int main(int argc, char** argv) {
 
 	try {
 
-		// path to the setting file
-		std::string file = "C:/Users/vermosen/Documents/GitHub/myFix/myFix/settings.txt";
+		// settings instance
+		myFix::settings::instance().dictionary(DICT);				// provides dictionary path
 
 		bool end = false;											// main exit indicator 
 		int test = 0    ;											// optional test
@@ -61,7 +67,7 @@ int main(int argc, char** argv) {
 					<< std::endl
 					<< "1 - CME file parsing"
 					<< std::endl
-					<< "2 - test file import"
+					<< "2 - debug"
 					<< std::endl
 					<< "0 - exit"
 					<< std::endl
@@ -71,24 +77,27 @@ int main(int argc, char** argv) {
 
 			}
 
-			switch (res) {											// switch over the tests available
+			switch (res) {											// switch over the available tests
 
 			case 1:
 
-				fileImport();
+				fileImport(
+					std::string(DICT),								// path to the dictionary file
+					std::string(PATH).append(DATA));				// path to the data file
+
 				break;
 
 			case 2:
 
-				testFixParser();
+				debug();
 				break;
 
 			case 0:
 
-				end = true;										// stop the server
+				end = true;											// stop the server
 				break;
 
-			default:											// unknown, invalid
+			default:												// unknown, invalid
 
 				std::cout
 					<< "invalid selection, please try again"

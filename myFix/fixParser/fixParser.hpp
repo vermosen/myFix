@@ -21,6 +21,7 @@ namespace myFix {
 	
 	public:
 
+		// common structure
 		std::string		symbol_		= "";	// symbol name (FIX field 107)
 		thOth::dateTime time_			;	// quote time
 		double          price_		= .0;	// price
@@ -78,19 +79,21 @@ namespace myFix {
 	public:
 
 		fixParser(const std::string & specs_path);					// provide dictionary path
+		~fixParser();
 
 		//parse a FIX message and return its components that change the book + trades
 		std::vector<bookMessage> parse(const FIX50SP2::MarketDataIncrementalRefresh& msg) const;
 		std::vector<bookMessage> parse(const std::string& msg) const;
 
-		std::vector<tradeMessage> parse_trades(const FIX50SP2::MarketDataIncrementalRefresh& msg) const;
-		std::vector<tradeMessage> parse_trades(const std::string& msg) const;
+		std::vector<tradeMessage> parse_trade(const FIX50SP2::MarketDataIncrementalRefresh& msg) const;
+		std::vector<tradeMessage> parse_trade(const std::string& msg) const;
 
 		std::vector<bookMessage> operator()(const FIX50SP2::MarketDataIncrementalRefresh& msg) const;
 		std::vector<bookMessage> operator()(const std::string& msg) const;
 
+		// TODO: change the parse, parse_trades and operator() to manage 
 	private:
-		FIX::DataDictionary dic;
-		std::unordered_set<std::string> symbols;
+		FIX::DataDictionary * dic_;
+		std::unordered_set<std::string> symbols_;
 	};
 }

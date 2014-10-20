@@ -1,9 +1,21 @@
 #include "fixParser/fixParser.hpp"
 
+#include <istream>
+
 namespace myFix {
 
-	fixParser::fixParser(const std::string & specs_path)					// provide dictionary path
-		: dic(specs_path), symbols() {};
+	fixParser::fixParser(const std::string & specs_)				// provide dictionary path 
+		: symbols_() {
+	
+		dic_ = new FIX::DataDictionary(specs_);
+	
+	};
+
+	fixParser::~fixParser() {
+	
+		delete dic_;
+	
+	};
 
 		// @brief parse a FIX message and return its components that change the book + trades
 	std::vector<bookMessage> fixParser::parse(const FIX50SP2::MarketDataIncrementalRefresh& msg) const {
@@ -20,7 +32,8 @@ namespace myFix {
 		// get data from the header
 		try {
 
-			groups_count = strtol(msg.getField(268).c_str(), nullptr, 10);
+			groups_count = boost::lexical_cast<size_t>(msg.getField(268));
+
 			FIX::Header header = msg.getHeader();
 			value = header.getField(52);
 			long millis = strtol(&value[value.size() - 3], nullptr, 10);
@@ -46,7 +59,7 @@ namespace myFix {
 			try {
 
 				value = group.getField(securityDesc).getString();
-				if (symbols.size() != 0 && symbols.find(value) == symbols.cend())
+				if (symbols_.size() != 0 && symbols_.find(value) == symbols_.cend())
 					continue;
 
 				// discard groups with quote condition = exchange best (field 276 = 'C')
@@ -109,22 +122,26 @@ namespace myFix {
 	}
 
 	std::vector<bookMessage> fixParser::parse(const std::string& msg) const {
-		FIX::Message fix_msg(msg, dic, false);
+		FIX::Message fix_msg(msg, *dic_, false);
 		return parse(FIX50SP2::MarketDataIncrementalRefresh(fix_msg));
 	}
 
-	std::vector<tradeMessage> fixParser::parse_trades(const FIX50SP2::MarketDataIncrementalRefresh& msg) const {
-
+	std::vector<tradeMessage> fixParser::parse_trade(
+		const FIX50SP2::MarketDataIncrementalRefresh & msg) const {
+		
 		std::vector<tradeMessage> messages;
 
 		std::string value;
 
 		size_t groups_count = 0;
 		thOth::dateTime time;
+
 		// Try to get the number of groups in the message. If not available, discard the message.
 		try {
 		
-			groups_count = strtol(msg.getField(268).c_str(), nullptr, 10);
+			std::string count = msg.getField(268);
+			groups_count = boost::lexical_cast<size_t>(count);
+			//groups_count = strtol(msg.getField(268).c_str(), nullptr, 10);
 			FIX::Header header = msg.getHeader();
 			value = header.getField(52);
 			value = msg.getHeader().getField(52); // didn't work in GCC for some reason
@@ -148,7 +165,7 @@ namespace myFix {
 			try	{
 				
 				value = group.getField(securityDesc).getString();
-				if (symbols.size() != 0 && symbols.find(value) == symbols.cend())
+				if (symbols_.size() != 0 && symbols_.find(value) == symbols_.cend())
 					continue;
 
 				// is a trade
@@ -172,10 +189,10 @@ namespace myFix {
 		return messages;
 	}
 
-	std::vector<tradeMessage> fixParser::parse_trades(const std::string& msg) const
+	std::vector<tradeMessage> fixParser::parse_trade(const std::string& msg) const
 	{
-		FIX::Message fix_msg(msg, dic, false);
-		return parse_trades(FIX50SP2::MarketDataIncrementalRefresh(fix_msg));
+		FIX::Message fix_msg(msg, *dic_, false);
+		return parse_trade(FIX50SP2::MarketDataIncrementalRefresh(fix_msg));
 	}
 
 	std::vector<bookMessage> fixParser::operator()(const FIX50SP2::MarketDataIncrementalRefresh& msg) const {

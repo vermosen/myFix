@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "myFix", "myFix.vcxproj", "{BFC39B85-D877-4A9B-A13F-50039BCB28BB}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -32,8 +32,8 @@ Global
 		{D5D558EA-BBAC-4862-A946-D3881BACE3B7}.Debug|Win32.Build.0 = Debug|Win32
 		{D5D558EA-BBAC-4862-A946-D3881BACE3B7}.Release|Win32.ActiveCfg = Release|Win32
 		{D5D558EA-BBAC-4862-A946-D3881BACE3B7}.Release|Win32.Build.0 = Release|Win32
-		{7653D38D-8F71-457F-BDE5-B8AF7B8A69BA}.Debug test|Win32.ActiveCfg = Debug dynamic|Win32
-		{7653D38D-8F71-457F-BDE5-B8AF7B8A69BA}.Debug test|Win32.Build.0 = Debug dynamic|Win32
+		{7653D38D-8F71-457F-BDE5-B8AF7B8A69BA}.Debug test|Win32.ActiveCfg = Debug|Win32
+		{7653D38D-8F71-457F-BDE5-B8AF7B8A69BA}.Debug test|Win32.Build.0 = Debug|Win32
 		{7653D38D-8F71-457F-BDE5-B8AF7B8A69BA}.Debug|Win32.ActiveCfg = Debug|Win32
 		{7653D38D-8F71-457F-BDE5-B8AF7B8A69BA}.Debug|Win32.Build.0 = Debug|Win32
 		{7653D38D-8F71-457F-BDE5-B8AF7B8A69BA}.Release|Win32.ActiveCfg = Release|Win32

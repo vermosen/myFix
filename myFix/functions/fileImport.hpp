@@ -1,13 +1,6 @@
 #ifndef functions_file_import_hpp
 #define functions_file_import_hpp
 
-#include <fstream>
-
-#include <boost/timer.hpp>
-
-#define PATH "C://Temp/"
-#define FILE "XCME_MD_ES_20140303_20140307"
-
 // FAST file import function
 // field 1128 with value 9 means FIX50SP2
 // field 35 with value X means MarketDataIncrementalRefresh message
@@ -16,35 +9,59 @@
 // Component Block - <MDIncGrp>	Y	Number of entries following.
 // 75	TradeDate
 
-void fileImport() {
+#include <fstream>
 
-	// create the data dictionary
-	boost::timer t;
+#include <boost/timer.hpp>
 
-	//open file
-	std::ifstream infile(
-		std::string(PATH).append(FILE));
+#include "fixParser/fixParser.hpp"
 
-	// get through the lines
-	int nline = 1;
-	std::string line;
-	while (std::getline(infile, line)) {
+void fileImport(
+	const std::string & dict_, 
+	const std::string & data_) {
 
-		std::istringstream iss(line);
-		std::string a;
-		if (!(iss >> a)) { break; }
+	
+	boost::timer t;										// timer
 
-		if (nline++ % 1000 == 0) {
+	myFix::fixParser parser(dict_);						// create the file parser
 
+	FIX::DataDictionary dict(dict_);
+
+	std::ifstream infile(data_);						// open data file
+
+	int nline = 1; std::string line;					// current line and counter
+	
+	std::vector<myFix::tradeMessage> tradeMsg;
+	std::vector<myFix::bookMessage>	 bookMsg;
+
+	int g = 0;
+	while (std::getline(infile, line)) {				// get through the lines
+
+		std::istringstream iss(line);					// istringstream
+		std::string a;									// empty line
+		
+		if (!(iss >> a)) { break; }						// can't read the line
+
+		if (nline++ % 1000 == 0)						// message every 1000 line
 			std::cout
 				<< "read "
 				<< nline - 1
 				<< " lines."
 				<< std::endl;
 
-			std::cout << line << std::endl;
+		try {
+		
+			std::vector<myFix::tradeMessage> msg = parser.parse_trade(a);
+		
+			if (msg.size() > 0) {
+			
+				std::cout << g++ << std::endl;
+			
+			}
 
 		}
+
+		catch (...) {}
+
 	}
 
 	std::cout 

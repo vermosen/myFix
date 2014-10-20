@@ -24,6 +24,12 @@
     <ClCompile Include="fixParser\fixParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="utilities\logger\logger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="utilities\settings\settings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="functions\fileImport.hpp">
@@ -35,7 +41,13 @@
     <ClInclude Include="fixParser\fixParser.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="functions\testFixParser.hpp">
+    <ClInclude Include="functions\debug.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="utilities\logger\logger.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="utilities\settings\settings.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
