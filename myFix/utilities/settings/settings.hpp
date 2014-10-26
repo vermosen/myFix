@@ -29,7 +29,7 @@
 #define DB_ID       "fixdb"
 #define DB_PORT     3308
 #define LOGPATH		"C://Temp/"
-#define DICT        "C://Users/vermosen/Documents/GitHub/quickfix/spec/FIX50SP2.xml"
+#define DICT        "C://Temp/FIX50SP2_CME.xml"
 
 namespace myFix {
 

@@ -127,7 +127,7 @@ namespace myFix {
 		
 		std::vector<tradeMessage> messages;
 
-		std::string value;
+		std::string dateValue; dateValue.reserve(17);
 
 		size_t groups_count = 0;
 		thOth::dateTime time;
@@ -135,14 +135,12 @@ namespace myFix {
 		// Try to get the number of groups in the message. If not available, discard the message.
 		try {
 		
-			groups_count = boost::lexical_cast<size_t>(msg.getField(268));
-			//groups_count = strtol(msg.getField(268).c_str(), nullptr, 10);
-			FIX::Header header = msg.getHeader();
+			groups_count = boost::lexical_cast<size_t>(msg.getField(268));			// convert group 268 "group count"
+			dateValue = msg.getHeader().getField(52);								// get time string
 			
-			// parsing time
-			value = header.getField(52);
-			value = msg.getHeader().getField(52); // didn't work in GCC for some reason
-			long millis = strtol(&value[value.size() - 3], nullptr, 10);
+			boost::posix_time::time_duration ms = boost::posix_time::milliseconds(
+				boost::lexical_cast<int>(dateValue.substr(15, 3)));					// number of milliseonds
+			
 			time = thOth::dateTime::currentTime();
 			//time = thOth::dateTime(value, "%Y%m%d%H%M%S") + boost::posix_time::milliseconds(millis);
 		
@@ -153,15 +151,17 @@ namespace myFix {
 		
 		}
 
-		FIX::SecurityDesc securityDesc;
+		FIX::SecurityDesc description;
 		FIX50SP2::MarketDataIncrementalRefresh::NoMDEntries group;
+		std::string value;
+
 		for (size_t i = 1; i <= groups_count; ++i) {
 
 			msg.getGroup(i, group);
 
 			try	{
 				
-				value = group.getField(securityDesc).getString();
+				value = group.getField(description).getString();
 				if (symbols_.size() != 0 && symbols_.find(value) == symbols_.cend())
 					continue;
 

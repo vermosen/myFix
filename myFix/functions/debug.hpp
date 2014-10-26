@@ -5,6 +5,8 @@
 
 #include <boost/timer.hpp>
 
+#include <thOth/time/DateTime.hpp>
+
 #include "utilities/settings/settings.hpp"
 #include "fixParser/fixParser.hpp"
 
@@ -14,43 +16,38 @@ void debug(const std::string & data_) {
 
 	boost::timer t;										// timer
 
-	myFix::fixParser parser(							// create the file parser
-		myFix::settings::instance().dictionary()); 
+	try {
+	
+		// facet test
+		std::string myDateStr1("20021112000000.112");
+		std::string myDateStr2("20021112123112.765");
+		thOth::dateTime dt1 = thOth::dateTime::fixStrToDate(myDateStr1);
+		thOth::dateTime dt2 = thOth::dateTime::fixStrToDate(myDateStr1);
+		std::cout << dt1 << std::endl;
+		std::cout << dt2 << std::endl;
 
-	std::ifstream infile(data_);						// open data file
-
-	// local variables 
-	int									n_valid = 0;	// valid record counter
-	std::vector<myFix::tradeMessage>	tradeMsg;
-	long								nline = 1;		// line counter
-	std::string							line("");		// current line
-		
-	while (std::getline(infile, line)) {				// get through the lines
-
-		std::istringstream iss(line);					// istringstream
-
-		if (!(iss >> line)) { break; }					// can't read the line
-
-		if (nline++ == (long)LINE - 1) {					// message every 1000 line
-
-			try {
-
-				std::vector<myFix::tradeMessage> msg		// parse the line
-					= parser.parse_trade(line);
-
-			}
-			catch (...) {}
-
-		}
-
-		line.clear();
 	}
-
+	catch (std::exception & e) {
+	
+		std::cout << "an exception occured: " 
+				  << std::endl
+				  << e.what()
+				  << std::endl;
+	
+	}
+	catch (...) {
+	
+		std::cout << "unknown exception occured" << std::endl;
+	
+	}
+	
 	std::cout
 		<< "file read in "
 		<< t.elapsed()
 		<< " seconds"
 		<< std::endl;
+
+	system("pause");
 
 }
 

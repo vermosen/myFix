@@ -51,6 +51,9 @@ void fileImport(const std::string & data_) {
 		
 			std::vector<myFix::tradeMessage> msg		// parse the line
 				= parser.parse_trade(line);
+
+			// now that we get the trade messages,
+			// convert into	mysql records	
 		
 			if (msg.size() > 0) {
 			
