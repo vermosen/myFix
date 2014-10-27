@@ -57,9 +57,10 @@ void fileImport(const std::string & data_) {
 		
 			if (msg.size() > 0) {
 			
+				n_valid += msg.size();
 				std::cout 
 					<< "valid records: " 
-					<< n_valid++ 
+					<< n_valid
 					<< std::endl;
 			
 			}

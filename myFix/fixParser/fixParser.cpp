@@ -9,6 +9,11 @@ namespace myFix {
 
 		dic_ = d;
 
+		boost::posix_time::time_input_facet * facet					// create the facet
+			= new boost::posix_time::time_input_facet("%Y%m%d%H%M%S");
+
+		ss_.imbue(std::locale(std::locale(), facet));
+
 	};
 
 	fixParser::~fixParser() {};
@@ -32,9 +37,8 @@ namespace myFix {
 
 			FIX::Header header = msg.getHeader();
 			value = header.getField(52);
-			long millis = strtol(&value[value.size() - 3], nullptr, 10);
-			// build date from string
-			//time = thOth::dateTime(value, "%Y%m%d%H%M%S") + boost::posix_time::milliseconds(millis);
+			time = thOth::dateTime::strToDate(value, ss_);								// build date from string
+			time += thOth::dateTime::milliSeconds(boost::lexical_cast<int>(value.substr(14, 3)));
 			seq_number = strtol(&header.getField(34)[0], nullptr, 10);
 			sender_id = header.getField(49);
 
@@ -127,7 +131,7 @@ namespace myFix {
 		
 		std::vector<tradeMessage> messages;
 
-		std::string dateValue; dateValue.reserve(17);
+		std::string dateVal; dateVal.reserve(17);
 
 		size_t groups_count = 0;
 		thOth::dateTime time;
@@ -136,13 +140,9 @@ namespace myFix {
 		try {
 		
 			groups_count = boost::lexical_cast<size_t>(msg.getField(268));			// convert group 268 "group count"
-			dateValue = msg.getHeader().getField(52);								// get time string
-			
-			boost::posix_time::time_duration ms = boost::posix_time::milliseconds(
-				boost::lexical_cast<int>(dateValue.substr(15, 3)));					// number of milliseonds
-			
-			time = thOth::dateTime::currentTime();
-			//time = thOth::dateTime(value, "%Y%m%d%H%M%S") + boost::posix_time::milliseconds(millis);
+			dateVal = msg.getHeader().getField(52);									// get time string
+			time = thOth::dateTime::strToDate(dateVal, ss_);						// build date from string
+			time += thOth::dateTime::milliSeconds(boost::lexical_cast<int>(dateVal.substr(14, 3)));
 		
 		}
 		catch (...)	{

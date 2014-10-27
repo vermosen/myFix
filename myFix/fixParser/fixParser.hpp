@@ -18,7 +18,7 @@
 namespace myFix {
 
 	class message {
-	
+
 	public:
 
 		// common structure
@@ -92,8 +92,12 @@ namespace myFix {
 		std::vector<bookMessage> operator()(const std::string& msg) const;
 
 		// TODO: change the parse, parse_trades and operator() to manage 
-	private:
+
+	protected:
+
 		FIX::DataDictionary * dic_;
 		std::unordered_set<std::string> symbols_;
+		mutable std::stringstream ss_;
+
 	};
 }

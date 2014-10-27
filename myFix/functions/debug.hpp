@@ -19,12 +19,14 @@ void debug(const std::string & data_) {
 	try {
 	
 		// facet test
-		std::string myDateStr1("20021112000000.112");
-		std::string myDateStr2("20021112123112.765");
-		thOth::dateTime dt1 = thOth::dateTime::fixStrToDate(myDateStr1);
-		thOth::dateTime dt2 = thOth::dateTime::fixStrToDate(myDateStr1);
+		std::stringstream ss1;
+		boost::posix_time::time_input_facet * facet1									// create the facet
+			= new boost::posix_time::time_input_facet("%Y%m%d%H%M%S");
+		ss1.imbue(std::locale(std::locale(), facet1));
+		std::string strDt = "20021112000000123";
+		thOth::dateTime dt1 = thOth::dateTime::strToDate(strDt, ss1);
+		dt1 += thOth::dateTime::milliSeconds(boost::lexical_cast<int>(strDt.substr(14, 3)));
 		std::cout << dt1 << std::endl;
-		std::cout << dt2 << std::endl;
 
 	}
 	catch (std::exception & e) {
