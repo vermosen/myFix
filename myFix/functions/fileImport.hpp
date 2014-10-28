@@ -14,14 +14,14 @@
 #include <boost/timer.hpp>
 
 #include "utilities/settings/settings.hpp"
-#include "fixParser/fixParser.hpp"
+#include "parser/parser.hpp"
 
 void fileImport(const std::string & data_) {
 
 	
 	boost::timer t;										// timer
 
-	myFix::fixParser parser(							// create the file parser
+	myFix::parser parser(								// create the file parser
 		myFix::settings::instance().dictionary());											
 
 	std::ifstream infile(data_);						// open data file

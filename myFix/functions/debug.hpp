@@ -8,9 +8,7 @@
 #include <thOth/time/DateTime.hpp>
 
 #include "utilities/settings/settings.hpp"
-#include "fixParser/fixParser.hpp"
-
-#define LINE 5113
+#include "parser/parser.hpp"
 
 void debug(const std::string & data_) {
 

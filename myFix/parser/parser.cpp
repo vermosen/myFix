@@ -1,10 +1,8 @@
-#include "fixParser/fixParser.hpp"
-
-#include <istream>
+#include "parser/parser.hpp"
 
 namespace myFix {
 
-	fixParser::fixParser(FIX::DataDictionary * d)					// provide dictionary ptr 
+	parser::parser(FIX::DataDictionary * d)							// provide dictionary ptr 
 		: symbols_() {
 
 		dic_ = d;
@@ -16,10 +14,10 @@ namespace myFix {
 
 	};
 
-	fixParser::~fixParser() {};
+	parser::~parser() {};
 
 		// @brief parse a FIX message and return its components that change the book + trades
-	std::vector<bookMessage> fixParser::parse(const FIX50SP2::MarketDataIncrementalRefresh& msg) const {
+	std::vector<bookMessage> parser::parse(const FIX50SP2::MarketDataIncrementalRefresh& msg) const {
 
 		std::vector<bookMessage> messages;
 
@@ -121,12 +119,12 @@ namespace myFix {
 		return messages;
 	}
 
-	std::vector<bookMessage> fixParser::parse(const std::string& msg) const {
+	std::vector<bookMessage> parser::parse(const std::string& msg) const {
 		FIX::Message fix_msg(msg, *dic_, false);
 		return parse(FIX50SP2::MarketDataIncrementalRefresh(fix_msg));
 	}
 
-	std::vector<tradeMessage> fixParser::parse_trade(
+	std::vector<tradeMessage> parser::parse_trade(
 		const FIX50SP2::MarketDataIncrementalRefresh & msg) const {
 		
 		std::vector<tradeMessage> messages;
@@ -186,17 +184,8 @@ namespace myFix {
 		return messages;
 	}
 
-	std::vector<tradeMessage> fixParser::parse_trade(const std::string& msg) const
-	{
+	std::vector<tradeMessage> parser::parse_trade(const std::string& msg) const {
 		FIX::Message fix_msg(msg, *dic_, false);
 		return parse_trade(FIX50SP2::MarketDataIncrementalRefresh(fix_msg));
-	}
-
-	std::vector<bookMessage> fixParser::operator()(const FIX50SP2::MarketDataIncrementalRefresh& msg) const {
-		return parse(msg);
-	}
-
-	std::vector<bookMessage> fixParser::operator()(const std::string& msg) const {
-		return parse(msg);
 	}
 }
