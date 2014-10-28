@@ -122,39 +122,39 @@ namespace myFix {
 			for (thOth::timeSeries<tradeMessage>::const_iterator It = recs.cbegin(); It != recs.cend(); It++) {
 
 				fieldStr.append("CONTRACT_ID,");						// contract id
-				INSERT_SQL_NUM(valueStr, ct.first)
+				SQL_INSERT_NUM(valueStr, ct.first)
 					valueStr.append(",");
 
 				fieldStr.append("BAR_START,");							// barStart
-				INSERT_SQL_DATE(valueStr, It->first)
+				SQL_INSERT_DATE(valueStr, It->first)
 					valueStr.append(",");
 
 				fieldStr.append("BAR_END,");							// barEnd
-				INSERT_SQL_DATE(valueStr, thOth::dateTime::advance(It->first, It->second.length()))
+				SQL_INSERT_DATE(valueStr, thOth::dateTime::advance(It->first, It->second.length()))
 					valueStr.append(",");
 
 				fieldStr.append("OPEN,");								// open
-				INSERT_SQL_NUM(valueStr, It->second.open())
+				SQL_INSERT_NUM(valueStr, It->second.open())
 					valueStr.append(",");
 
 				fieldStr.append("CLOSE,");								// close
-				INSERT_SQL_NUM(valueStr, It->second.close())
+				SQL_INSERT_NUM(valueStr, It->second.close())
 					valueStr.append(",");
 
 				fieldStr.append("HIGH,");								// close
-				INSERT_SQL_NUM(valueStr, It->second.high())
+				SQL_INSERT_NUM(valueStr, It->second.high())
 					valueStr.append(",");
 
 				fieldStr.append("LOW,");								// close
-				INSERT_SQL_NUM(valueStr, It->second.low())
+				SQL_INSERT_NUM(valueStr, It->second.low())
 					valueStr.append(",");
 
 				fieldStr.append("VOLUME,");								// volume
-				INSERT_SQL_NUM(valueStr, It->second.volume())
+				SQL_INSERT_NUM(valueStr, It->second.volume())
 					valueStr.append(",");
 
 				fieldStr.append("EXCHANGE");							// exchange
-				INSERT_SQL_STR(valueStr, ct.second.summary.exchange)
+				SQL_INSERT_STR(valueStr, ct.second.summary.exchange)
 
 					std::string insertStatement("INSERT INTO table_historical_bar (");
 

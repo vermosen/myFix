@@ -16,6 +16,12 @@ namespace myFix {
 
 	parser::~parser() {};
 
+	void parser::addSymbol(const std::pair<dataBase::recordId, std::string> & pair) {
+
+		symbols_.insert(boost::bimap<dataBase::recordId, std::string>::value_type(pair.first, pair.second));
+
+	};
+
 		// @brief parse a FIX message and return its components that change the book + trades
 	std::vector<bookMessage> parser::parse(const FIX50SP2::MarketDataIncrementalRefresh& msg) const {
 
@@ -32,7 +38,6 @@ namespace myFix {
 		try {
 
 			groups_count = boost::lexical_cast<size_t>(msg.getField(268));
-
 			FIX::Header header = msg.getHeader();
 			value = header.getField(52);
 			time = thOth::dateTime::strToDate(value, ss_);								// build date from string
@@ -57,7 +62,7 @@ namespace myFix {
 			try {
 
 				value = group.getField(securityDesc).getString();
-				if (symbols_.size() != 0 && symbols_.find(value) == symbols_.cend())
+				if (symbols_.size() != 0 && symbols_.find(value) == symbols_.end())
 					continue;
 
 				// discard groups with quote condition = exchange best (field 276 = 'C')
@@ -74,7 +79,10 @@ namespace myFix {
 				m_msg.seq_number_	= seq_number;
 				m_msg.price_		= std::stod(group.getField(270));
 				m_msg.quantity_		= std::stoi(group.getField(271));
-				m_msg.symbol_		= value;
+
+				// TODO: need to attach the right contract id, 
+				// i.e. discard the other contracts
+				m_msg.symbol_		= std::pair<myFix::dataBase::recordId, std::string>(1, value);
 				m_msg.sender_id_	= sender_id;
 
 				// MDUpdateAction
@@ -160,7 +168,7 @@ namespace myFix {
 			try	{
 				
 				value = group.getField(description).getString();
-				if (symbols_.size() != 0 && symbols_.find(value) == symbols_.cend())
+				if (symbols_.size() != 0 && symbols_.find(value) == symbols_.end())
 					continue;
 
 				// is a trade
@@ -170,7 +178,7 @@ namespace myFix {
 					m_msg.time_		= time;
 					m_msg.price_	= std::stod(group.getField(270));
 					m_msg.quantity_ = std::stoi(group.getField(271));
-					m_msg.symbol_	= value;
+					m_msg.symbol_	= std::pair<>value;
 					messages.push_back(m_msg);
 				
 				}

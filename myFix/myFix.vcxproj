@@ -113,6 +113,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.hpp" />
+    <ClInclude Include="functions\facetTest.hpp" />
     <ClInclude Include="parser\parser.hpp" />
     <ClInclude Include="functions\fileImport.hpp" />
     <ClInclude Include="functions\debug.hpp" />

@@ -9,22 +9,33 @@
 
 #include "utilities/settings/settings.hpp"
 #include "parser/parser.hpp"
+#include "recordset/tableTradeRecordset/tableTradeRecordset.hpp"
 
+// test an insert on the database
 void debug(const std::string & data_) {
 
 	boost::timer t;										// timer
 
 	try {
 	
-		// facet test
-		std::stringstream ss1;
-		boost::posix_time::time_input_facet * facet1									// create the facet
-			= new boost::posix_time::time_input_facet("%Y%m%d%H%M%S");
-		ss1.imbue(std::locale(std::locale(), facet1));
-		std::string strDt = "20021112000000123";
-		thOth::dateTime dt1 = thOth::dateTime::strToDate(strDt, ss1);
-		dt1 += thOth::dateTime::milliSeconds(boost::lexical_cast<int>(strDt.substr(14, 3)));
-		std::cout << dt1 << std::endl;
+		// declare parser
+		//myFix::parser parser(								// create the file parser
+		//	myFix::settings::instance().dictionary());
+
+		// add the requested symbols
+		//parser.addSymbol(std::pair<myFix::dataBase::recordId, std::string>(1, "TOTO"));
+
+		myFix::dataBase::tableTradeRecordset(			// recordset connect to the database
+			myFix::settings::instance().connection());
+
+		//myFix::tradeMessage t = {};
+
+		//std::string		symbol_ = ""	;		// symbol name (FIX field 107)
+		//thOth::dateTime time_			;		// quote time
+		//double          price_ = .0		;		// price
+		//int             quantity_ = 0	;
+
+		
 
 	}
 	catch (std::exception & e) {

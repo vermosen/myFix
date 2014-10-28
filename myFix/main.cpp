@@ -61,6 +61,7 @@ int main(int argc, char** argv) {
 					<< std::endl << "Please select an activity: "
 					<< std::endl << "1 - CME file parsing"
 					<< std::endl << "2 - debug"
+					<< std::endl << "3 - facet test"
 					<< std::endl << "0 - exit"
 					<< std::endl << std::endl;
 
@@ -78,6 +79,11 @@ int main(int argc, char** argv) {
 			case 2:
 
 				debug(std::string(PATH).append(DATA));				// path to the data file
+				break;
+
+			case 3:
+
+				facetTest();										// path to the data file
 				break;
 
 			case 0:

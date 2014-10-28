@@ -7,6 +7,7 @@
 #include "recordset/recordset.hpp"
 #include "utilities/message/message.hpp"
 #include "recordset/recordsetException.hpp"
+#include "recordset/conversion.hpp"
 
 namespace myFix {
 

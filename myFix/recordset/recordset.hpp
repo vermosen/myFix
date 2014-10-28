@@ -12,17 +12,17 @@
 #include <thOth/time/dateTime.hpp>
 
 // insert a string value
-#define INSERT_SQL_STR(X,Y) \
+#define SQL_INSERT_STR(X,Y) \
 	X.append("'" )          \
 	 .append(Y   )          \
 	 .append("'");
 
 // insert a num value
-#define INSERT_SQL_NUM(X,Y) \
+#define SQL_INSERT_NUM(X,Y) \
 	 X.append(boost::lexical_cast<std::string>(Y));
 
 // insert a date value
-#define INSERT_SQL_DATE(X,Y)     \
+#define SQL_INSERT_DATE(X,Y)     \
 	X.append("'")                \
 	 .append(convertDateTime_sql(Y)) \
 	 .append("'");
