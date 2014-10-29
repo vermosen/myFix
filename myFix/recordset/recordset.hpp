@@ -24,7 +24,7 @@
 // insert a date value
 #define SQL_INSERT_DATE(X,Y)     \
 	X.append("'")                \
-	 .append(convertDateTime_sql(Y)) \
+	 .append(Y.convertSqlDateTime()) \
 	 .append("'");
 
 namespace myFix {

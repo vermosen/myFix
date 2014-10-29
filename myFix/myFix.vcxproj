@@ -97,7 +97,10 @@
     <ClCompile Include="main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="recordset\tableTradeRecordset\tableTradeRecordset.cpp" />
+    <ClCompile Include="recordset\tableTradeRecordset\tableTradeRecordset.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="utilities\logger\logger.cpp" />
     <ClCompile Include="utilities\settings\settings.cpp" />
   </ItemGroup>
@@ -117,10 +120,12 @@
     <ClInclude Include="parser\parser.hpp" />
     <ClInclude Include="functions\fileImport.hpp" />
     <ClInclude Include="functions\debug.hpp" />
-    <ClInclude Include="recordset\conversion.hpp" />
     <ClInclude Include="recordset\recordset.hpp" />
     <ClInclude Include="recordset\recordsetException.hpp" />
-    <ClInclude Include="recordset\tableTradeRecordset\tableTradeRecordset.hpp" />
+    <ClInclude Include="recordset\tableTradeRecordset\tableTradeRecordset.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="utilities\logger\logger.hpp" />
     <ClInclude Include="utilities\message\message.hpp" />
     <ClInclude Include="utilities\settings\settings.hpp" />

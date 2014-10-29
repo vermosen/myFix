@@ -13,7 +13,7 @@ namespace myFix {
 	// TODO: bring more structure on that one
 	typedef std::pair<myFix::dataBase::recordId, std::string> instrument;
 
-	class message {
+	struct message {
 
 	public:
 

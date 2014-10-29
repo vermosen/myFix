@@ -18,7 +18,7 @@ namespace myFix {
 
 	void parser::addSymbol(const std::pair<dataBase::recordId, std::string> & pair) {
 
-		symbols_.insert(boost::bimap<dataBase::recordId, std::string>::value_type(pair.first, pair.second));
+		//symbols_.insert(boost::bimap<dataBase::recordId, std::string>::value_type(pair.first, pair.second));
 
 	};
 
@@ -62,8 +62,8 @@ namespace myFix {
 			try {
 
 				value = group.getField(securityDesc).getString();
-				if (symbols_.size() != 0 && symbols_.find(value) == symbols_.end())
-					continue;
+				//if (symbols_.size() != 0 && symbols_.find(value) == symbols_.end())
+				//	continue;
 
 				// discard groups with quote condition = exchange best (field 276 = 'C')
 				// as they aren't book updates
@@ -82,7 +82,7 @@ namespace myFix {
 
 				// TODO: need to attach the right contract id, 
 				// i.e. discard the other contracts
-				m_msg.symbol_		= std::pair<myFix::dataBase::recordId, std::string>(1, value);
+				m_msg.symbol_		= std::pair<dataBase::recordId, std::string>(1, "FAKE");
 				m_msg.sender_id_	= sender_id;
 
 				// MDUpdateAction
@@ -148,7 +148,8 @@ namespace myFix {
 			groups_count = boost::lexical_cast<size_t>(msg.getField(268));			// convert group 268 "group count"
 			dateVal = msg.getHeader().getField(52);									// get time string
 			time = thOth::dateTime::strToDate(dateVal, ss_);						// build date from string
-			time += thOth::dateTime::milliSeconds(boost::lexical_cast<int>(dateVal.substr(14, 3)));
+			time += thOth::dateTime::milliSeconds(									// (poorly) manage fix ms format....
+				boost::lexical_cast<int>(dateVal.substr(14, 3)));
 		
 		}
 		catch (...)	{
@@ -178,7 +179,7 @@ namespace myFix {
 					m_msg.time_		= time;
 					m_msg.price_	= std::stod(group.getField(270));
 					m_msg.quantity_ = std::stoi(group.getField(271));
-					m_msg.symbol_	= std::pair<>value;
+					m_msg.symbol_	= std::pair<dataBase::recordId, std::string>(1, "FAKE");	// need to retrieve the pair from bimap
 					messages.push_back(m_msg);
 				
 				}

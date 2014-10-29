@@ -20,10 +20,12 @@
 #include "quickfix/Log.h"
 #include "quickfix/SessionSettings.h"
 
-#include "functions/fileImport.hpp"
-#include "functions/debug.hpp"
 #include "Application.hpp"
 #include "utilities/settings/settings.hpp"
+
+#include "functions/fileImport.hpp"
+#include "functions/debug.hpp"
+#include "functions/facetTest.hpp"
 
 #define PATH     "C://Temp/"
 #define SETTINGS "C://Users/vermosen/Documents/GitHub/myFix/myFix/settings.txt"

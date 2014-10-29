@@ -7,8 +7,9 @@
 
 #include <thOth/time/DateTime.hpp>
 
-#include "utilities/settings/settings.hpp"
 #include "parser/parser.hpp"
+#include "utilities/settings/settings.hpp"
+
 
 // a test devoted to look at date 
 // conversion using std::locale and facets
@@ -21,7 +22,7 @@ void facetTest() {
 		// facet test
 		std::stringstream ss1;
 		boost::posix_time::time_input_facet * facet1									// create the facet
-			= new boost::posix_time::time_input_facet("%Y%m%d%H%M%S");
+			= new boost::posix_time::time_input_facet("%Y%m%d%H%M%s");
 		ss1.imbue(std::locale(std::locale(), facet1));
 		std::string strDt = "20021112000000123";
 		thOth::dateTime dt1 = thOth::dateTime::strToDate(strDt, ss1);

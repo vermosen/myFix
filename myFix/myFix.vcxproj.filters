@@ -65,9 +65,6 @@
     <ClInclude Include="recordset\recordsetException.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="recordset\conversion.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="functions\facetTest.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
