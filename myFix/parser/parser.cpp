@@ -3,7 +3,7 @@
 namespace myFix {
 
 	parser::parser(FIX::DataDictionary * d)							// provide dictionary ptr 
-		: symbols_() {
+		: symbolMap_() {
 
 		dic_ = d;
 
@@ -16,9 +16,9 @@ namespace myFix {
 
 	parser::~parser() {};
 
-	void parser::addSymbol(const std::pair<dataBase::recordId, std::string> & pair) {
+	void parser::addSymbol(const boost::bimap<dataBase::recordId, std::string>::value_type & instrument) {
 
-		//symbols_.insert(boost::bimap<dataBase::recordId, std::string>::value_type(pair.first, pair.second));
+		symbolMap_.insert(instrument);
 
 	};
 
@@ -62,8 +62,15 @@ namespace myFix {
 			try {
 
 				value = group.getField(securityDesc).getString();
-				//if (symbols_.size() != 0 && symbols_.find(value) == symbols_.end())
-				//	continue;
+				
+				// test on the contract
+				if (symbolMap_.size() != 0 && symbolMap_.right.find(value) == symbolMap_.right.end()) {
+
+					// TODO: throw an exception
+					std::cout << "new contract detected:" << value << std::endl;
+					continue;
+
+				}
 
 				// discard groups with quote condition = exchange best (field 276 = 'C')
 				// as they aren't book updates
@@ -75,16 +82,15 @@ namespace myFix {
 				catch (...) {}
 
 				bookMessage m_msg;
+
 				m_msg.time_			= time;
 				m_msg.seq_number_	= seq_number;
 				m_msg.price_		= std::stod(group.getField(270));
 				m_msg.quantity_		= std::stoi(group.getField(271));
-
-				// TODO: need to attach the right contract id, 
-				// i.e. discard the other contracts
-				m_msg.symbol_		= std::pair<dataBase::recordId, std::string>(1, "FAKE");
-				m_msg.sender_id_	= sender_id;
-
+				m_msg.sender_id_    = sender_id;
+				m_msg.symbol_       = std::pair<dataBase::recordId, std::string>(
+					symbolMap_.right.find(value)->second, value);
+				
 				// MDUpdateAction
 				value = group.getField(279);
 				if (value == "0")
@@ -169,17 +175,25 @@ namespace myFix {
 			try	{
 				
 				value = group.getField(description).getString();
-				if (symbols_.size() != 0 && symbols_.find(value) == symbols_.end())
+				
+				// test on the contract
+				if (symbolMap_.size() != 0 && symbolMap_.right.find(value) == symbolMap_.right.end()) {
+				
+					std::cout << "new contract detected:" << value << std::endl;
 					continue;
+				
+				}
 
-				// is a trade
+				// is a trade ?
 				if (group.getField(269) == "2") {
 
 					tradeMessage m_msg;
 					m_msg.time_		= time;
 					m_msg.price_	= std::stod(group.getField(270));
 					m_msg.quantity_ = std::stoi(group.getField(271));
-					m_msg.symbol_	= std::pair<dataBase::recordId, std::string>(1, "FAKE");	// need to retrieve the pair from bimap
+					m_msg.symbol_   = std::pair<dataBase::recordId, std::string>(
+						symbolMap_.right.find(value)->second, value);	
+
 					messages.push_back(m_msg);
 				
 				}

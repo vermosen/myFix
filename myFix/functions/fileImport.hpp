@@ -12,9 +12,14 @@
 #include <fstream>
 
 #include <boost/timer.hpp>
+#include <boost/bimap.hpp>
 
+#include "recordset/functions/insertSingleTrade.hpp"
 #include "utilities/settings/settings.hpp"
 #include "parser/parser.hpp"
+
+#define ADD_CONTRACT(X, Y, Z) \
+X.addSymbol(boost::bimap<myFix::dataBase::recordId, std::string>::value_type(Y, Z));
 
 void fileImport(const std::string & data_) {
 
@@ -24,11 +29,28 @@ void fileImport(const std::string & data_) {
 	myFix::parser parser(								// create the file parser
 		myFix::settings::instance().dictionary());											
 
+	// build symbols map
+	ADD_CONTRACT(parser, 1 , "ESH4"     )
+	ADD_CONTRACT(parser, 2 , "ESM4"     )
+	ADD_CONTRACT(parser, 3 , "ESU4"     )
+	ADD_CONTRACT(parser, 4 , "ESZ4"     )
+	ADD_CONTRACT(parser, 5 , "ESH5"     )
+	ADD_CONTRACT(parser, 6 , "ESH4-ESU4")
+	ADD_CONTRACT(parser, 7 , "ESM4-ESU4")
+	ADD_CONTRACT(parser, 8 , "ESU4-ESZ4")
+	ADD_CONTRACT(parser, 9 , "ESU4-ESH5")
+	ADD_CONTRACT(parser, 10, "ESZ4-ESH5")
+	ADD_CONTRACT(parser, 11, "ESM4-ESH5")
+	ADD_CONTRACT(parser, 12, "ESH4-ESM4")
+	ADD_CONTRACT(parser, 13, "ESH4-ESH5")
+	ADD_CONTRACT(parser, 14, "ESH4-ESZ4")
+	ADD_CONTRACT(parser, 15, "ESM4-ESZ4")
+	
 	std::ifstream infile(data_);						// open data file
-
 
 	// local variables 
 	int									n_valid = 0	;	// valid record counter
+	int                                 n_error = 0 ;	// errors
 	std::vector<myFix::tradeMessage>	tradeMsg	;
 	long								nline = 1	;	// line counter
 	std::string							line("")	;	// current line
@@ -46,34 +68,40 @@ void fileImport(const std::string & data_) {
 				<< " lines."
 				<< std::endl;
 
-		// trying to convert into fix messages
 		try {
-		
+
+			// step 1: trying to convert current line
 			std::vector<myFix::tradeMessage> msg		// parse the line
 				= parser.parse_trade(line);
 
-			// now that we get the trade messages,
-			// convert into	mysql records	
-		
-			if (msg.size() > 0) {
-			
-				n_valid += msg.size();
-				std::cout 
-					<< "valid records: " 
-					<< n_valid
-					<< std::endl;
-			
+			// step 2: write each msg in the db		
+			for (std::vector<myFix::tradeMessage>::const_iterator It
+				= msg.cbegin(); It != msg.cend(); It++) {
+
+				if (insertSingleTrade(*It) == true) {
+
+					if (n_valid++ % 100 == 0) 			// info
+
+						std::cout
+							<< n_valid
+							<< "records inserted"
+							<< std::endl;
+
+				}
+				else {
+
+					std::cout
+						<< ++n_error
+						<< "errors occured"
+						<< std::endl;
+
+				}
 			}
-
 		}
-
-		// todo : exception management & log
-		catch (...) {
 		
-			//std::cout 
-			//	<< "parsing error on line " 
-			//	<< nline 
-			//	<< std::endl;
+		catch (...) {									// todo : exception management & log
+		
+			std::cout << "big mess !!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
 		
 		}
 

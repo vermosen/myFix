@@ -22,9 +22,9 @@
 	 X.append(boost::lexical_cast<std::string>(Y));
 
 // insert a date value
-#define SQL_INSERT_DATE(X,Y)     \
-	X.append("'")                \
-	 .append(Y.convertSqlDateTime()) \
+#define SQL_INSERT_DATE(X,Y,Z)        \
+	X.append("'")                     \
+	 .append(Y.convertSqlDateTime(Z)) \
 	 .append("'");
 
 namespace myFix {

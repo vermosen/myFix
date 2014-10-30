@@ -7,6 +7,7 @@
 
 #include <thOth/time/DateTime.hpp>
 
+#include "recordset/functions/insertSingleTrade.hpp"
 #include "utilities/settings/settings.hpp"
 #include "parser/parser.hpp"
 
@@ -36,51 +37,21 @@ void debug(const std::string & data_) {
 			myFix::tradeMessage t;
 			t.price_ = 100.13;
 			t.quantity_ = 1234;
-			t.symbol_ = std::pair<myFix::dataBase::recordId, std::string>(1, "FAKE");
+			t.symbol_ = std::pair<myFix::dataBase::recordId, std::string>(999, "FAKE");
 			t.time_ = tradeDate;
 
 			messages.push_back(t);
 		
 		}
-		
-		// insert tradeMessage into mysql database
-		std::string fieldStr, valueStr;								// the two fields to build together
 
 		// TODO: need to iterate over the ts
-		for (std::vector<myFix::tradeMessage>::const_iterator It 
+		for (std::vector<myFix::tradeMessage>::const_iterator It
 			= messages.cbegin(); It != messages.cend(); It++) {
 
-			fieldStr.append("INSTRUMENT_ID,");						// contract id
-			SQL_INSERT_NUM(valueStr, It->symbol_.first)
-				valueStr.append(",");
-
-			fieldStr.append("TRADE_DATETIME,");						// barStart
-			SQL_INSERT_DATE(valueStr, It->time_)
-				valueStr.append(",");
-
-			fieldStr.append("TRADE_PRICE,");						// open
-			SQL_INSERT_NUM(valueStr, It->price_)
-				valueStr.append(",");
-
-			fieldStr.append("TRADE_VOLUME,");						// close
-			SQL_INSERT_NUM(valueStr, It->quantity_)
-				valueStr.append(",");
-
-				std::string insertStatement("INSERT INTO table_historical_bar (");
-
-			insertStatement
-				.append(fieldStr)
-				.append(") VALUES (")
-				.append(valueStr)
-				.append(")");
-
-			if (mysql_query(myFix::settings::instance().connection(), insertStatement.c_str()) != 0)	// throw on an error
-				throw std::exception(mysql_error(myFix::settings::instance().connection()));
-
-			fieldStr.clear(), valueStr.clear();
+			if (insertSingleTrade(*It) != true)
+				throw std::exception("insertion error");
 
 		}
-
 	}
 	catch (std::exception & e) {
 	
@@ -97,12 +68,10 @@ void debug(const std::string & data_) {
 	}
 	
 	std::cout
-		<< "file read in "
+		<< "test ended in "
 		<< t.elapsed()
 		<< " seconds"
 		<< std::endl;
-
-	system("pause");
 
 }
 
