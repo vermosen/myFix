@@ -119,10 +119,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.hpp" />
+    <ClInclude Include="functions\all.hpp" />
     <ClInclude Include="functions\facetTest.hpp" />
+    <ClInclude Include="functions\singleInsert.hpp" />
     <ClInclude Include="parser\parser.hpp" />
     <ClInclude Include="functions\fileImport.hpp" />
     <ClInclude Include="functions\debug.hpp" />
+    <ClInclude Include="recordset\functions\insertBulkTrade.hpp" />
     <ClInclude Include="recordset\functions\insertSingleTrade.hpp" />
     <ClInclude Include="recordset\recordset.hpp" />
     <ClInclude Include="recordset\recordsetException.hpp" />

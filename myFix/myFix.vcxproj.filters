@@ -71,6 +71,15 @@
     <ClInclude Include="recordset\functions\insertSingleTrade.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="functions\singleInsert.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="functions\all.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="recordset\functions\insertBulkTrade.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="settings.txt" />

@@ -23,13 +23,15 @@
 #include "Application.hpp"
 #include "utilities/settings/settings.hpp"
 
-#include "functions/fileImport.hpp"
-#include "functions/debug.hpp"
-#include "functions/facetTest.hpp"
+#include "functions/all.hpp"
 
 #define PATH     "C://Temp/"
 #define SETTINGS "C://Users/vermosen/Documents/GitHub/myFix/myFix/settings.txt"
-#define DATA     "XCME_MD_ES_20140303_20140307"
+//#define DATA     "XCME_MD_ES_20140303_20140307" -> done
+//#define DATA     "XCME_MD_ES_20140310_20140314" -> done
+//#define DATA     "XCME_MD_ES_20140317_20140321" -> done
+//#define DATA     "XCME_MD_ES_20140324_20140328" -> done
+#define DATA     "XCME_MD_ES_20140331_20140404"
 
 int main(int argc, char** argv) {
 
@@ -64,6 +66,7 @@ int main(int argc, char** argv) {
 					<< std::endl << "1 - CME file parsing"
 					<< std::endl << "2 - debug"
 					<< std::endl << "3 - facet test"
+					<< std::endl << "4 - single insert test"
 					<< std::endl << "0 - exit"
 					<< std::endl << std::endl;
 
@@ -86,6 +89,11 @@ int main(int argc, char** argv) {
 			case 3:
 
 				facetTest();										// path to the data file
+				break;
+
+			case 4:
+
+				singleInsert();										// single insert test
 				break;
 
 			case 0:

@@ -15,6 +15,7 @@
 #include <boost/bimap.hpp>
 
 #include "recordset/functions/insertSingleTrade.hpp"
+#include "recordset/functions/insertBulkTrade.hpp"
 #include "utilities/settings/settings.hpp"
 #include "parser/parser.hpp"
 
@@ -23,7 +24,6 @@ X.addSymbol(boost::bimap<myFix::dataBase::recordId, std::string>::value_type(Y, 
 
 void fileImport(const std::string & data_) {
 
-	
 	boost::timer t;										// timer
 
 	myFix::parser parser(								// create the file parser
@@ -45,6 +45,11 @@ void fileImport(const std::string & data_) {
 	ADD_CONTRACT(parser, 13, "ESH4-ESH5")
 	ADD_CONTRACT(parser, 14, "ESH4-ESZ4")
 	ADD_CONTRACT(parser, 15, "ESM4-ESZ4")
+	ADD_CONTRACT(parser, 16, "ESM5"     )
+	ADD_CONTRACT(parser, 17, "ESM4-ESM5")
+	ADD_CONTRACT(parser, 18, "ESU4-ESM5")
+	ADD_CONTRACT(parser, 19, "ESZ4-ESM5")
+	ADD_CONTRACT(parser, 20, "ESH5-ESM5")
 	
 	std::ifstream infile(data_);						// open data file
 
@@ -74,31 +79,43 @@ void fileImport(const std::string & data_) {
 			std::vector<myFix::tradeMessage> msg		// parse the line
 				= parser.parse_trade(line);
 
-			// step 2: write each msg in the db		
-			for (std::vector<myFix::tradeMessage>::const_iterator It
-				= msg.cbegin(); It != msg.cend(); It++) {
+			// step 2: try a bulk insert in the db	
+			if (insertBulkTrade(msg) == true) {
 
-				if (insertSingleTrade(*It) == true) {
-
-					if (n_valid++ % 100 == 0) 			// info
-
-						std::cout
-							<< n_valid
-							<< "records inserted"
-							<< std::endl;
-
-				}
-				else {
+				if (n_valid++ % 100 == 0) 				// info
 
 					std::cout
-						<< ++n_error
-						<< "errors occured"
-						<< std::endl;
+					<< n_valid - 1
+					<< " records inserted"
+					<< std::endl;
 
+			}
+			else {										// if unsuccessful, try to insert line by line
+
+				for (std::vector<myFix::tradeMessage>::const_iterator It
+					= msg.cbegin(); It != msg.cend(); It++) {
+
+					if (insertSingleTrade(*It) == true) {
+
+						if (n_valid++ % 100 == 0) 		// info
+
+							std::cout
+							<< n_valid - 1
+							<< " records inserted"
+							<< std::endl;
+
+					}
+					else {
+
+						std::cout
+							<< ++n_error
+							<< " errors occured"
+							<< std::endl;
+
+					}
 				}
 			}
 		}
-		
 		catch (...) {									// todo : exception management & log
 		
 			std::cout << "big mess !!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;

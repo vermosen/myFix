@@ -7,17 +7,31 @@
 
 #include <thOth/time/DateTime.hpp>
 
-#include "recordset/functions/insertSingleTrade.hpp"
+#include "recordset/functions/insertBulkTrade.hpp"
 #include "utilities/settings/settings.hpp"
 #include "parser/parser.hpp"
 
-// test an insert on the database
-void debug(const std::string & data_) {
+// feed a bar table from a dataset
+// we want to create a function which turns 
+// {id time price volume}s into a bar, ie a struct 
+// {id time, open, close, high, low, volume, duration}
+// in our case, we need to have 1ms bars
+
+struct trade {
+
+	thOth::dateTime time_	;
+					price_	;
+					volume_	;
+}
+
+void debug(const std::vector<trade> & trades_) {
 
 	boost::timer t;										// timer
 
 	try {
 
+		// 
+		
 		// vector to insert
 		std::vector<myFix::tradeMessage> messages;
 
@@ -34,24 +48,27 @@ void debug(const std::string & data_) {
 				+ thOth::dateTime::milliSeconds(boost::lexical_cast<int>(dtStr.substr(15, 3)));
 
 
-			myFix::tradeMessage t;
-			t.price_ = 100.13;
-			t.quantity_ = 1234;
-			t.symbol_ = std::pair<myFix::dataBase::recordId, std::string>(999, "FAKE");
-			t.time_ = tradeDate;
+			myFix::tradeMessage t1;
+			t1.price_ = 100.1321;
+			t1.quantity_ = 1234;
+			t1.symbol_ = std::pair<myFix::dataBase::recordId, std::string>(999, "FAKE");
+			t1.time_ = tradeDate;
 
-			messages.push_back(t);
+			messages.push_back(t1);
+
+			myFix::tradeMessage t2;
+			t2.price_ = 100.1311;
+			t2.quantity_ = 1111;
+			t2.symbol_ = std::pair<myFix::dataBase::recordId, std::string>(999, "FAKE");
+			t2.time_ = tradeDate + thOth::dateTime::time_duration(thOth::dateTime::milliSeconds(1));
+
+			messages.push_back(t2);
 		
 		}
 
-		// TODO: need to iterate over the ts
-		for (std::vector<myFix::tradeMessage>::const_iterator It
-			= messages.cbegin(); It != messages.cend(); It++) {
+		if (insertBulkTrade(messages) != true)
+			throw std::exception("insertion error");
 
-			if (insertSingleTrade(*It) != true)
-				throw std::exception("insertion error");
-
-		}
 	}
 	catch (std::exception & e) {
 	
