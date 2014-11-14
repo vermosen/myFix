@@ -100,6 +100,9 @@
     <ClCompile Include="main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClInclude Include="recordset\functions\requestBulkTrade.hpp">
+      <FileType>CppHeader</FileType>
+    </ClInclude>
     <ClCompile Include="recordset\tableTradeRecordset\tableTradeRecordset.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -126,6 +129,7 @@
     <ClInclude Include="functions\fileImport.hpp" />
     <ClInclude Include="functions\debug.hpp" />
     <ClInclude Include="recordset\functions\insertBulkTrade.hpp" />
+    <ClInclude Include="recordset\functions\insertSingleBar.hpp" />
     <ClInclude Include="recordset\functions\insertSingleTrade.hpp" />
     <ClInclude Include="recordset\recordset.hpp" />
     <ClInclude Include="recordset\recordsetException.hpp" />

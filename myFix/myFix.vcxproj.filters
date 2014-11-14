@@ -80,6 +80,12 @@
     <ClInclude Include="recordset\functions\insertBulkTrade.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="recordset\functions\insertSingleBar.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="recordset\functions\requestBulkTrade.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="settings.txt" />

@@ -6,10 +6,10 @@
 #include <boost/timer.hpp>
 
 #include <thOth/time/DateTime.hpp>
+#include <thOth/bar/bar.hpp>
 
-#include "recordset/functions/insertBulkTrade.hpp"
-#include "utilities/settings/settings.hpp"
-#include "parser/parser.hpp"
+#include "recordset/functions/requestBulkTrade.hpp"
+#include "recordset/functions/insertSingleBar.hpp"
 
 // feed a bar table from a dataset
 // we want to create a function which turns 
@@ -17,57 +17,47 @@
 // {id time, open, close, high, low, volume, duration}
 // in our case, we need to have 1ms bars
 
-struct trade {
-
-	thOth::dateTime time_	;
-					price_	;
-					volume_	;
-}
-
-void debug(const std::vector<trade> & trades_) {
+void debug(const std::string & file_) {
 
 	boost::timer t;										// timer
 
 	try {
 
-		// 
+		// request settings
+		thOth::dateTime start(2014, 3, 2);
+		start += thOth::dateTime::hours(23) ;
+		thOth::dateTime end = start + thOth::dateTime::milliSeconds(100);	// db code 1
+		myFix::instrument instrument(1, "ESH4");
+
+		// retrieve data
+		std::vector<myFix::tradeMessage> data = requestBulkTrade(instrument, start, end);
+
+		// create the bar based on that
+		double open = data.cbegin()->price_;
+		double close = data.crbegin()->price_;
+		double volume = 0;
+		double high = open;
+		double low = open;
 		
-		// vector to insert
-		std::vector<myFix::tradeMessage> messages;
-
-		{
-
-			// build a dateTime
-			std::string dtStr("20021112000000123");
-			std::stringstream ss1;
-			boost::posix_time::time_input_facet * facet1		// create the facet
-				= new boost::posix_time::time_input_facet("%Y%m%d%H%M%S");
-			ss1.imbue(std::locale(std::locale(), facet1));
-
-			thOth::dateTime tradeDate = thOth::dateTime::strToDate(dtStr, ss1)
-				+ thOth::dateTime::milliSeconds(boost::lexical_cast<int>(dtStr.substr(15, 3)));
-
-
-			myFix::tradeMessage t1;
-			t1.price_ = 100.1321;
-			t1.quantity_ = 1234;
-			t1.symbol_ = std::pair<myFix::dataBase::recordId, std::string>(999, "FAKE");
-			t1.time_ = tradeDate;
-
-			messages.push_back(t1);
-
-			myFix::tradeMessage t2;
-			t2.price_ = 100.1311;
-			t2.quantity_ = 1111;
-			t2.symbol_ = std::pair<myFix::dataBase::recordId, std::string>(999, "FAKE");
-			t2.time_ = tradeDate + thOth::dateTime::time_duration(thOth::dateTime::milliSeconds(1));
-
-			messages.push_back(t2);
+		for (std::vector<myFix::tradeMessage>::const_iterator It = data.cbegin(); It != data.cend(); It++){
+		
+			volume += It->quantity_;
+			high = max(high, It->price_);
+			low = min(low, It->price_);
 		
 		}
 
-		if (insertBulkTrade(messages) != true)
-			throw std::exception("insertion error");
+		bool ret = insertSingleBar(
+			instrument,
+			start,
+			thOth::bar(
+				open,
+				close,
+				high,
+				low,
+				thOth::period(thOth::timeUnit::milliSecond, 100),
+				volume));
+		
 
 	}
 	catch (std::exception & e) {

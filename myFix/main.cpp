@@ -31,7 +31,7 @@
 //#define DATA     "XCME_MD_ES_20140310_20140314" -> done
 //#define DATA     "XCME_MD_ES_20140317_20140321" -> done
 //#define DATA     "XCME_MD_ES_20140324_20140328" -> done
-#define DATA     "XCME_MD_ES_20140331_20140404"
+#define DATA     "XCME_MD_ES_20140331_20140404" //-> done
 
 int main(int argc, char** argv) {
 
