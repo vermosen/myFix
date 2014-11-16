@@ -66,10 +66,9 @@ namespace myFix {
 				// test on the contract
 				if (symbolMap_.size() != 0 && symbolMap_.right.find(value) == symbolMap_.right.end()) {
 
-					// TODO: throw an exception
-					std::cout << "new contract detected:" << value << std::endl;
-					continue;
-
+					// undefined instrument
+					throw undefinedInstrumentException(value);
+					
 				}
 
 				// discard groups with quote condition = exchange best (field 276 = 'C')
@@ -179,8 +178,8 @@ namespace myFix {
 				// test on the contract
 				if (symbolMap_.size() != 0 && symbolMap_.right.find(value) == symbolMap_.right.end()) {
 				
-					std::cout << "new contract detected:" << value << std::endl;
-					continue;
+					// undefined instrument
+					throw undefinedInstrumentException(value);
 				
 				}
 
@@ -198,6 +197,11 @@ namespace myFix {
 				
 				}
 			}
+			catch (undefinedInstrumentException & e) {
+			
+				throw e;						// throw outside of the class
+			
+			}
 			catch (...)
 			{
 				continue;
@@ -208,6 +212,7 @@ namespace myFix {
 	}
 
 	std::vector<tradeMessage> parser::parse_trade(const std::string& msg) const {
+
 		FIX::Message fix_msg(msg, *dic_, false);
 		return parse_trade(FIX50SP2::MarketDataIncrementalRefresh(fix_msg));
 	}

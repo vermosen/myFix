@@ -12,7 +12,7 @@ namespace myFix {
 	settings::settings()						// default values
 		: verbosity_(0),
 		port_    (DB_PORT    ),
-		server_  (DB_SERVER  ), 
+		server_  (DB_SERVER  ),
 		user_    (DB_USER    ),
 		password_(DB_PASSWORD),
 		dataBase_(DB_ID      ),

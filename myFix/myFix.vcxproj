@@ -100,6 +100,12 @@
     <ClCompile Include="main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClInclude Include="functions\barImport_old.hpp" />
+    <ClInclude Include="functions\barImport.hpp" />
+    <ClInclude Include="functions\instrumentImport.hpp" />
+    <ClInclude Include="functions\tradeImport2.hpp" />
+    <ClInclude Include="recordset\functions\insertBulkBar.hpp" />
+    <ClInclude Include="recordset\functions\insertSingleInstrument.hpp" />
     <ClInclude Include="recordset\functions\requestBulkTrade.hpp">
       <FileType>CppHeader</FileType>
     </ClInclude>
@@ -126,11 +132,12 @@
     <ClInclude Include="functions\facetTest.hpp" />
     <ClInclude Include="functions\singleInsert.hpp" />
     <ClInclude Include="parser\parser.hpp" />
-    <ClInclude Include="functions\fileImport.hpp" />
+    <ClInclude Include="functions\tradeImport.hpp" />
     <ClInclude Include="functions\debug.hpp" />
     <ClInclude Include="recordset\functions\insertBulkTrade.hpp" />
     <ClInclude Include="recordset\functions\insertSingleBar.hpp" />
     <ClInclude Include="recordset\functions\insertSingleTrade.hpp" />
+    <ClInclude Include="recordset\functions\requestBulkInstrument.hpp" />
     <ClInclude Include="recordset\recordset.hpp" />
     <ClInclude Include="recordset\recordsetException.hpp" />
     <ClInclude Include="recordset\tableTradeRecordset\tableTradeRecordset.hpp">
