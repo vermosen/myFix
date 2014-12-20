@@ -5,6 +5,8 @@
 #include <istream>
 
 #include <thOth/time/DateTime.hpp>
+#include <thOth/pattern/acyclicVisitor.hpp>
+#include <thOth/pattern/visitor.hpp>
 
 #include "recordset/recordset.hpp"
 
@@ -13,7 +15,7 @@ namespace myFix {
 	// TODO: bring more structure on that one
 	typedef std::pair<myFix::dataBase::recordId, std::string> instrument;
 
-	struct message {
+	class message {
 
 	public:
 
@@ -23,11 +25,22 @@ namespace myFix {
 		double          price_     = .0	;	// price
 		int             quantity_  =  0	;	// number of units (contracts, shares, etc.)
 
+		// visitability
+		virtual void accept(thOth::acyclicVisitor &);
+
 	};
 
-	struct tradeMessage : public message {};
+	class tradeMessage : public message {
+	
+	public:
 
-	struct bookMessage : public message {
+		virtual void accept(thOth::acyclicVisitor &);
+	
+	};
+
+	class bookMessage : public message {
+
+	public:
 
 		enum update_action { new_ = 1, change_ = 2, delete_ = 3 };
 		enum entry_type    { bid_ = 1, ask_    = 2, trade_  = 3 };
@@ -39,35 +52,14 @@ namespace myFix {
 		unsigned long   seq_number_ = 0	;	// sequence number (FIX field 34)
 		std::string     sender_id_ = ""	;	// firm sending message (FIX field 49), e.g., CME
 
-		bool operator<(const bookMessage& msg) const { return seq_number_ < msg.seq_number_; };
+		// sort by sequence number
+		bool operator<(const bookMessage & msg);
 
-		std::string to_string() const {
+		friend std::ostream & operator << (std::ostream &, const bookMessage &);
 
-			std::stringstream ss;
-			ss << symbol_.second
-				<< " ("
-				<< sender_id_
-				<< "); "
-				<< boost::posix_time::to_simple_string(time_)
-				<< "; SeqNo("
-				<< seq_number_
-				<< "); "
-				<< "UpdateAction("
-				<< static_cast<int>(action_)
-				<< "); EntryType("
-				<< static_cast<int>(type_)
-				<< "); "
-				<< price_
-				<< "; "
-				<< quantity_
-				<< "; "
-				<< order_count_
-				<< "; "
-				<< level_;
+		// visitability
+		virtual void accept(thOth::acyclicVisitor &);
 
-			return ss.str();
-
-		}
 	};
 }
 

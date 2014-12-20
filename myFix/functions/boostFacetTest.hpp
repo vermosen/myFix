@@ -7,13 +7,12 @@
 
 #include <thOth/time/DateTime.hpp>
 
-#include "parser/parser.hpp"
 #include "utilities/settings/settings.hpp"
 
 
 // a test devoted to look at date 
 // conversion using std::locale and facets
-void facetTest() {
+void boostFacetTest() {
 
 	boost::timer t;										// timer
 

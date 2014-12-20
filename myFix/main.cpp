@@ -15,10 +15,10 @@
 
 #include <boost/lexical_cast.hpp>
 
-#include "quickfix/FileStore.h"
-#include "quickfix/ThreadedSocketAcceptor.h"
-#include "quickfix/Log.h"
-#include "quickfix/SessionSettings.h"
+#include <quickfix/FileStore.h>
+#include <quickfix/ThreadedSocketAcceptor.h>
+#include <quickfix/Log.h>
+#include <quickfix/SessionSettings.h>
 
 #include "Application.hpp"
 #include "utilities/settings/settings.hpp"
@@ -27,34 +27,31 @@
 
 #define PATH     "C://Temp/"
 #define SETTINGS "C://Users/vermosen/Documents/GitHub/myFix/myFix/settings.txt"
-//#define DATA     "XCME_MD_ES_20140303_20140307" -> done
-//#define DATA     "XCME_MD_ES_20140310_20140314" -> done
-//#define DATA     "XCME_MD_ES_20140317_20140321" -> done
-//#define DATA     "XCME_MD_ES_20140324_20140328" -> done
-//#define DATA     "XCME_MD_ES_20140331_20140404" -> done
+
+// SPY
+//#define DATA  "XCME_MD_ES_20140303_20140307" -> done
+//#define DATA  "XCME_MD_ES_20140310_20140314" -> done
+//#define DATA  "XCME_MD_ES_20140317_20140321" -> done
+//#define DATA  "XCME_MD_ES_20140324_20140328" -> done
+//#define DATA  "XCME_MD_ES_20140331_20140404" -> done
+
+// NASDAQ
+//#define DATA	"XCME_MD_NQ_20140303_20140307" -> done
+//#define DATA	"XCME_MD_NQ_20140310_20140314" -> done
+//#define DATA	"XCME_MD_NQ_20140317_20140321" -> done
+//#define DATA	"XCME_MD_NQ_20140324_20140328" -> done
+//#define DATA	"XCME_MD_NQ_20140331_20140404" -> done
 
 // gold contracts
-#define DATA "XCEC_MD_GC_20140303_20140307"
-
-// parser loading macro
-#define ADD_CONTRACT(X, Y, Z) \
-X.addSymbol(boost::bimap<myFix::dataBase::recordId, std::string>::value_type(Y, Z));
+//#define DATA "XCEC_MD_GC_20140303_20140307" -> done
+//#define DATA "XCEC_MD_GC_20140310_20140314" -> done
+//#define DATA "XCEC_MD_GC_20140317_20140321" -> done
+//#define DATA "XCEC_MD_GC_20140324_20140328" -> done
+#define DATA "XCEC_MD_GC_20140331_20140404"
 
 int main(int argc, char** argv) {
 
 	int exit;														// exit code
-
-	myFix::parser ps(												// create the file parser
-		myFix::settings::instance().dictionary());
-
-	// load the instruments
-	std::vector<myFix::instrument> inst = requestBulkInstrument();
-
-	// load the contract table
-	for (std::vector<myFix::instrument>::const_iterator It 
-		= inst.cbegin(); It != inst.cend(); It++)
-	
-		ADD_CONTRACT(ps, It->first, It->second)
 
 	try {
 
@@ -100,13 +97,12 @@ int main(int argc, char** argv) {
 
 			case 1:
 
-				instrumentImport(std::string(PATH).append(DATA), ps);
+				//instrumentImport(std::string(PATH).append(DATA));
 				break;
 
 			case 2:
 
-				tradeImport2(std::string(PATH).append(DATA), ps);			// path to the data file
-				//tradeImport(std::string(PATH).append(DATA), ps);			// path to the data file
+				//tradeImport(std::string(PATH).append(DATA));		// path to the data file
 				break;
 
 			case 3:
@@ -117,7 +113,7 @@ int main(int argc, char** argv) {
 					start = start + boost::posix_time::hours(23);
 					thOth::dateTime end  (2014, 4, 5);
 					thOth::period p(thOth::timeUnit::milliSecond, 100);
-					barImport(myFix::instrument(1, "ESH4"), start, end, p);
+					//barImport(myFix::instrument(208, "GCJ4"), start, end, p);
 			
 				}
 			
@@ -125,17 +121,17 @@ int main(int argc, char** argv) {
 
 			case 4:
 
-				debug(std::string(PATH).append(DATA), ps);				// path to the data file
+				debug(std::string(PATH).append(DATA));				// path to the data file
 				break;
 
 			case 5:
 
-				facetTest();										// path to the data file
+				//boostFacetTest();									// path to the data file
 				break;
 
 			case 6:
 
-				singleInsert();										// single insert test
+				//singleInsert();										// single insert test
 				break;
 
 			case 0:

@@ -9,7 +9,6 @@
 
 #include "recordset/functions/insertSingleTrade.hpp"
 #include "utilities/settings/settings.hpp"
-#include "parser/parser.hpp"
 
 // test an insert on the database
 void singleInsert() {

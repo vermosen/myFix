@@ -64,16 +64,16 @@ namespace myFix {
 
 			inline logger & log                     () { return log_      ;  };
 			inline MYSQL * connection               () { return connect_  ;  };
-			inline FIX::DataDictionary * dictionary () { return dictionary_; };
+			inline std::shared_ptr<FIX::DataDictionary> dictionary () { return dictionary_; };
 
 
 		private:
 
 			// members
-			unsigned int          verbosity_ ;			// verbosity settings				
-			logger                log_       ;			// log file
-			MYSQL *               connect_   ;			// mysql connection object
-			FIX::DataDictionary * dictionary_;			// quickfix dictionary
+			unsigned int          verbosity_ ;					// verbosity settings				
+			logger                log_       ;					// log file
+			MYSQL *               connect_   ;					// mysql connection object
+			std::shared_ptr<FIX::DataDictionary> dictionary_;	// quickfix dictionary
 
 			// dataBase settings
 			unsigned int port_     ;     				// db server port

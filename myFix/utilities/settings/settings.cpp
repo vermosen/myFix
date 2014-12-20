@@ -19,7 +19,8 @@ namespace myFix {
 		log_     (LOGPATH    ) {
 
 												// null pointer, safe ?
-			dictionary_ = new FIX::DataDictionary(DICT);
+			dictionary_ = std::shared_ptr<FIX::DataDictionary>(
+				new FIX::DataDictionary(DICT));
 
 			connect_ = mysql_init(NULL);		// initialize a null connection
 
@@ -198,9 +199,9 @@ namespace myFix {
 	
 		boost::lock_guard<boost::mutex> guard(dictionaryMutex_);
 
-		delete dictionary_;
-		dictionary_ = new FIX::DataDictionary(s);// update the pointer
+		// update the pointer
+		dictionary_ = std::shared_ptr<FIX::DataDictionary>(	
+			new FIX::DataDictionary(s));
 	
 	}
-
 }

@@ -2,7 +2,7 @@
 #define recordset_functions_bulk_insert_trade_hpp
 
 #include "recordset/recordset.hpp"
-#include "utilities/message/message.hpp"
+#include "message/message.hpp"
 #include "utilities/settings/settings.hpp"
 
 bool insertBulkTrade(const std::vector<myFix::tradeMessage> & msgs) {

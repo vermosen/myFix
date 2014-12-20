@@ -2,71 +2,77 @@
 #define recordset_functions_request_bulk_instrument_hpp
 
 #include "recordset/recordset.hpp"
-#include "utilities/message/message.hpp"
+#include "message/message.hpp"
 #include "utilities/settings/settings.hpp"
 
-// request all the trades for the given instrument between two given dates
-std::vector<myFix::instrument> requestBulkInstrument() {
+namespace myFix {
 
-	std::string selectStr;
-	std::vector<myFix::instrument> ret;
+	namespace dataBase {
+	
+		// request all the trades for the given instrument between two given dates
+		std::vector<instrument> requestBulkInstrument() {
 
-	try{
+			std::string selectStr;
+			std::vector<instrument> ret;
 
-		// select
-		selectStr.append("SELECT INSTRUMENT_ID, INSTRUMENT_NAME FROM TABLE_INSTRUMENT");
+			try{
 
-		// TODO: exception management
-		if (mysql_query(myFix::settings::instance().connection(), selectStr.c_str()) != 0)	// throw on an error
-			throw std::exception(mysql_error(myFix::settings::instance().connection()));
+				// select
+				selectStr.append("SELECT INSTRUMENT_ID, INSTRUMENT_NAME FROM TABLE_INSTRUMENT");
 
-		mysql_query(												// query to run
-			myFix::settings::instance().connection(),
-			selectStr.c_str());
+				// TODO: exception management
+				if (mysql_query(settings::instance().connection(), selectStr.c_str()) != 0)	// throw on an error
+					throw std::exception(mysql_error(settings::instance().connection()));
 
-		MYSQL_RES * reception_ = mysql_store_result(				// store the results
-			myFix::settings::instance().connection());
+				mysql_query(												// query to run
+					settings::instance().connection(),
+					selectStr.c_str());
 
-		if (!reception_)											// sql statement failed
-			return ret;
+				MYSQL_RES * reception_ = mysql_store_result(				// store the results
+					settings::instance().connection());
 
-		if (reception_->row_count == 0)								// no record
-			return ret;
+				if (!reception_)											// sql statement failed
+					return ret;
 
-		MYSQL_ROW row;												// otherwise, run...
+				if (reception_->row_count == 0)								// no record
+					return ret;
 
-		myFix::instrument inst;
+				MYSQL_ROW row;												// otherwise, run...
 
-		while (row = mysql_fetch_row(reception_)) {					// loop over the results
+				instrument inst;
 
-			for (unsigned long i = 0; i < reception_->field_count; i++) {
+				while (row = mysql_fetch_row(reception_)) {					// loop over the results
 
-				// drops the bar Id
-				// drops the instrument id (already recorded)
-				if (std::string(reception_->fields[i].name)
-					== "INSTRUMENT_ID" && row[i] != NULL)
-					inst.first = boost::lexical_cast<myFix::dataBase::recordId>(std::string(row[i]));
+					for (unsigned long i = 0; i < reception_->field_count; i++) {
 
-				else if (std::string(reception_->fields[i].name)
-					== "INSTRUMENT_NAME" && row[i] != NULL)
-					inst.second = boost::lexical_cast<std::string>(row[i]);
+						// drops the bar Id
+						// drops the instrument id (already recorded)
+						if (std::string(reception_->fields[i].name)
+							== "INSTRUMENT_ID" && row[i] != NULL)
+							inst.first = boost::lexical_cast<dataBase::recordId>(std::string(row[i]));
+
+						else if (std::string(reception_->fields[i].name)
+							== "INSTRUMENT_NAME" && row[i] != NULL)
+							inst.second = boost::lexical_cast<std::string>(row[i]);
+
+					}
+
+					// push back
+					ret.push_back(inst);
+
+				}
+			}
+			catch (...){
+
+				//return false;
 
 			}
 
-			// push back
-			ret.push_back(inst);
+			return ret;
 
-		}
+		};
 	}
-	catch (...){
-
-		//return false;
-
-	}
-
-	return ret;
-
-};
+}
 
 #endif
 

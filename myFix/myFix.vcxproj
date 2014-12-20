@@ -96,19 +96,21 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
-    <ClCompile Include="parser\parser.cpp" />
     <ClCompile Include="main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
-    <ClInclude Include="functions\barImport_old.hpp" />
     <ClInclude Include="functions\barImport.hpp" />
     <ClInclude Include="functions\instrumentImport.hpp" />
-    <ClInclude Include="functions\tradeImport2.hpp" />
+    <ClInclude Include="functions\tradeImport.hpp" />
+    <ClInclude Include="parser\parsers\tradeparser.hpp" />
     <ClInclude Include="recordset\functions\insertBulkBar.hpp" />
     <ClInclude Include="recordset\functions\insertSingleInstrument.hpp" />
     <ClInclude Include="recordset\functions\requestBulkTrade.hpp">
       <FileType>CppHeader</FileType>
     </ClInclude>
+    <ClCompile Include="message\message.cpp" />
+    <ClCompile Include="parser\parser.cpp" />
+    <ClCompile Include="parser\parsers\tradeParser.cpp" />
     <ClCompile Include="recordset\tableTradeRecordset\tableTradeRecordset.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -129,10 +131,9 @@
   <ItemGroup>
     <ClInclude Include="Application.hpp" />
     <ClInclude Include="functions\all.hpp" />
-    <ClInclude Include="functions\facetTest.hpp" />
+    <ClInclude Include="functions\boostFacetTest.hpp" />
     <ClInclude Include="functions\singleInsert.hpp" />
     <ClInclude Include="parser\parser.hpp" />
-    <ClInclude Include="functions\tradeImport.hpp" />
     <ClInclude Include="functions\debug.hpp" />
     <ClInclude Include="recordset\functions\insertBulkTrade.hpp" />
     <ClInclude Include="recordset\functions\insertSingleBar.hpp" />
@@ -145,7 +146,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="utilities\logger\logger.hpp" />
-    <ClInclude Include="utilities\message\message.hpp" />
+    <ClInclude Include="message\message.hpp" />
     <ClInclude Include="utilities\settings\settings.hpp" />
   </ItemGroup>
   <ItemGroup>

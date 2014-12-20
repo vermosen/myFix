@@ -8,7 +8,6 @@
 #include "recordset/functions/requestBulkTrade.hpp"
 #include "recordset/functions/insertBulkBar.hpp"
 #include "utilities/settings/settings.hpp"
-#include "parser/parser.hpp"
 
 // feed a bar table from a dataset
 // we want to create a function which turns 

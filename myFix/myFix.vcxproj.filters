@@ -30,7 +30,13 @@
     <ClCompile Include="recordset\tableTradeRecordset\tableTradeRecordset.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="parser\parsers\tradeParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="parser\parser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="message\message.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -53,16 +59,10 @@
     <ClInclude Include="recordset\tableTradeRecordset\tableTradeRecordset.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="utilities\message\message.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="parser\parser.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="recordset\recordsetException.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="functions\facetTest.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="recordset\functions\insertSingleTrade.hpp">
@@ -86,13 +86,7 @@
     <ClInclude Include="recordset\functions\insertBulkBar.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="functions\barImport_old.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="functions\barImport.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="functions\tradeImport.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="functions\instrumentImport.hpp">
@@ -104,7 +98,16 @@
     <ClInclude Include="recordset\functions\requestBulkInstrument.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="functions\tradeImport2.hpp">
+    <ClInclude Include="functions\tradeImport.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="functions\boostFacetTest.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="parser\parsers\tradeparser.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="message\message.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
