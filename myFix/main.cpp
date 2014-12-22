@@ -22,7 +22,6 @@
 
 #include "Application.hpp"
 #include "utilities/settings/settings.hpp"
-#include "recordset/functions/requestBulkInstrument.hpp"
 #include "functions/all.hpp"
 
 #define PATH     "C://Temp/"

@@ -102,14 +102,14 @@
     <ClInclude Include="functions\barImport.hpp" />
     <ClInclude Include="functions\instrumentImport.hpp" />
     <ClInclude Include="functions\tradeImport.hpp" />
+    <ClInclude Include="parser\parsers\bookOrderParser.hpp" />
     <ClInclude Include="parser\parsers\tradeparser.hpp" />
     <ClInclude Include="recordset\functions\insertBulkBar.hpp" />
     <ClInclude Include="recordset\functions\insertSingleInstrument.hpp" />
     <ClInclude Include="recordset\functions\requestBulkTrade.hpp">
       <FileType>CppHeader</FileType>
     </ClInclude>
-    <ClCompile Include="message\message.cpp" />
-    <ClCompile Include="parser\parser.cpp" />
+    <ClCompile Include="parser\parsers\bookOrderParser.cpp" />
     <ClCompile Include="parser\parsers\tradeParser.cpp" />
     <ClCompile Include="recordset\tableTradeRecordset\tableTradeRecordset.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -146,7 +146,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="utilities\logger\logger.hpp" />
-    <ClInclude Include="message\message.hpp" />
     <ClInclude Include="utilities\settings\settings.hpp" />
   </ItemGroup>
   <ItemGroup>

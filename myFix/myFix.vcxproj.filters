@@ -33,10 +33,7 @@
     <ClCompile Include="parser\parsers\tradeParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="parser\parser.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="message\message.cpp">
+    <ClCompile Include="parser\parsers\bookOrderParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -107,7 +104,7 @@
     <ClInclude Include="parser\parsers\tradeparser.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="message\message.hpp">
+    <ClInclude Include="parser\parsers\bookOrderParser.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

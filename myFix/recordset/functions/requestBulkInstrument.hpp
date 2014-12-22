@@ -1,8 +1,9 @@
 #ifndef recordset_functions_request_bulk_instrument_hpp
 #define recordset_functions_request_bulk_instrument_hpp
 
+#include <thOth/message.hpp>
+
 #include "recordset/recordset.hpp"
-#include "message/message.hpp"
 #include "utilities/settings/settings.hpp"
 
 namespace myFix {
@@ -10,10 +11,10 @@ namespace myFix {
 	namespace dataBase {
 	
 		// request all the trades for the given instrument between two given dates
-		std::vector<instrument> requestBulkInstrument() {
+		std::vector<thOth::instrument> requestBulkInstrument() {
 
 			std::string selectStr;
-			std::vector<instrument> ret;
+			std::vector<thOth::instrument> ret;
 
 			try{
 
@@ -39,7 +40,7 @@ namespace myFix {
 
 				MYSQL_ROW row;												// otherwise, run...
 
-				instrument inst;
+				thOth::instrument inst;
 
 				while (row = mysql_fetch_row(reception_)) {					// loop over the results
 

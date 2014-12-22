@@ -2,16 +2,13 @@
 
 namespace myFix {
 
-	tradeParser::tradeParser(const std::shared_ptr<FIX::DataDictionary> & d)		// provide dictionary ptr 
-		: parser (d) {};
+	tradeParser::tradeParser(const std::shared_ptr<FIX::DataDictionary> & dict)		// ctor with dictionary ptr
+		: parser(dict) {};	
 
-	tradeParser::~tradeParser() {};
+	void tradeParser::parse(const std::string & msg) {
 
-	std::vector<std::shared_ptr<myFix::message> > tradeParser::parse(const std::string& msg) const {
 
-		FIX::Message fixMsg(msg, *dic_, false);
-
-		std::vector<std::shared_ptr<myFix::message> > messages;
+		FIX::Message fixMsg(msg, *dict_, false);
 
 		std::string dateVal; dateVal.reserve(17);
 
@@ -21,16 +18,16 @@ namespace myFix {
 		// Try to get the number of groups in the message. If not available, discard the message.
 		try {
 
-			groups_count = boost::lexical_cast<size_t>(fixMsg.getField(268));		// convert group 268 "group count"
-			dateVal      = fixMsg.getHeader().getField(52);							// get time string
-			time         = thOth::dateTime::strToDate(dateVal, ss_);				// build date from string
-			time += thOth::dateTime::milliSeconds(									// (poorly) manage fix ms format....
-				boost::lexical_cast<int>(dateVal.substr(14, 3)));
+			groups_count	= boost::lexical_cast<size_t>(fixMsg.getField(268));	// convert group 268 "group count"
+			dateVal			= fixMsg.getHeader().getField(52);						// get time string
+			time			= thOth::dateTime::strToDate(dateVal, stream_) +		// build date from string
+				thOth::dateTime::milliSeconds(boost::lexical_cast<int>(				// (poorly) manage fix ms format....
+				dateVal.substr(14, 3)));
 
 		}
 		catch (...)	{
 
-			return messages;
+			return;
 
 		}
 
@@ -46,25 +43,18 @@ namespace myFix {
 
 				value = group.getField(description).getString();
 
-				// test on the contract
-				if (symbolMap_.size() != 0 && symbolMap_.right.find(value) == symbolMap_.right.end()) {
+				if (symbolMap_.size() != 0 &&										// test on the contract
+					symbolMap_.right.find(value) == symbolMap_.right.end())
 
-					// undefined instrument
-					throw undefinedInstrumentException(value);
+					throw undefinedInstrumentException(value);						// undefined instrument
 
-				}
+				if (group.getField(269) == "2") {									// is a trade ?
 
-				// is a trade ?
-				if (group.getField(269) == "2") {
-
-					std::shared_ptr<message> msg(new tradeMessage);
-					msg->time_     = time;
-					msg->price_    = std::stod(group.getField(270));
-					msg->quantity_ = std::stoi(group.getField(271));
-					msg->symbol_   = std::pair<dataBase::recordId, std::string>(
-						symbolMap_.right.find(value)->second, value);
-
-					messages.push_back(msg);
+					messages_.push_back(thOth::tradeMessage(
+						std::pair<dataBase::recordId, std::string>(
+						symbolMap_.right.find(value)->second, value), 
+						time, std::stod(group.getField(270)), 
+						std::stoi(group.getField(271))));
 
 				}
 			}
@@ -73,13 +63,10 @@ namespace myFix {
 				throw e;						// throw outside of the class
 
 			}
-			catch (...)
+			catch (...)							// continue on other exceptions
 			{
 				continue;
 			}
 		}
-
-		return messages;
-
 	}
 }

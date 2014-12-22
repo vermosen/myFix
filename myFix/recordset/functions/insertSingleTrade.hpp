@@ -1,30 +1,31 @@
 #ifndef recordset_functions_insert_single_trade_hpp
 #define recordset_functions_insert_single_trade_hpp
 
+#include <thOth/message/tradeMessage.hpp>
+
 #include "recordset/recordset.hpp"
-#include "message/message.hpp"
 #include "utilities/settings/settings.hpp"
 
-bool insertSingleTrade(const myFix::tradeMessage & msg) {
+bool insertSingleTrade(const thOth::tradeMessage & msg) {
 
 	std::string fieldStr, valueStr;
 
 	try{
 	
 		fieldStr.append("INSTRUMENT_ID,");						// contract id
-		SQL_INSERT_NUM(valueStr, msg.symbol_.first)
+		SQL_INSERT_NUM(valueStr, msg.symbol().first)
 			valueStr.append(",");
 
 		fieldStr.append("TRADE_DATETIME,");						// barStart
-		SQL_INSERT_DATE(valueStr, msg.time_, true)
+		SQL_INSERT_DATE(valueStr, msg.time(), true)
 			valueStr.append(",");
 
 		fieldStr.append("TRADE_PRICE,");						// open
-		SQL_INSERT_NUM(valueStr, msg.price_)
+		SQL_INSERT_NUM(valueStr, msg.price())
 			valueStr.append(",");
 
 		fieldStr.append("TRADE_VOLUME");						// close
-		SQL_INSERT_NUM(valueStr, msg.quantity_)
+		SQL_INSERT_NUM(valueStr, msg.quantity())
 
 		std::string insertStatement("INSERT INTO table_trade (");
 
