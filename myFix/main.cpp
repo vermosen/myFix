@@ -20,7 +20,7 @@
 #include <quickfix/Log.h>
 #include <quickfix/SessionSettings.h>
 
-#include "Application.hpp"
+//#include "Application.hpp"
 #include "utilities/settings/settings.hpp"
 #include "functions/all.hpp"
 
@@ -108,9 +108,13 @@ int main(int argc, char** argv) {
 
 				{
 				
-					thOth::dateTime start(2014, 3, 2);
-					start = start + boost::posix_time::hours(23);
-					thOth::dateTime end  (2014, 4, 5);
+					thOth::dateTime start							// start date
+						= thOth::dateTime(2014, 3, 2) 
+						+ boost::posix_time::hours(23);
+
+					thOth::dateTime end								// end date
+						= thOth::dateTime(2014, 4, 5);
+
 					thOth::period p(thOth::timeUnit::milliSecond, 100);
 					//barImport(myFix::instrument(208, "GCJ4"), start, end, p);
 			
@@ -130,7 +134,7 @@ int main(int argc, char** argv) {
 
 			case 6:
 
-				//singleInsert();										// single insert test
+				//singleInsert();									// single insert test
 				break;
 
 			case 0:

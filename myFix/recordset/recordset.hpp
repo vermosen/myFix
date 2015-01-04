@@ -3,9 +3,6 @@
 
 #include <string>
 #include <map>
-#include <xstddef>
-
-#include <stdint.h>
 
 #include <mysql.h>
 
@@ -38,8 +35,6 @@ namespace myFix {
 			EraseFormerData    = 2
 
 		};
-
-		typedef uint64_t recordId;								// equivalent of a big int
 
 		template<
 			typename Key, 

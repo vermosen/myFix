@@ -51,7 +51,7 @@ namespace myFix {
 				if (group.getField(269) == "2") {									// is a trade ?
 
 					messages_.push_back(thOth::tradeMessage(
-						std::pair<dataBase::recordId, std::string>(
+						std::pair<thOth::BigInt, std::string>(
 						symbolMap_.right.find(value)->second, value), 
 						time, std::stod(group.getField(270)), 
 						std::stoi(group.getField(271))));

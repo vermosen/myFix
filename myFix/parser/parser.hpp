@@ -27,7 +27,7 @@ namespace myFix {
 	protected:
 
 		// define instrumentMap
-		typedef boost::bimap < dataBase::recordId, std::string > instrumentMap;
+		typedef boost::bimap < thOth::BigInt, std::string > instrumentMap;
 
 	public:
 

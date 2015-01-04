@@ -29,7 +29,7 @@ void tradeImport(const std::string & data_) {
 	// local variables
 	int									n_valid = 0	;	// valid record counter
 	int                                 n_error = 0	;	// errors
-	std::vector<myFix::tradeMessage>	tradeMsg	;
+	std::vector<thOth::tradeMessage>	tradeMsg	;
 	long								nline = 1	;	// line counter
 	std::string							line("")	;	// current line
 
@@ -38,7 +38,7 @@ void tradeImport(const std::string & data_) {
 
 	ps.loadInstrumentTable();							// load the instruments from the db
 
-	std::vector<myFix::tradeMessage> buffer;			// the message buffer
+	std::vector<thOth::tradeMessage> buffer;			// the message buffer
 
 	buffer.reserve(BUFFER_SIZE);						// reserve the size
 
@@ -57,17 +57,10 @@ void tradeImport(const std::string & data_) {
 
 		try {
 			
-			// step 1: parse the current line
-			std::vector<myFix::tradeMessage> msg		
-				= ps.parse(line);
-
-			// step 2: fill the buffer
-			for (std::vector<myFix::tradeMessage>::const_iterator It
-				= msg.cbegin(); It != msg.cend(); It++, n_valid++)
-					buffer.push_back(*It);
+			ps.parse(line);								// tries to parse the current line
 
 			// is the buffer full ?
-			if (buffer.size() >= BUFFER_SIZE) {
+			if (ps.size() >= BUFFER_SIZE) {
 			
 				if (insertBulkTrade(buffer)) {
 
