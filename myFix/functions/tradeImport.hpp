@@ -71,7 +71,7 @@ void tradeImport(const std::string & data_) {
 
 				} else {									// if unsuccessful, try to insert line by line
 
-					for (std::vector<myFix::tradeMessage>::const_iterator It
+					for (std::vector<thOth::tradeMessage>::const_iterator It
 						= buffer.cbegin(); It != buffer.cend(); It++) {
 
 						if (insertSingleTrade(*It) == true) {

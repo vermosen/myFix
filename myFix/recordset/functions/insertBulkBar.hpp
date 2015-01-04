@@ -4,10 +4,10 @@
 #include <thOth/bar/bar.hpp>
 
 #include "recordset/recordset.hpp"
-#include "utilities/message/message.hpp"
+#include "thOth/message.hpp"
 #include "utilities/settings/settings.hpp"
 
-bool insertBulkBar(const myFix::instrument & instrument_,
+bool insertBulkBar(const thOth::instrument & instrument_,
 				   const std::vector<std::pair<thOth::dateTime, thOth::bar> > & msgs) {
 
 	std::string fieldStr, valueStr;

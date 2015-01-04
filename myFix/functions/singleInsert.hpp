@@ -18,7 +18,7 @@ void singleInsert() {
 	try {
 
 		// vector to insert
-		std::vector<myFix::tradeMessage> messages;
+		std::vector<thOth::tradeMessage> messages;
 
 		{
 
@@ -33,18 +33,18 @@ void singleInsert() {
 				+ thOth::dateTime::milliSeconds(boost::lexical_cast<int>(dtStr.substr(15, 3)));
 
 
-			myFix::tradeMessage t;
-			t.price_ = 100.13;
-			t.quantity_ = 1234;
-			t.symbol_ = std::pair<myFix::dataBase::recordId, std::string>(999, "FAKE");
-			t.time_ = tradeDate;
-
+			thOth::tradeMessage t(								// fake message
+				std::pair<thOth::BigInt, std::string>(999, "FAKE"),
+				tradeDate,
+				100.13,
+				1234);
+			
 			messages.push_back(t);
 
 		}
 
 		// TODO: need to iterate over the ts
-		for (std::vector<myFix::tradeMessage>::const_iterator It
+		for (std::vector<thOth::tradeMessage>::const_iterator It
 			= messages.cbegin(); It != messages.cend(); It++) {
 
 			if (insertSingleTrade(*It) != true)

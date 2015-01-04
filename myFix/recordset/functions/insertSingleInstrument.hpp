@@ -2,7 +2,7 @@
 #define recordset_functions_insert_single_instrument_hpp
 
 #include "recordset/recordset.hpp"
-#include "utilities/message/message.hpp"
+#include "thOth/message.hpp"
 #include "utilities/settings/settings.hpp"
 
 bool insertSingleInstrument(const std::string & code) {

@@ -96,7 +96,7 @@ int main(int argc, char** argv) {
 
 			case 1:
 
-				//instrumentImport(std::string(PATH).append(DATA));
+				instrumentImport(std::string(PATH).append(DATA));
 				break;
 
 			case 2:

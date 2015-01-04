@@ -7,7 +7,7 @@
 
 #include "recordset/functions/insertSingleInstrument.hpp"
 #include "utilities/settings/settings.hpp"
-//#include "parser/parsers/tradeParser.hpp"
+#include "parser/parsers/tradeParser.hpp"
 
 // import instruments defined by the file
 void instrumentImport(const std::string & data_) {
@@ -37,17 +37,14 @@ void instrumentImport(const std::string & data_) {
 
 		try {
 
-			// try to convert the current line
-			std::vector<myFix::tradeMessage> tradeMsg = ps.parse(line);
+			ps.parse(line);								// try to parse the current line
 
 		}
 		catch (myFix::undefinedInstrumentException & e){
 
-			// new instrument detected -> insert in the db
-			if (insertSingleInstrument(e.code())) {
+			if (insertSingleInstrument(e.code())) {		// new instrument detected -> insert in the db
 			
-				// TODO: if success, insert into the parser
-				std::cout
+				std::cout								// TODO: if success, insert into the parser
 					<< "successfully inserted new contract "
 					<< e.code()
 					<< std::endl;

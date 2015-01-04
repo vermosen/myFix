@@ -33,11 +33,12 @@ namespace myFix {
 
 		parser(const std::shared_ptr<FIX::DataDictionary>&);	// ctor with dictionary ptr
 		virtual ~parser() {};									// virtual destructor
-		
+
 		virtual void parse(const std::string &) = 0;			// message parsing method
 
 		void addSymbol(const instrumentMap::value_type & i);	// add an instrument to the parser		
 		void loadInstrumentTable();								// load the db instrument table
+		size_t size();											// the current data size
 
 	protected:
 
@@ -75,6 +76,12 @@ namespace myFix {
 	void parser<T>::addSymbol(const instrumentMap::value_type & i) {
 		symbolMap_.insert(i);
 	}
+
+	template<typename T>
+	size_t parser<T>::size() {
+		return messages_.size(); 
+	};
+
 }
 
 #endif
