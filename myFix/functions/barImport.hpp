@@ -15,10 +15,10 @@
 // {id time price volume}s into a bar, ie a struct 
 // {id time, open, close, high, low, volume, duration}
 // in our case, we need to have 1ms bars
-void barImport(const thOth::instrument & inst_	,
-			   thOth::dateTime startDate_		,
-			   const thOth::dateTime & endDate_	,
-			   const thOth::period & period_	) {
+void barImport(const thOth::instrument	& inst_		,
+			   thOth::dateTime			startDate_	,
+			   const thOth::dateTime	& endDate_	,
+			   const thOth::period		& period_	) {
 
 	boost::timer t;										// timer
 

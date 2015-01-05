@@ -101,7 +101,7 @@ int main(int argc, char** argv) {
 
 			case 2:
 
-				//tradeImport(std::string(PATH).append(DATA));		// path to the data file
+				tradeImport(std::string(PATH).append(DATA));		// path to the data file
 				break;
 
 			case 3:
@@ -116,7 +116,7 @@ int main(int argc, char** argv) {
 						= thOth::dateTime(2014, 4, 5);
 
 					thOth::period p(thOth::timeUnit::milliSecond, 100);
-					//barImport(myFix::instrument(208, "GCJ4"), start, end, p);
+					barImport(thOth::instrument(208, "GCJ4"), start, end, p);
 			
 				}
 			
@@ -129,12 +129,12 @@ int main(int argc, char** argv) {
 
 			case 5:
 
-				//boostFacetTest();									// path to the data file
+				boostFacetTest();									// path to the data file
 				break;
 
 			case 6:
 
-				//singleInsert();									// single insert test
+				singleInsert();									// single insert test
 				break;
 
 			case 0:

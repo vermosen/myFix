@@ -112,6 +112,10 @@
     <ClCompile Include="parser\parsers\bookOrderParser.cpp" />
     <ClCompile Include="parser\parsers\tradeParser.cpp" />
     <ClCompile Include="recordset\functions\requestBulkInstrument.cpp" />
+    <ClCompile Include="recordset\tableInstrumentRecordset\tableInstrumentRecordset.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="recordset\tableTradeRecordset\tableTradeRecordset.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -142,6 +146,10 @@
     <ClInclude Include="recordset\functions\requestBulkInstrument.hpp" />
     <ClInclude Include="recordset\recordset.hpp" />
     <ClInclude Include="recordset\recordsetException.hpp" />
+    <ClInclude Include="recordset\tableInstrumentRecordset\tableInstrumentRecordset.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="recordset\tableTradeRecordset\tableTradeRecordset.hpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>

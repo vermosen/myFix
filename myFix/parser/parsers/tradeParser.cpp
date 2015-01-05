@@ -7,7 +7,6 @@ namespace myFix {
 
 	void tradeParser::parse(const std::string & msg) {
 
-
 		FIX::Message fixMsg(msg, *dict_, false);
 
 		std::string dateVal; dateVal.reserve(17);

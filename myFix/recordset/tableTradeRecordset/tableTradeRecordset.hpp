@@ -3,18 +3,19 @@
 
 #include <thOth/time/DateTime.hpp>
 #include <thOth/time/timeSeries.hpp>
+#include <thOth/bar/bar.hpp>
+#include <thOth/message/trademessage.hpp>
 
 #include "recordset/recordset.hpp"
-#include "utilities/message/message.hpp"
 #include "recordset/recordsetException.hpp"
-#include "recordset/conversion.hpp"
+
 
 namespace myFix {
 
 	namespace dataBase {
 
 		class tableTradeRecordset 
-			: public recordset<myFix::tradeMessage,
+			: public recordset<thOth::tradeMessage,
 							   thOth::dateTime, 
 							   thOth::timeSeries> {
 
@@ -31,8 +32,8 @@ namespace myFix {
 
 				// insert
 				bool insert(
-					const std::pair<recordId, std::string> &, 
-					const thOth::timeSeries<myFix::tradeMessage> &);
+					const std::pair<thOth::BigInt, std::string> &, 
+					const thOth::timeSeries<thOth::tradeMessage> &);
 				
 			protected:
 

@@ -40,7 +40,7 @@ namespace myFix {
 																		// request we generate a key
 
 			std::string exchange;
-			recordId instrumentId;										// the id of the record to insert
+			thOth::BigInt instrumentId;										// the id of the record to insert
 
 			while (row = mysql_fetch_row(reception_)) {					// loop over the results
 				
@@ -56,18 +56,18 @@ namespace myFix {
 
 					if (std::string(reception_->fields[i].name)
 						== "CONTRACT_ID" && row[i] != NULL)
-						instrumentId = boost::lexical_cast<recordId>(row[i]);
+						instrumentId = boost::lexical_cast<thOth::BigInt>(row[i]);
 
 					else if (std::string(reception_->fields[i].name)		// we don't need the bar
 						== "BAR_ID" && row[i] != NULL) {}
 
 					else if (std::string(reception_->fields[i].name)
 						== "BAR_START" && row[i] != NULL)
-						startDate = convertDateTime_sql(std::string(row[i]));
+						startDate = thOth::dateTime::convertSqlDateTime(std::string(row[i]));
 
 					else if (std::string(reception_->fields[i].name)
 						== "BAR_END" && row[i] != NULL)
-						endDate = convertDateTime_sql(std::string(row[i]));
+						endDate = thOth::dateTime::convertSqlDateTime(std::string(row[i]));
 
 					else if (std::string(reception_->fields[i].name)
 						== "OPEN" && row[i] != NULL)
@@ -113,13 +113,14 @@ namespace myFix {
 		};
 
 		bool tableTradeRecordset::insert(
-			const std::pair<recordId, std::string> & ct,
-			const thOth::timeSeries<tradeMessage> & recs) {
+			const std::pair<thOth::BigInt, std::string> & ct,
+			const thOth::timeSeries<thOth::tradeMessage> & recs) {
 
 			std::string fieldStr, valueStr;								// the two fields to build together
 
 			// TODO: need to iterate over the ts
-			for (thOth::timeSeries<tradeMessage>::const_iterator It = recs.cbegin(); It != recs.cend(); It++) {
+			for (thOth::timeSeries<thOth::tradeMessage>::const_iterator It 
+				= recs.cbegin(); It != recs.cend(); It++) {
 
 				fieldStr.append("CONTRACT_ID,");						// contract id
 				SQL_INSERT_NUM(valueStr, ct.first)
@@ -130,7 +131,7 @@ namespace myFix {
 					valueStr.append(",");
 
 				fieldStr.append("BAR_END,");							// barEnd
-				SQL_INSERT_DATE(valueStr, thOth::dateTime::advance(It->first, It->second.length()))
+				SQL_INSERT_DATE(valueStr, thOth::dateTime::advance(It->first, It->second.length()), true)
 					valueStr.append(",");
 
 				fieldStr.append("OPEN,");								// open

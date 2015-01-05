@@ -36,6 +36,9 @@
     <ClCompile Include="parser\parsers\bookOrderParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="recordset\tableInstrumentRecordset\tableInstrumentRecordset.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="recordset\functions\requestBulkInstrument.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -108,6 +111,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="parser\parsers\bookOrderParser.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="recordset\tableInstrumentRecordset\tableInstrumentRecordset.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -24,6 +24,7 @@ namespace myFix {
 	class tradeParser : public parser<thOth::tradeMessage> {
 		
 	public:
+
 		tradeParser(const std::shared_ptr<FIX::DataDictionary>&);	// ctor with dictionary ptr
 		virtual void parse(const std::string &);					// parsing method
 
