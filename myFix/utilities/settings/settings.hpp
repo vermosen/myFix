@@ -23,7 +23,7 @@
 #include "utilities/logger/logger.hpp"
 
 // default setup
-#define DB_SERVER   "192.168.0.4"										
+#define DB_SERVER   "192.168.0.10"										
 #define DB_USER     "admin"
 #define DB_PASSWORD "DIAle050580$"
 #define DB_ID       "fixdb"

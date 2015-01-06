@@ -1,6 +1,8 @@
 #ifndef table_instrument_recordset_hpp
 #define table_instrument_recordset_hpp
 
+#include "utilities/settings/settings.hpp"
+
 #include <map>
 
 #include <thOth/time/DateTime.hpp>
