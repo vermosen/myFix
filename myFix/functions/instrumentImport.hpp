@@ -12,11 +12,11 @@
 // import instruments defined by the file
 void instrumentImport(const std::string & data_) {
 
-	boost::timer t;										// timer
+	boost::timer t				;						// timer
+	std::ifstream infile(data_)	;						// open data file
+	long nline = 1				;						// line counter
+	std::string line("")		;						// current line
 
-	std::ifstream infile(data_);						// open data file
-	long nline = 1;										// line counter
-	std::string line("");								// current line
 	myFix::tradeParser ps(								// create the file parser
 		myFix::settings::instance().dictionary());
 

@@ -42,13 +42,11 @@ namespace myFix {
 				for (unsigned long i = 0;								// loop over the fields
 					i < reception_->field_count; i++) {	
 
-					std::string field(reception_->fields[i].name);
-
 					if (std::string(reception_->fields[i].name)
 						== "INSTRUMENT_ID" && row[i] != NULL)
 						instrumentId = boost::lexical_cast<thOth::BigInt>(row[i]);
 
-					if (std::string(reception_->fields[i].name)
+					else if (std::string(reception_->fields[i].name)
 						== "INSTRUMENT_NAME" && row[i] != NULL)
 						name = boost::lexical_cast<std::string>(row[i]);
 
@@ -72,12 +70,8 @@ namespace myFix {
 
 		bool tableInstrumentRecordset::deleteStr(const std::string & deleteStr) {
 		
-			if (mysql_query(connection_, deleteStr.c_str()) != 0) {		// throw on an error
-
-				std::string tt(mysql_error(connection_));
+			if (mysql_query(connection_, deleteStr.c_str()) != 0)		// throw on an error
 				throw std::exception(mysql_error(connection_));
-
-			}
 
 			// todo: error management
 			return true;

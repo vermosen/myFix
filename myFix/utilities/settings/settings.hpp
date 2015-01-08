@@ -23,13 +23,16 @@
 #include "utilities/logger/logger.hpp"
 
 // default setup
-#define DB_SERVER   "192.168.0.10"										
+#define DB_SERVER   "mac"										
 #define DB_USER     "admin"
 #define DB_PASSWORD "DIAle050580$"
 #define DB_ID       "fixdb"
-#define DB_PORT     3308
+#define DB_PORT     3306
 #define LOGPATH		"C://Temp/"
 #define DICT        "C://Temp/FIX50SP2_CME.xml"
+
+// debug:
+// mysql -hmacbook-pro-jmv.local -utest_win -ptest -P3306 fixdb
 
 namespace myFix {
 
