@@ -34,13 +34,11 @@ void tradeImport(const std::string & data_) {
 	std::string							line("")	;	// current line
 
 	myFix::tradeParser ps(								// create the file parser
-		myFix::settings::instance().dictionary());
+		myFix::settings::instance().dictionary())	;
 
-	ps.loadInstrumentTable();							// load the instruments from the db
-
-	std::vector<thOth::tradeMessage> buffer;			// the message buffer
-
-	buffer.reserve(BUFFER_SIZE);						// reserve the size
+	ps.loadInstrumentTable()						;	// load the instruments from the db
+	std::vector<thOth::tradeMessage> buffer			;	// the message buffer
+	buffer.reserve(BUFFER_SIZE)						;	// reserve the size
 
 	while (std::getline(infile, line)) {				// get through the lines
 
@@ -59,8 +57,7 @@ void tradeImport(const std::string & data_) {
 			
 			ps.parse(line);								// tries to parse the current line
 
-			// is the buffer full ?
-			if (ps.size() >= BUFFER_SIZE) {
+			if (ps.size() >= BUFFER_SIZE) {				// is the buffer full ?
 			
 				if (insertBulkTrade(buffer)) {
 

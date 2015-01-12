@@ -4,21 +4,6 @@ namespace myFix {
 
 	namespace dataBase {
 
-		tableInstrumentRecordset::tableInstrumentRecordset(MYSQL * connection)
-			: recordset(connection) {};
-
-		tableInstrumentRecordset & tableInstrumentRecordset::operator=(const tableInstrumentRecordset & o) {
-
-			if (this != &o) {
-			
-				recordset::operator=(o);						// call the parent class =
-
-			}
-
-			return *this;
-		
-		}
-
 		bool tableInstrumentRecordset::selectStr(const std::string & selectStr) {
 		
 			mysql_query(												// query to run
@@ -68,17 +53,8 @@ namespace myFix {
 
 		};
 
-		bool tableInstrumentRecordset::deleteStr(const std::string & deleteStr) {
-		
-			if (mysql_query(connection_, deleteStr.c_str()) != 0)		// throw on an error
-				throw std::exception(mysql_error(connection_));
-
-			// todo: error management
-			return true;
-		
-		}
-
-		bool tableInstrumentRecordset::insert(const std::string & code) {// single insert
+		bool tableInstrumentRecordset::insertStr(						// single insert
+			const std::string & code) {
 
 			std::string fieldStr, valueStr;
 

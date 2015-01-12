@@ -6,34 +6,31 @@
 #include <thOth/bar/bar.hpp>
 #include <thOth/message/trademessage.hpp>
 
+#include "utilities/settings/settings.hpp"
 #include "recordset/recordset.hpp"
 #include "recordset/recordsetException.hpp"
-
 
 namespace myFix {
 
 	namespace dataBase {
 
 		class tableTradeRecordset 
-			: public recordset<thOth::tradeMessage,
-							   thOth::dateTime, 
+			: public recordset<thOth::dateTime, 
+							   thOth::tradeMessage,
 							   thOth::timeSeries> {
 
 			public:
 
-				tableTradeRecordset(MYSQL *);
-				~tableTradeRecordset() {};
-
-				tableTradeRecordset & operator =(const tableTradeRecordset &);
+				tableTradeRecordset(MYSQL * connection)
+					: recordset<thOth::dateTime, thOth::tradeMessage, thOth::timeSeries>(connection) {};
 
 				// recordset interface
 				bool selectStr(const std::string &);					// run a select statement
-				bool deleteStr(const std::string &);					// delete records 
 
 				// insert
 				bool insert(
 					const std::pair<thOth::BigInt, std::string> &, 
-					const thOth::timeSeries<thOth::tradeMessage> &);
+					const thOth::timeSeries<thOth::dateTime, thOth::tradeMessage> &);
 				
 			protected:
 

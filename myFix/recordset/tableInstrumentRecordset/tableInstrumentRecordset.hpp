@@ -23,16 +23,13 @@ namespace myFix {
 
 			public:
 
-				tableInstrumentRecordset(MYSQL *);
-				~tableInstrumentRecordset() {};
-
-				tableInstrumentRecordset & operator =(const tableInstrumentRecordset &);
+				tableInstrumentRecordset(MYSQL * connection)
+					: recordset<thOth::BigInt, std::string, std::map>(connection) {};
 
 				// recordset interface
 				bool selectStr(const std::string &);					// run a select statement
-				bool deleteStr(const std::string &);					// delete records 
-
-				bool insert(const std::string &);						// single insert
+				bool insertStr(const std::string &);					// single insert
+				
 				bool insert(const std::vector<std::string> &);			// bulk insert
 				
 			protected:

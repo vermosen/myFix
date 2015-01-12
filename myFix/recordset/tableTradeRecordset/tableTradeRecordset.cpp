@@ -4,107 +4,54 @@ namespace myFix {
 
 	namespace dataBase {
 
-		tableTradeRecordset::tableTradeRecordset(MYSQL * connection) 
-			: recordset(connection) {};
-
-		tableTradeRecordset & tableTradeRecordset::operator=(const tableTradeRecordset & o) {
-
-			if (this != &o) {
-			
-				recordset::operator=(o);						// call the parent class =
-				records_ = o.records_  ;						// copy local stuff
-
-			}
-
-			return *this;
-		
-		}
-
 		bool tableTradeRecordset::selectStr(const std::string & selectStr) {
-		
+
 			mysql_query(												// query to run
 				connection_,
 				selectStr.c_str());
 
 			reception_ = mysql_store_result(connection_);
-		
+
 			if (!reception_)											// sql statement failed
 				throw selectQueryExceptionSelectFailed();
 
 			if (reception_->row_count == 0)								// no record
 				throw selectQueryExceptionNoSelection();
 
-			MYSQL_ROW row;
+			MYSQL_ROW row_;												// current row
 
-			//recordId barId = 1;										// in case the id is not part of the 
-																		// request we generate a key
+			// todo: get the instrument details on the instrument table
+			thOth::instrument	dummy_(0, "")	;
+			std::string			exchange		;
+			//thOth::BigInt		id_				;						// the id of the record to insert
+			thOth::dateTime		time_			;
+			thOth::real			price_			;
+			thOth::volume		volume_			;
 
-			std::string exchange;
-			thOth::BigInt instrumentId;										// the id of the record to insert
+			while (row_ = mysql_fetch_row(reception_)) {				// loop over the results
 
-			while (row = mysql_fetch_row(reception_)) {					// loop over the results
-				
-				
-				thOth::dateTime startDate; thOth::dateTime endDate;		// mandatory bar components
-				thOth::real open; thOth::real close; thOth::real low;
-				thOth::real high; thOth::size volume;
-				
-				for (unsigned long i = 0;								// loop over the fields
-					i < reception_->field_count; i++) {	
+				for (unsigned long i = 0; i < reception_->field_count; i++) {
 
-					std::string field(reception_->fields[i].name);
-
+					// drops the bar Id
+					// drops the instrument id (already recorded)
 					if (std::string(reception_->fields[i].name)
-						== "CONTRACT_ID" && row[i] != NULL)
-						instrumentId = boost::lexical_cast<thOth::BigInt>(row[i]);
-
-					else if (std::string(reception_->fields[i].name)		// we don't need the bar
-						== "BAR_ID" && row[i] != NULL) {}
+						== "TRADE_DATETIME" && row_[i] != NULL)
+						time_ = thOth::dateTime::convertSqlDateTime(std::string(row_[i]));
 
 					else if (std::string(reception_->fields[i].name)
-						== "BAR_START" && row[i] != NULL)
-						startDate = thOth::dateTime::convertSqlDateTime(std::string(row[i]));
+						== "TRADE_PRICE" && row_[i] != NULL)
+						price_ = boost::lexical_cast<double>(row_[i]);
 
 					else if (std::string(reception_->fields[i].name)
-						== "BAR_END" && row[i] != NULL)
-						endDate = thOth::dateTime::convertSqlDateTime(std::string(row[i]));
-
-					else if (std::string(reception_->fields[i].name)
-						== "OPEN" && row[i] != NULL)
-						open = boost::lexical_cast<thOth::real>(row[i]);
-
-					else if (std::string(reception_->fields[i].name)
-						== "CLOSE" && row[i] != NULL)
-						close = boost::lexical_cast<thOth::real>(row[i]);
-
-					else if (std::string(reception_->fields[i].name)
-						== "HIGH" && row[i] != NULL)
-						high = boost::lexical_cast<thOth::real>(row[i]);
-
-					else if (std::string(reception_->fields[i].name)
-						== "LOW" && row[i] != NULL)
-						low = boost::lexical_cast<thOth::real>(row[i]);
-					
-					else if (std::string(reception_->fields[i].name)
-						== "VOLUME" && row[i] != NULL)
-						volume = boost::lexical_cast<thOth::size>(row[i]);
-
-					else if (std::string(reception_->fields[i].name)
-						== "EXCHANGE" && row[i] != NULL)
-						exchange = boost::lexical_cast<std::string>(row[i]);
-
-					else
-
-						throw selectQueryExceptionUnknownField();
+						== "TRADE_VOLUME" && row_[i] != NULL)
+						volume_ = boost::lexical_cast<int>(row_[i]);
 
 				}
 
-				records_.insert(
-					std::pair<thOth::dateTime, thOth::bar>(
-						startDate, thOth::bar(
-							open, close, high,
-							low, thOth::period(
-								thOth::second, 30), volume)));
+				std::pair<thOth::dateTime, thOth::tradeMessage> temp(
+					time_, thOth::tradeMessage(dummy_, time_, price_, volume_));
+
+				records_.insert(temp);
 
 			}
 
@@ -113,82 +60,55 @@ namespace myFix {
 		};
 
 		bool tableTradeRecordset::insert(
-			const std::pair<thOth::BigInt, std::string> & ct,
-			const thOth::timeSeries<thOth::tradeMessage> & recs) {
+			const std::pair<thOth::BigInt, std::string> & contract_,
+			const thOth::timeSeries<thOth::dateTime, thOth::tradeMessage> & records_) {
 
-			std::string fieldStr, valueStr;								// the two fields to build together
+			std::string fieldStr, valueStr;
 
-			// TODO: need to iterate over the ts
-			for (thOth::timeSeries<thOth::tradeMessage>::const_iterator It 
-				= recs.cbegin(); It != recs.cend(); It++) {
+			try{
 
-				fieldStr.append("CONTRACT_ID,");						// contract id
-				SQL_INSERT_NUM(valueStr, ct.first)
-					valueStr.append(",");
+				fieldStr.append("INSTRUMENT_ID,");						// contract id
+				fieldStr.append("TRADE_DATETIME,");						// barStart
+				fieldStr.append("TRADE_PRICE,");						// open
+				fieldStr.append("TRADE_VOLUME,");						// close
 
-				fieldStr.append("BAR_START,");							// barStart
-				SQL_INSERT_DATE(valueStr, It->first)
-					valueStr.append(",");
+				fieldStr.pop_back();									// remove the last column
 
-				fieldStr.append("BAR_END,");							// barEnd
-				SQL_INSERT_DATE(valueStr, thOth::dateTime::advance(It->first, It->second.length()), true)
-					valueStr.append(",");
+				std::string insertStatement("INSERT INTO table_trade (");
+				insertStatement.append(fieldStr).append(") VALUES ");
 
-				fieldStr.append("OPEN,");								// open
-				SQL_INSERT_NUM(valueStr, It->second.open())
-					valueStr.append(",");
+				for (thOth::timeSeries<thOth::dateTime, thOth::tradeMessage>::const_iterator It =
+					records_.cbegin(); It != records_.cend(); It++) {
 
-				fieldStr.append("CLOSE,");								// close
-				SQL_INSERT_NUM(valueStr, It->second.close())
-					valueStr.append(",");
+					valueStr.append("(");
 
-				fieldStr.append("HIGH,");								// close
-				SQL_INSERT_NUM(valueStr, It->second.high())
-					valueStr.append(",");
+					SQL_INSERT_NUM(valueStr, It->second.symbol().first)
+						valueStr.append(",");
+					SQL_INSERT_DATE(valueStr, It->second.time(), true)
+						valueStr.append(",");
+					SQL_INSERT_NUM(valueStr, It->second.price())
+						valueStr.append(",");
+					SQL_INSERT_NUM(valueStr, It->second.quantity())
+						valueStr.append("),");
 
-				fieldStr.append("LOW,");								// close
-				SQL_INSERT_NUM(valueStr, It->second.low())
-					valueStr.append(",");
+				}
 
-				fieldStr.append("VOLUME,");								// volume
-				SQL_INSERT_NUM(valueStr, It->second.volume())
-					valueStr.append(",");
+				valueStr.pop_back();						// suppress the last column
 
-				fieldStr.append("EXCHANGE");							// exchange
-				SQL_INSERT_STR(valueStr, ct.second.summary.exchange)
+				insertStatement.append(valueStr);			// add the value fields to insert statement 
 
-					std::string insertStatement("INSERT INTO table_historical_bar (");
-
-				insertStatement
-					.append(fieldStr)
-					.append(") VALUES (")
-					.append(valueStr)
-					.append(")");
-
-				if (mysql_query(connection_, insertStatement.c_str()) != 0)	// throw on an error
-					throw std::exception(mysql_error(connection_));
-
-				fieldStr.clear(), valueStr.clear();							
+				if (mysql_query(myFix::settings::instance().connection(), insertStatement.c_str()) != 0)	// throw on an error
+					throw std::exception(mysql_error(myFix::settings::instance().connection()));
 
 			}
-			
+			catch (...){
 
-			return true;												// return true otherwise
-
-		}
-
-		bool tableTradeRecordset::deleteStr(const std::string & deleteStr) {
-		
-			if (mysql_query(connection_, deleteStr.c_str()) != 0) {		// throw on an error
-
-				std::string tt(mysql_error(connection_));
-				throw std::exception(mysql_error(connection_));
+				return false;
 
 			}
 
-			// todo: error management
 			return true;
-		
+
 		}
 	}
 }

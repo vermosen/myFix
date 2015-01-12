@@ -41,7 +41,7 @@ namespace myFix {
 			typename T, 
 			template<
 				typename Key, 
-				typename T, 
+				typename T,
 				typename Rel = std::less<Key>, 
 				typename All = std::allocator<std::pair<const Key, T>>>
 			class Container>
@@ -82,7 +82,8 @@ namespace myFix {
 
 			// database methods, return true is the statement succeed, throw otherwise
 			virtual bool selectStr (const std::string &) = 0;
-			virtual bool deleteStr (const std::string &) = 0;
+			virtual bool insertStr (const std::string &) = 0;
+			virtual bool deleteStr (const std::string &)	;
 
 			//TODO: synchronization method with deletion policy defined + error management
 			//void synchronize(deletionPolicy);
@@ -107,6 +108,29 @@ namespace myFix {
 			Container<Key, T> records_;
 			
 		};
+
+		template<
+			typename Key,
+			typename T,
+			template<				
+				typename Key, 
+				typename T,
+				typename Rel,
+				typename All>
+			class Container>
+		bool recordset<Key, T, Container>::deleteStr(const std::string & deleteStr) {
+
+			if (mysql_query(connection_, deleteStr.c_str()) != 0) {		// throw on an error
+
+				std::string tt(mysql_error(connection_));
+				throw std::exception(mysql_error(connection_));
+
+			}
+
+			// todo: error management
+			return true;
+
+		}
 	}
 }
 
