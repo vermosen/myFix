@@ -53,11 +53,7 @@ int main(int argc, char** argv) {
 	int exit;														// exit code
 
 	try {
-
-
-		// this is a colment
-
-
+		
 		bool end = false;											// main exit indicator 
 		int test = 0    ;											// optional test
 

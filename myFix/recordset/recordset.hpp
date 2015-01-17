@@ -82,8 +82,8 @@ namespace myFix {
 
 			// database methods, return true is the statement succeed, throw otherwise
 			virtual bool selectStr (const std::string &) = 0;
-			virtual bool insertStr (const std::string &) = 0;
-			virtual bool deleteStr (const std::string &)	;
+			bool insertStr (const std::string &)			;
+			bool deleteStr (const std::string &)			;
 
 			//TODO: synchronization method with deletion policy defined + error management
 			//void synchronize(deletionPolicy);
@@ -128,6 +128,33 @@ namespace myFix {
 			}
 
 			// todo: error management
+			return true;
+
+		}
+
+		template<
+			typename Key,
+			typename T,
+			template<
+				typename Key,
+				typename T,
+				typename Rel,
+				typename All>
+			class Container>
+		bool recordset<Key, T, Container>::insertStr(const std::string & insertStr) {
+
+			try{
+
+				// throw on an error
+				if (mysql_query(myFix::settings::instance().connection(), insertStr.c_str()) != 0)
+					throw std::exception(mysql_error(myFix::settings::instance().connection()));
+
+			} catch (...){
+
+				return false;
+
+			}
+
 			return true;
 
 		}

@@ -11,12 +11,14 @@ namespace myFix {
 
 		// select query exceptions
 		class selectQueryException : public recordsetException {};
-		class selectQueryExceptionNoSelection : public selectQueryException {};
+
+		class selectQueryExceptionNoSelection  : public selectQueryException {};
 		class selectQueryExceptionSelectFailed : public selectQueryException {};
 		class selectQueryExceptionUnknownField : public selectQueryException {};
 
 		// insert query exceptions
 		class insertQueryException : public recordsetException {};
+
 		class insertQueryExceptionUnknownField : public insertQueryException {};
 	}
 }

@@ -28,8 +28,8 @@ namespace myFix {
 
 				// recordset interface
 				bool selectStr(const std::string &);					// run a select statement
-				bool insertStr(const std::string &);					// single insert
 				
+				// refined interface
 				bool insert(const std::vector<std::string> &);			// bulk insert
 				
 			protected:

@@ -97,7 +97,9 @@ namespace myFix {
 
 				insertStatement.append(valueStr);			// add the value fields to insert statement 
 
-				if (mysql_query(myFix::settings::instance().connection(), insertStatement.c_str()) != 0)	// throw on an error
+				// this should throw internally
+				if (this->insertStr(insertStatement) != true)
+
 					throw std::exception(mysql_error(myFix::settings::instance().connection()));
 
 			}
