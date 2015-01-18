@@ -21,11 +21,11 @@ bool insertSingleTrade(const thOth::tradeMessage & msg) {
 			valueStr.append(",");
 
 		fieldStr.append("TRADE_PRICE,");						// open
-		SQL_INSERT_NUM(valueStr, msg.price())
+		SQL_INSERT_NUM(valueStr, msg.messageTrade().price())
 			valueStr.append(",");
 
 		fieldStr.append("TRADE_VOLUME");						// close
-		SQL_INSERT_NUM(valueStr, msg.quantity())
+		SQL_INSERT_NUM(valueStr, msg.messageTrade().quantity())
 
 		std::string insertStatement("INSERT INTO table_trade (");
 
@@ -38,8 +38,7 @@ bool insertSingleTrade(const thOth::tradeMessage & msg) {
 		if (mysql_query(myFix::settings::instance().connection(), insertStatement.c_str()) != 0)	// throw on an error
 			throw std::exception(mysql_error(myFix::settings::instance().connection()));
 	
-	}
-	catch (...){
+	} catch (...){
 	
 		return false;
 	

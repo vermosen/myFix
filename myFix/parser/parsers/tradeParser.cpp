@@ -50,20 +50,19 @@ namespace myFix {
 				if (group.getField(269) == "2") {									// is a trade ?
 
 					messages_.push_back(thOth::tradeMessage(
-						std::pair<thOth::BigInt, std::string>(
+						std::pair<thOth::bigInt, std::string>(
 						symbolMap_.right.find(value)->second, value), 
-						time, std::stod(group.getField(270)), 
-						std::stoi(group.getField(271))));
+						time, thOth::trade(
+							std::stoi(group.getField(271)), 
+							std::stod(group.getField(270)))));
 
 				}
-			}
-			catch (undefinedInstrumentException & e) {
+			} catch (undefinedInstrumentException & e) {
 
-				throw e;						// throw outside of the class
+				throw e;															// throw outside of the class
 
-			}
-			catch (...)							// continue on other exceptions
-			{
+			} catch (...) {															// continue on other exceptions
+
 				continue;
 			}
 		}

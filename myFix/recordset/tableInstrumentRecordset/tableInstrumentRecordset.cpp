@@ -20,7 +20,7 @@ namespace myFix {
 
 			MYSQL_ROW row				;								// row ptr
 			std::string name			;								// request, we generate the key
-			thOth::BigInt instrumentId  ;								// the id of the record to insert
+			thOth::bigInt instrumentId  ;								// the id of the record to insert
 
 			while (row = mysql_fetch_row(reception_)) {					// loop over the results
 				
@@ -29,7 +29,7 @@ namespace myFix {
 
 					if (std::string(reception_->fields[i].name)
 						== "INSTRUMENT_ID" && row[i] != NULL)
-						instrumentId = boost::lexical_cast<thOth::BigInt>(row[i]);
+						instrumentId = boost::lexical_cast<thOth::bigInt>(row[i]);
 
 					else if (std::string(reception_->fields[i].name)
 						== "INSTRUMENT_NAME" && row[i] != NULL)
@@ -44,7 +44,7 @@ namespace myFix {
 				}
 
 				records_.insert(
-					std::pair<thOth::BigInt, std::string>(
+					std::pair<thOth::bigInt, std::string>(
 						instrumentId, name));
 
 			}

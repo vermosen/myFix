@@ -17,19 +17,19 @@ namespace myFix {
 	namespace dataBase {
 
 		class tableInstrumentRecordset 
-			: public recordset<thOth::BigInt,
+			: public recordset<thOth::bigInt,
 							   std::string,
 							   std::map> {
 
 			public:
 
 				tableInstrumentRecordset(MYSQL * connection)
-					: recordset<thOth::BigInt, std::string, std::map>(connection) {};
+					: recordset<thOth::bigInt, std::string, std::map>(connection) {};
 
 				// recordset interface
 				bool selectStr(const std::string &);					// run a select statement
 				
-				// refined interface
+				// specific interface
 				bool insert(const std::vector<std::string> &);			// bulk insert
 				
 			protected:

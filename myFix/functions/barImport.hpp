@@ -47,10 +47,10 @@ void barImport(const thOth::instrument	& inst_		,
 			// create the current bar (don't fill the volume)
 			std::pair<thOth::dateTime, thOth::bar> currentBar(
 				startDate_, thOth::bar(
-				trd.cbegin()->price(), 
-				trd.cbegin()->price(), 
-				trd.cbegin()->price(), 
-				trd.cbegin()->price(), 
+				trd.cbegin()->messageTrade().price(), 
+				trd.cbegin()->messageTrade().price(),
+				trd.cbegin()->messageTrade().price(),
+				trd.cbegin()->messageTrade().price(),
 				period_, 0));
 
 			for (std::vector<thOth::tradeMessage>::const_iterator It = trd.cbegin(); It < trd.cend(); It++) {
@@ -66,13 +66,13 @@ void barImport(const thOth::instrument	& inst_		,
 					currentBar.first = thOth::dateTime::adjust100ms(It->time());
 
 					// reset values
-					currentBar.second.open	(It->price		());
-					currentBar.second.low	(It->price		());
-					currentBar.second.high	(It->price		());
-					currentBar.second.volume(It->quantity	());
+					currentBar.second.open  (It->messageTrade().price   ());
+					currentBar.second.low   (It->messageTrade().price   ());
+					currentBar.second.high  (It->messageTrade().price   ());
+					currentBar.second.volume(It->messageTrade().quantity());
 
 					// in case there is only 1 trade
-					currentBar.second.close	(It->price		());
+					currentBar.second.close	(It->messageTrade().price   ());
 
 					barEnd = thOth::dateTime::advance(currentBar.first, period_);
 
@@ -80,10 +80,10 @@ void barImport(const thOth::instrument	& inst_		,
 				else {										// we are still in the range
 
 					// stack up
-					currentBar.second.close	(It->price());
-					currentBar.second.high	(max(currentBar.second.high(), It->price()));
-					currentBar.second.low	(min(currentBar.second.low(), It->price()));
-					currentBar.second.volume(currentBar.second.volume() + It->quantity());
+					currentBar.second.close   (It->messageTrade().price());
+					currentBar.second.high    (max(currentBar.second.high(), It->messageTrade().price()));
+					currentBar.second.low     (min(currentBar.second.low (), It->messageTrade().price()));
+					currentBar.second.volume  (currentBar.second.volume  () + It->messageTrade().quantity());
 
 				}
 			}	

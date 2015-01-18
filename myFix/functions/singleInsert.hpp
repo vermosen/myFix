@@ -34,10 +34,9 @@ void singleInsert() {
 
 
 			thOth::tradeMessage t(								// fake message
-				std::pair<thOth::BigInt, std::string>(999, "FAKE"),
+				std::pair<thOth::bigInt, std::string>(999, "FAKE INSTRUMENT"),
 				tradeDate,
-				100.13,
-				1234);
+				thOth::trade(1234, 100.13));					// volume, price
 			
 			messages.push_back(t);
 

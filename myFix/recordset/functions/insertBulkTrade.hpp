@@ -31,9 +31,9 @@ bool insertBulkTrade(const std::vector<thOth::tradeMessage> & msgs) {
 				valueStr.append(",");
 			SQL_INSERT_DATE(valueStr, It->time(), true)
 				valueStr.append(",");
-			SQL_INSERT_NUM(valueStr, It->price())
+			SQL_INSERT_NUM(valueStr, It->messageTrade().price())
 				valueStr.append(",");
-			SQL_INSERT_NUM(valueStr, It->quantity())
+			SQL_INSERT_NUM(valueStr, It->messageTrade().quantity())
 
 			valueStr.append("),");
 

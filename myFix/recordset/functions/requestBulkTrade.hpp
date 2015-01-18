@@ -82,8 +82,7 @@ std::vector<thOth::tradeMessage> requestBulkTrade(const thOth::instrument & inst
 			ret.push_back(thOth::tradeMessage(							// push back
 				instrument_,
 				time_,
-				price_,
-				volume_));
+				thOth::trade(volume_, price_)));
 
 		}
 	}

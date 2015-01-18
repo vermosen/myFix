@@ -23,7 +23,7 @@ namespace myFix {
 			// todo: get the instrument details on the instrument table
 			thOth::instrument	dummy_(0, "")	;
 			std::string			exchange		;
-			//thOth::BigInt		id_				;						// the id of the record to insert
+			//thOth::bigInt		id_				;						// the id of the record to insert
 			thOth::dateTime		time_			;
 			thOth::real			price_			;
 			thOth::volume		volume_			;
@@ -40,16 +40,16 @@ namespace myFix {
 
 					else if (std::string(reception_->fields[i].name)
 						== "TRADE_PRICE" && row_[i] != NULL)
-						price_ = boost::lexical_cast<double>(row_[i]);
+						price_ = boost::lexical_cast<thOth::real>(row_[i]);
 
 					else if (std::string(reception_->fields[i].name)
 						== "TRADE_VOLUME" && row_[i] != NULL)
-						volume_ = boost::lexical_cast<int>(row_[i]);
+						volume_ = boost::lexical_cast<thOth::volume>(row_[i]);
 
 				}
 
-				std::pair<thOth::dateTime, thOth::tradeMessage> temp(
-					time_, thOth::tradeMessage(dummy_, time_, price_, volume_));
+				std::pair<thOth::dateTime, thOth::trade> temp(
+					time_, thOth::trade(volume_, price_));
 
 				records_.insert(temp);
 
@@ -60,7 +60,7 @@ namespace myFix {
 		};
 
 		bool tableTradeRecordset::insert(
-			const std::pair<thOth::BigInt, std::string> & contract_,
+			const std::pair<thOth::bigInt, std::string> & contract_,
 			const thOth::timeSeries<thOth::dateTime, thOth::tradeMessage> & records_) {
 
 			std::string fieldStr, valueStr;
@@ -86,9 +86,9 @@ namespace myFix {
 						valueStr.append(",");
 					SQL_INSERT_DATE(valueStr, It->second.time(), true)
 						valueStr.append(",");
-					SQL_INSERT_NUM(valueStr, It->second.price())
+					SQL_INSERT_NUM(valueStr, It->second.messageTrade().price())
 						valueStr.append(",");
-					SQL_INSERT_NUM(valueStr, It->second.quantity())
+					SQL_INSERT_NUM(valueStr, It->second.messageTrade().quantity())
 						valueStr.append("),");
 
 				}
@@ -102,8 +102,7 @@ namespace myFix {
 
 					throw std::exception(mysql_error(myFix::settings::instance().connection()));
 
-			}
-			catch (...){
+			} catch (...){
 
 				return false;
 
