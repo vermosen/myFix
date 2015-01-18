@@ -37,8 +37,6 @@ void tradeImport(const std::string & data_) {
 		myFix::settings::instance().dictionary())	;
 
 	ps.loadInstrumentTable()						;	// load the instruments from the db
-	std::vector<thOth::tradeMessage> buffer			;	// the message buffer
-	buffer.reserve(BUFFER_SIZE)						;	// reserve the size
 
 	while (std::getline(infile, line)) {				// get through the lines
 
@@ -59,7 +57,7 @@ void tradeImport(const std::string & data_) {
 
 			if (ps.size() >= BUFFER_SIZE) {				// is the buffer full ?
 			
-				if (insertBulkTrade(buffer)) {
+				if (insertBulkTrade(ps.messages())) {
 
 					std::cout
 						<< n_valid
@@ -91,7 +89,7 @@ void tradeImport(const std::string & data_) {
 					}
 				}
 
-				buffer.clear();
+				ps.clear();
 
 			}
 		}
@@ -113,7 +111,8 @@ void tradeImport(const std::string & data_) {
 		}
 		catch (...) {									// todo : exception management & log
 
-			std::cout << "big mess !!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
+			std::cout << "unexpected error, aborting procedure..." << std::endl;
+			throw std::exception();
 
 		}
 

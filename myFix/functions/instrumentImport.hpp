@@ -9,7 +9,7 @@
 #include "utilities/settings/settings.hpp"
 #include "parser/parsers/tradeParser.hpp"
 
-// import instruments defined by the file
+// import the instruments defined in the given file
 void instrumentImport(const std::string & data_) {
 
 	boost::timer t				;						// timer
@@ -54,7 +54,8 @@ void instrumentImport(const std::string & data_) {
 		}
 		catch (...) {									// other error
 
-			std::cout << "big mess !!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
+			std::cout << "unexpected error, aborting procedure..." << std::endl;
+			throw std::exception();
 
 		}
 

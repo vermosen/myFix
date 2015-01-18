@@ -21,6 +21,8 @@
 
 namespace myFix {
 
+	// the parser class contains some instrument list
+	// and process the generic type T according to it.
 	template <typename T>
 	class parser {
 
@@ -39,6 +41,9 @@ namespace myFix {
 		void addSymbol(const instrumentMap::value_type & i);	// add an instrument to the parser		
 		void loadInstrumentTable();								// load the db instrument table
 		size_t size();											// the current data size
+		std::vector<T> & messages() { return messages_; };		// messages
+		void clear()				{ messages_.clear()			; };
+		void reserve(size_t)		{ messages_.reserve(size_t)	; };
 
 	protected:
 
