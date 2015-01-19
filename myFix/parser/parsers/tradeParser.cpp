@@ -23,8 +23,7 @@ namespace myFix {
 				thOth::dateTime::milliSeconds(boost::lexical_cast<int>(				// (poorly) manage fix ms format....
 				dateVal.substr(14, 3)));
 
-		}
-		catch (...)	{
+		} catch (...)	{
 
 			return;
 

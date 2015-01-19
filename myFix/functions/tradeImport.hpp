@@ -13,12 +13,11 @@
 
 #include <boost/timer.hpp>
 
-#include "recordset/functions/insertSingleTrade.hpp"
-#include "recordset/functions/insertBulkTrade.hpp"
-#include "utilities/settings/settings.hpp"
 #include "parser/parsers/tradeParser.hpp"
+#include "recordset/tableTradeRecordset/tableTradeRecordset.hpp"
+#include "utilities/settings/settings.hpp"
 
-#define BUFFER_SIZE 5000
+#define TRADE_BUFFER_SIZE 5000
 
 void tradeImport(const std::string & data_) {
 
@@ -35,6 +34,9 @@ void tradeImport(const std::string & data_) {
 
 	myFix::tradeParser ps(								// create the file parser
 		myFix::settings::instance().dictionary())	;
+
+	myFix::dataBase::tableTradeRecordset rs(
+		myFix::settings::instance().connection());
 
 	ps.loadInstrumentTable()						;	// load the instruments from the db
 
@@ -55,45 +57,21 @@ void tradeImport(const std::string & data_) {
 			
 			ps.parse(line);								// tries to parse the current line
 
-			if (ps.size() >= BUFFER_SIZE) {				// is the buffer full ?
+			if (ps.size() >= TRADE_BUFFER_SIZE) {		// is the buffer full ?
 			
-				if (insertBulkTrade(ps.messages())) {
+				if (rs.insert(ps.messages())) {			// bulk insert successfull ?
 
 					std::cout
 						<< n_valid
 						<< " records inserted"
 						<< std::endl;
 
-				} else {									// if unsuccessful, try to insert line by line
-
-					for (std::vector<thOth::tradeMessage>::const_iterator It
-						= buffer.cbegin(); It != buffer.cend(); It++) {
-
-						if (insertSingleTrade(*It) == true) {
-
-							if (n_valid++ % 100 == 0) 		// info
-
-								std::cout
-								<< n_valid
-								<< " records inserted"
-								<< std::endl;
-
-						} else {
-
-							std::cout
-								<< ++n_error
-								<< " errors occured"
-								<< std::endl;
-
-						}
-					}
 				}
 
-				ps.clear();
+				ps.clear();								// clear the buffer
 
 			}
-		}
-		catch (myFix::undefinedInstrumentException & e) {	// missing instrument
+		} catch (myFix::undefinedInstrumentException & e) {
 		
 			std::cout
 				<< "missing instrument code: "

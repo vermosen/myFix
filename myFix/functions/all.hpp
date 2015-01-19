@@ -3,9 +3,11 @@
 
 #include "functions/tradeImport.hpp"
 #include "functions/debug.hpp"
-#include "functions/boostFacetTest.hpp"
-#include "functions/singleInsert.hpp"
+
 #include "functions/barImport.hpp"
 #include "functions/instrumentImport.hpp"
 
+// unitary function
+#include "functions/unitaryTest/singleTradeInsert.hpp"
+#include "functions/unitaryTest/boostFacetTest.hpp"
 #endif

@@ -78,15 +78,21 @@ int main(int argc, char** argv) {
 
 				std::cout											// message
 					<< std::endl << "Please select an activity: "
-					<< std::endl << "1 - instrument import" 
-					<< std::endl << "2 - trade import"
-					<< std::endl << "3 - bar import"
-					<< std::endl << "--------------"
+					<< std::endl
+					<< std::endl << "#### main commands ####"
+					<< std::endl << "1 - instrument import  " 
+					<< std::endl << "2 - trade      import  "
+					<< std::endl << "3 - bar        import  "
+					<< std::endl
+					<< std::endl << "#### unitary tests ####"
 					<< std::endl << "4 - debug"
-					<< std::endl << "5 - facet test"
-					<< std::endl << "6 - single insert test"
+					<< std::endl << "5 - date facet"
+					<< std::endl << "6 - single trade insert"
+					<< std::endl
+					<< std::endl << "#### miscelanious  ####"
 					<< std::endl << "0 - exit"
-					<< std::endl << std::endl;
+					<< std::endl 
+					<< std::endl;
 
 				std::cin >> res;									// user defined test
 
@@ -106,20 +112,12 @@ int main(int argc, char** argv) {
 
 			case 3:
 
-				{
-				
-					thOth::dateTime start							// start date
-						= thOth::dateTime(2014, 3, 2) 
-						+ boost::posix_time::hours(23);
+				barImport(											// contract selection
+					thOth::instrument(208, "GCJ4"),
+					thOth::dateTime(2014, 3, 2) + boost::posix_time::hours(23),
+					thOth::dateTime(2014, 4, 5),
+					thOth::period(thOth::timeUnit::milliSecond, 100));
 
-					thOth::dateTime end								// end date
-						= thOth::dateTime(2014, 4, 5);
-
-					thOth::period p(thOth::timeUnit::milliSecond, 100);
-					barImport(thOth::instrument(208, "GCJ4"), start, end, p);
-			
-				}
-			
 				break;
 
 			case 4:
@@ -134,7 +132,7 @@ int main(int argc, char** argv) {
 
 			case 6:
 
-				singleInsert();									// single insert test
+				singleTradeInsert();								// single insert test
 				break;
 
 			case 0:

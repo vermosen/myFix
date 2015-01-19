@@ -59,6 +59,58 @@ namespace myFix {
 
 		};
 
+		// fix message interface
+		bool tableTradeRecordset::insert(const std::vector <thOth::tradeMessage> & mess_) {
+		
+			std::string fieldStr, valueStr;
+
+			try{
+
+				fieldStr.append("INSTRUMENT_ID,");						// contract id
+				fieldStr.append("TRADE_DATETIME,");						// barStart
+				fieldStr.append("TRADE_PRICE,");						// open
+				fieldStr.append("TRADE_VOLUME");						// close
+
+				std::string insertStatement("INSERT INTO table_trade (");
+				insertStatement.append(fieldStr).append(") VALUES ");
+
+				for (std::vector <thOth::tradeMessage>::const_iterator It =
+					mess_.cbegin(); It != mess_.cend(); It++) {
+
+					valueStr.append("(");
+
+					SQL_INSERT_NUM(valueStr, It->symbol().first)
+						valueStr.append(",");
+					SQL_INSERT_DATE(valueStr, It->time(), true)
+						valueStr.append(",");
+					SQL_INSERT_NUM(valueStr, It->messageTrade().price())
+						valueStr.append(",");
+					SQL_INSERT_NUM(valueStr, It->messageTrade().quantity())
+						valueStr.append("),");
+
+				}
+
+				valueStr.pop_back();						// suppress the last colon
+
+				insertStatement.append(valueStr);			// add the value fields to insert statement 
+
+				// this should throw internally
+				if (this->insertStr(insertStatement) != true)
+
+					throw std::exception(mysql_error(myFix::settings::instance().connection()));
+
+			}
+			catch (...){
+
+				return false;
+
+			}
+
+			return true;
+		
+		}
+
+		// object interface
 		bool tableTradeRecordset::insert(
 			const std::pair<thOth::bigInt, std::string> & contract_,
 			const thOth::timeSeries<thOth::dateTime, thOth::tradeMessage> & records_) {
@@ -67,12 +119,10 @@ namespace myFix {
 
 			try{
 
-				fieldStr.append("INSTRUMENT_ID,");						// contract id
-				fieldStr.append("TRADE_DATETIME,");						// barStart
-				fieldStr.append("TRADE_PRICE,");						// open
-				fieldStr.append("TRADE_VOLUME,");						// close
-
-				fieldStr.pop_back();									// remove the last column
+				fieldStr.append("INSTRUMENT_ID,"	);					// contract id
+				fieldStr.append("TRADE_DATETIME,"	);					// barStart
+				fieldStr.append("TRADE_PRICE,"		);					// open
+				fieldStr.append("TRADE_VOLUME"		);					// close
 
 				std::string insertStatement("INSERT INTO table_trade (");
 				insertStatement.append(fieldStr).append(") VALUES ");
@@ -82,9 +132,9 @@ namespace myFix {
 
 					valueStr.append("(");
 
-					SQL_INSERT_NUM(valueStr, It->second.symbol().first)
+					SQL_INSERT_NUM(valueStr, contract_.first)
 						valueStr.append(",");
-					SQL_INSERT_DATE(valueStr, It->second.time(), true)
+					SQL_INSERT_DATE(valueStr, It->first, true)
 						valueStr.append(",");
 					SQL_INSERT_NUM(valueStr, It->second.messageTrade().price())
 						valueStr.append(",");

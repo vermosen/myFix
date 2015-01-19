@@ -11,7 +11,7 @@
 #include "utilities/settings/settings.hpp"
 
 // test an insert on the database
-void singleInsert() {
+void singleTradeInsert() {
 
 	boost::timer t;										// timer
 
