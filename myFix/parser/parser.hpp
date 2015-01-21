@@ -21,6 +21,19 @@
 
 namespace myFix {
 
+	// exceptions 
+	class undefinedInstrumentException : public std::exception {
+
+	public:
+		undefinedInstrumentException(const std::string & code) : code_(code) {};
+
+		std::string code() { return code_; };
+
+	protected:
+		std::string code_;
+
+	};
+
 	// the parser class contains some instrument list
 	// and process the generic type T according to it.
 	template <typename T>

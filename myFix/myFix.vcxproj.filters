@@ -39,11 +39,11 @@
     <ClCompile Include="recordset\functions\requestBulkInstrument.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="recordset\tableBarRecordset\tableBarRecordset.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="functions\debug.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="utilities\logger\logger.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -63,9 +63,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="recordset\functions\insertSingleTrade.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="functions\singleInsert.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="functions\all.hpp">
@@ -98,16 +95,25 @@
     <ClInclude Include="functions\tradeImport.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="functions\boostFacetTest.hpp">
+    <ClInclude Include="parser\parsers\bookOrderParser.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="recordset\tableInstrumentRecordset\tableInstrumentRecordset.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="recordset\tableBarRecordset\tableBarRecordset.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="parser\parsers\tradeparser.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="parser\parsers\bookOrderParser.hpp">
+    <ClInclude Include="functions\unitaryTest\singleTradeInsert.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="recordset\tableInstrumentRecordset\tableInstrumentRecordset.hpp">
+    <ClInclude Include="functions\unitaryTest\boostFacetTest.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="functions\unitaryTest\debug.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

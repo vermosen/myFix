@@ -6,6 +6,7 @@
 
 #include <boost/timer.hpp>
 
+#include "recordset/tableTradeRecordset/tableTradeRecordset.hpp"
 #include "recordset/functions/requestBulkTrade.hpp"
 #include "recordset/functions/insertBulkBar.hpp"
 #include "utilities/settings/settings.hpp"
@@ -26,18 +27,21 @@ void barImport(const thOth::instrument	& inst_		,
 	// 1 - bulk request over the trade table of 10 minutes increments
 	// 2 - parse in 100 ms 
 	// 3 - bulk insert
-	const thOth::period chunkLen(						// chunk of data  
+	const thOth::period chunkSize(						// chunk of data  
 		thOth::timeUnit::hour, 1);	
 
 	std::vector<std::pair<thOth::dateTime, thOth::bar> > bars;
 
+	myFix::dataBase::tableTradeRecordset rs(					// a tableTradeRecordset
+		myFix::settings::instance().connection());
+
 	while (startDate_ < endDate_) {
-	
+		
 		std::vector<thOth::tradeMessage> trd =			// 1 - bulk request
 			requestBulkTrade(
 				inst_, 
 				startDate_, 
-				thOth::dateTime::advance(startDate_, chunkLen),
+				thOth::dateTime::advance(startDate_, chunkSize),
 				true);
 
 		if (!trd.empty()) {
@@ -104,7 +108,7 @@ void barImport(const thOth::instrument	& inst_		,
 		}
 
 		// move to the next chunk
-		startDate_ = thOth::dateTime::advance(startDate_, chunkLen);		
+		startDate_ = thOth::dateTime::advance(startDate_, chunkSize);
 
 	}
 

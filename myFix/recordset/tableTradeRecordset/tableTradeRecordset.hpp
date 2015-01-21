@@ -3,8 +3,8 @@
 
 #include <thOth/time/DateTime.hpp>
 #include <thOth/time/timeSeries.hpp>
-#include <thOth/bar/bar.hpp>
 #include <thOth/message/trademessage.hpp>
+#include <thOth/trade.hpp>
 
 #include "utilities/settings/settings.hpp"
 #include "recordset/recordset.hpp"
@@ -16,20 +16,21 @@ namespace myFix {
 
 		class tableTradeRecordset 
 			: public recordset<thOth::dateTime, 
-							   thOth::tradeMessage,
+							   thOth::trade,
 							   thOth::timeSeries> {
 
 			public:
 
 				tableTradeRecordset(MYSQL * connection)
-					: recordset<thOth::dateTime, thOth::tradeMessage, thOth::timeSeries>(connection) {};
+					: recordset<thOth::dateTime, thOth::trade, thOth::timeSeries>(connection) {};
 
 				// recordset interface
 				bool selectStr(const std::string &);					// run a select statement
 
-				// insert
-				bool insert(
-					const std::pair<thOth::BigInt, std::string> &, 
+				bool insert(const std::vector <thOth::tradeMessage> &);	// message vector
+					
+				bool insert(											// object vector
+					const std::pair<thOth::bigInt, std::string> &, 
 					const thOth::timeSeries<thOth::dateTime, thOth::tradeMessage> &);
 				
 			protected:

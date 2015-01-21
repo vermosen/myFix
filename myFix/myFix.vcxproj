@@ -111,6 +111,7 @@
     <ClCompile Include="parser\parsers\bookOrderParser.cpp" />
     <ClCompile Include="parser\parsers\tradeParser.cpp" />
     <ClCompile Include="recordset\functions\requestBulkInstrument.cpp" />
+    <ClCompile Include="recordset\tableBarRecordset\tableBarRecordset.cpp" />
     <ClCompile Include="recordset\tableInstrumentRecordset\tableInstrumentRecordset.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
@@ -134,16 +135,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="functions\all.hpp" />
-    <ClInclude Include="functions\boostFacetTest.hpp" />
-    <ClInclude Include="functions\singleInsert.hpp" />
+    <ClInclude Include="functions\unitaryTest\boostFacetTest.hpp" />
+    <ClInclude Include="functions\unitaryTest\singleTradeInsert.hpp" />
     <ClInclude Include="parser\parser.hpp" />
-    <ClInclude Include="functions\debug.hpp" />
+    <ClInclude Include="functions\unitaryTest\debug.hpp" />
     <ClInclude Include="recordset\functions\insertBulkTrade.hpp" />
     <ClInclude Include="recordset\functions\insertSingleBar.hpp" />
     <ClInclude Include="recordset\functions\insertSingleTrade.hpp" />
     <ClInclude Include="recordset\functions\requestBulkInstrument.hpp" />
     <ClInclude Include="recordset\recordset.hpp" />
     <ClInclude Include="recordset\recordsetException.hpp" />
+    <ClInclude Include="recordset\tableBarRecordset\tableBarRecordset.hpp" />
     <ClInclude Include="recordset\tableInstrumentRecordset\tableInstrumentRecordset.hpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
