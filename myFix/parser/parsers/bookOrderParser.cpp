@@ -48,17 +48,22 @@ namespace myFix {
 
 					throw undefinedInstrumentException(value);						// undefined instrument
 			
-				if (group.getField(269) == "1") {			// is a trade ?
+				if (group.getField(269) == "1") {			// is a bid ?
 
-					messages_.push_back(thOth::bookOrderMessage()
-						std::pair<thOth::bigInt, std::string>(
-						symbolMap_.right.find(value)->second, value),
-						time, thOth::trade(
-						std::stoi(group.getField(271)),
-						std::stod(group.getField(270)))));
+					messages_.push_back(
+						thOth::bookOrderMessage(
+							thOth::instrument(symbolMap_.right.find(value)->second, value),
+							time, thOth::bookOrder(thOth::bookOrder::bid_,
+							std::stoi(group.getField(271)),
+							std::stod(group.getField(270)))));
 
 				}
-			}
+				else if (group.getField(269) == "2") {
+				
+
+				
+				}
+			} 
 			catch (undefinedInstrumentException & e) {
 
 				throw e;															// throw outside of the class

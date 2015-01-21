@@ -8,7 +8,7 @@
 
 namespace myFix {
 
-	class bookOrderParser : public parser<thOth::tradeMessage> {
+	class bookOrderParser : public parser<thOth::bookOrderMessage> {
 
 	public:
 
