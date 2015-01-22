@@ -35,10 +35,14 @@ void tradeImport(const std::string & data_) {
 	myFix::tradeParser ps(								// create the file parser
 		myFix::settings::instance().dictionary())	;
 
+	// instrument rs
+	myFix::dataBase::tableInstrumentRecordset instrumentRs(	
+		myFix::settings::instance().connection());
+
 	myFix::dataBase::tableTradeRecordset rs(
 		myFix::settings::instance().connection());
 
-	ps.loadInstrumentTable()						;	// load the instruments from the db
+	ps.loadInstrumentTable(instrumentRs);				// load the instruments from the db
 
 	while (std::getline(infile, line)) {				// get through the lines
 

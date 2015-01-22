@@ -31,6 +31,7 @@ namespace myFix {
 				
 				// specific interface
 				bool insert(const std::vector<std::string> &);			// bulk insert
+				bool insert(const std::string &				);			// single insert
 				
 			protected:
 

@@ -32,10 +32,13 @@ void debug(const std::string & file_) {
 	long								nline = 1;		// line counter
 	std::string							line("");		// current line
 
+	myFix::dataBase::tableInstrumentRecordset rs(		// recordset
+		myFix::settings::instance().connection());
+
 	myFix::tradeParser ps(								// create the file parser
 		myFix::settings::instance().dictionary());
 
-	ps.loadInstrumentTable();							// load the instrument table
+	ps.loadInstrumentTable(rs);							// load the instrument table from the rs
 
 	// the message buffer
 	std::vector<std::shared_ptr<thOth::tradeMessage> > buffer;			

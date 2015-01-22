@@ -46,7 +46,7 @@
 //#define DATA "XCEC_MD_GC_20140310_20140314" -> done
 //#define DATA "XCEC_MD_GC_20140317_20140321" -> done
 //#define DATA "XCEC_MD_GC_20140324_20140328" -> done
-#define DATA "XCEC_MD_GC_20140331_20140404"
+#define DATA "XCME_MD_NQ_20140331_20140404"
 
 int main(int argc, char** argv) {
 

@@ -17,7 +17,8 @@
 #include <quickfix/DataDictionary.h>
 #include <quickfix/fix50sp2/MarketDataIncrementalRefresh.h>
 
-#include "recordset/functions/requestBulkInstrument.hpp"
+#include "recordset/tableInstrumentRecordset/tableInstrumentRecordset.hpp"
+//#include "recordset/functions/requestBulkInstrument.hpp"
 
 namespace myFix {
 
@@ -52,7 +53,10 @@ namespace myFix {
 		virtual void parse(const std::string &) = 0;			// message parsing method
 
 		void addSymbol(const instrumentMap::value_type & i);	// add an instrument to the parser		
-		void loadInstrumentTable();								// load the db instrument table
+		
+		void loadInstrumentTable(								// load the db instrument table from a recordset
+			dataBase::tableInstrumentRecordset & rs);								
+
 		size_t size();											// the current data size
 		std::vector<T> & messages() { return messages_; };		// messages
 		void clear()				{ messages_.clear()			; };
@@ -77,16 +81,18 @@ namespace myFix {
 	};
 
 	template<typename T>
-	void parser<T>::loadInstrumentTable() {
+	void parser<T>::loadInstrumentTable(dataBase::tableInstrumentRecordset & rs) {
 
-		std::vector<thOth::instrument> inst =					// load the instruments
-			dataBase::requestBulkInstrument();
+		this->symbolMap_.clear();								// clears the bymap
 
-		for (std::vector<thOth::instrument>::const_iterator It	// load the contract table
-			= inst.cbegin(); It != inst.cend(); It++)
+		// select statement
+		rs.selectStr("SELECT INSTRUMENT_ID, INSTRUMENT_NAME \
+					  FROM TABLE_INSTRUMENT");
 
-			this->addSymbol(instrumentMap::value_type(
-				It->first, It->second));
+		for (std::map<thOth::bigInt, std::string>::const_iterator It	// copy the contract table
+			= rs.cbegin(); It != rs.cend(); It++)
+
+			this->addSymbol(*It);
 
 	}
 

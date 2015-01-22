@@ -52,5 +52,32 @@ namespace myFix {
 			return true;
 
 		};
+
+		// single insert
+		bool tableInstrumentRecordset::insert(const std::string & code) {
+
+			std::string insertStatement("INSERT INTO table_instrument (INSTRUMENT_NAME) VALUES (");
+
+			SQL_INSERT_STR(insertStatement, code)
+			SQL_INSERT_STR(insertStatement, ")")
+
+			return this->insertStr(insertStatement);
+		
+		}
+
+		// bulk insert
+		bool tableInstrumentRecordset::insert(const std::vector<std::string> & codes) {	
+		
+			std::string statement;
+
+			for (std::vector<std::string>::const_iterator It = codes.cbegin(); It != codes.cend(); It++)
+			
+				// TODO: error management, e.g.
+				// should we stop on each error ?
+				this->insert(statement);
+
+			return true;
+					
+		};		
 	}
 }

@@ -50,12 +50,12 @@ namespace myFix {
 			
 				if (group.getField(269) == "1") {			// is a bid ?
 
-					messages_.push_back(
+					/*messages_.push_back(
 						thOth::bookOrderMessage(
 							thOth::instrument(symbolMap_.right.find(value)->second, value),
 							time, thOth::bookOrder(thOth::bookOrder::bid_,
 							std::stoi(group.getField(271)),
-							std::stod(group.getField(270)))));
+							std::stod(group.getField(270)))));*/
 
 				}
 				else if (group.getField(269) == "2") {
