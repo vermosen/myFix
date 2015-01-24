@@ -22,7 +22,7 @@ namespace myFix {
 		public:
 
 			tableBarRecordset(MYSQL * connection)
-				: recordset<thOth::dateTime, thOth::bar, thOth::timeSeries>(connection) {};
+				: recordset(connection) {};
 
 			// recordset interface
 			bool selectStr(const std::string &);					// run a select statement
@@ -31,10 +31,6 @@ namespace myFix {
 			bool insert(
 				const thOth::instrument &,
 				const thOth::timeSeries<thOth::dateTime, thOth::bar> &);
-
-		protected:
-
-			tableBarRecordset() {};
 
 		};
 

@@ -24,7 +24,7 @@ namespace myFix {
 			public:
 
 				tableInstrumentRecordset(MYSQL * connection)
-					: recordset<thOth::bigInt, std::string, std::map>(connection) {};
+					: recordset(connection) {};
 
 				// recordset interface
 				bool selectStr(const std::string &);					// run a select statement
@@ -32,10 +32,6 @@ namespace myFix {
 				// specific interface
 				bool insert(const std::vector<std::string> &);			// bulk insert
 				bool insert(const std::string &				);			// single insert
-				
-			protected:
-
-				tableInstrumentRecordset() {};
 				
 		};
 	}

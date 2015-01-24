@@ -1,9 +1,13 @@
 #ifndef functions_all_hpp
 #define functions_all_hpp
 
-#include "functions/tradeImport.hpp"
-#include "functions/barImport.hpp"
-#include "functions/instrumentImport.hpp"
+// imports
+#include "functions/imports/tradeImport.hpp"
+#include "functions/imports/instrumentImport.hpp"
+#include "functions/imports/marketOrderImport.hpp"
+
+// conversions
+#include "functions/conversions/barConversion.hpp"
 
 // unitary function
 #include "functions/unitaryTest/singleTradeInsert.hpp"

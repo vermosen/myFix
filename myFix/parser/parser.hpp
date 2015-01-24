@@ -18,7 +18,6 @@
 #include <quickfix/fix50sp2/MarketDataIncrementalRefresh.h>
 
 #include "recordset/tableInstrumentRecordset/tableInstrumentRecordset.hpp"
-//#include "recordset/functions/requestBulkInstrument.hpp"
 
 namespace myFix {
 
@@ -89,10 +88,14 @@ namespace myFix {
 		rs.selectStr("SELECT INSTRUMENT_ID, INSTRUMENT_NAME \
 					  FROM TABLE_INSTRUMENT");
 
-		for (std::map<thOth::bigInt, std::string>::const_iterator It	// copy the contract table
+		// copy the contract table
+		for (std::map<thOth::bigInt, std::string>::const_iterator It	
 			= rs.cbegin(); It != rs.cend(); It++)
 
-			this->addSymbol(*It);
+			this->addSymbol(
+				instrumentMap::value_type(
+					It->first, 
+					It->second));
 
 	}
 
@@ -105,7 +108,6 @@ namespace myFix {
 	size_t parser<T>::size() {
 		return messages_.size(); 
 	};
-
 }
 
 #endif

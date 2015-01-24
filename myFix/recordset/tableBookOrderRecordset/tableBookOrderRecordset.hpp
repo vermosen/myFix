@@ -1,9 +1,9 @@
-#ifndef table_trade_recordset_hpp
-#define table_trade_recordset_hpp
+#ifndef table_book_order_recordset_hpp
+#define table_book_order_recordset_hpp
 
 #include <thOth/time/DateTime.hpp>
 #include <thOth/time/timeSeries.hpp>
-#include <thOth/message/trademessage.hpp>
+#include <thOth/message/bookOrderMessage.hpp>
 
 #include "utilities/settings/settings.hpp"
 #include "recordset/recordset.hpp"
@@ -13,24 +13,24 @@ namespace myFix {
 
 	namespace dataBase {
 
-		class tableTradeRecordset 
+		class tableBookOrderRecordset 
 			: public recordset<thOth::dateTime, 
-							   thOth::trade,
+							   thOth::bookOrder,
 							   thOth::timeSeries> {
 
 			public:
 
-				tableTradeRecordset(MYSQL * connection)
+				tableBookOrderRecordset(MYSQL * connection)
 					: recordset(connection) {};
 
 				// recordset interface
 				bool selectStr(const std::string &);					// run a select statement
 
-				bool insert(const std::vector <thOth::tradeMessage> &);	// message vector
+				bool insert(const std::vector <thOth::bookOrderMessage> &);	// message vector
 					
 				bool insert(											// object vector
 					const std::pair<thOth::bigInt, std::string> &, 
-					const thOth::timeSeries<thOth::dateTime, thOth::tradeMessage> &);
+					const thOth::timeSeries<thOth::dateTime, thOth::bookOrderMessage> &);
 				
 		};
 	}

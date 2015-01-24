@@ -52,6 +52,8 @@ namespace myFix {
 			typedef typename Container<Key, T>::const_iterator const_iterator;
 			typedef typename Container<Key, T>::iterator iterator;
 
+			recordset() = delete;							// no default ctor
+
 			recordset(MYSQL * connection)					// ctor
 				: connection_(connection) {};				
 			
@@ -98,8 +100,6 @@ namespace myFix {
 			thOth::size size() const { return records_.size(); };
 
 		protected:
-
-			recordset() {};									// protected default ctor
 
 			MYSQL *     connection_;						// connection objects
 			MYSQL_RES * reception_ ;

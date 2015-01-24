@@ -56,11 +56,11 @@ namespace myFix {
 		// single insert
 		bool tableInstrumentRecordset::insert(const std::string & code) {
 
-			std::string insertStatement("INSERT INTO table_instrument (INSTRUMENT_NAME) VALUES (");
+			std::string insertStatement("INSERT INTO table_instrument \
+										 (INSTRUMENT_NAME) VALUES (");
 
 			SQL_INSERT_STR(insertStatement, code)
-			SQL_INSERT_STR(insertStatement, ")")
-
+			insertStatement.append(")");
 			return this->insertStr(insertStatement);
 		
 		}

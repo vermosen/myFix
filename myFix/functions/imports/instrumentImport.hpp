@@ -45,6 +45,8 @@ void instrumentImport(const std::string & data_) {
 
 				ps.parse(line);								// try to parse the current line
 
+				past = true;								// paring is ok, no new instrument
+
 			}
 
 			// on error, insert the new instrumentin the db
