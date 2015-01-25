@@ -13,8 +13,8 @@
 
 #include <boost/timer.hpp>
 
-#include "parser/parsers/tradeParser.hpp"
-#include "recordset/tableTradeRecordset/tableTradeRecordset.hpp"
+#include "parser/parsers/bookOrderParser.hpp"
+#include "recordset/tableBookOrderRecordset/tableBookOrderRecordset.hpp"
 #include "utilities/settings/settings.hpp"
 
 #define ORDER_BUFFER_SIZE 10000
@@ -32,14 +32,14 @@ void marketOrderImport(const std::string & data_) {
 	long								nline = 1	;	// line counter
 	std::string							line("")	;	// current line
 
-	myFix::tradeParser ps(								// create the file parser
+	myFix::bookOrderParser ps(								// create the file parser
 		myFix::settings::instance().dictionary());
 
 	// instrument rs
 	myFix::dataBase::tableInstrumentRecordset instrumentRs(
 		myFix::settings::instance().connection());
 
-	myFix::dataBase::tableTradeRecordset rs(
+	myFix::dataBase::tableBookOrderRecordset rs(
 		myFix::settings::instance().connection());
 
 	ps.loadInstrumentTable(instrumentRs);				// load the instruments from the db
