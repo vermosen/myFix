@@ -34,8 +34,13 @@ namespace myFix {
 
 	};
 
+	// unsupported identifier
+	class unsupportedIdentifierException : public std::exception {};
+
 	// the parser class contains some instrument list
 	// and process the generic type T according to it.
+	// the parser can observe other elements
+	// and reload on update
 	template <typename T>
 	class parser {
 

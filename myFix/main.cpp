@@ -100,7 +100,7 @@ int main(int argc, char** argv) {
 					<< std::endl << "6 - date facet test		"
 					<< std::endl << "7 - single trade insert"
 					<< std::endl
-					<< std::endl << "#### miscelanious  ####"
+					<< std::endl << "#### Miscellaneous ####"
 					<< std::endl << "0 - exit"
 					<< std::endl 
 					<< std::endl;

@@ -17,7 +17,7 @@
 #include "recordset/tableTradeRecordset/tableTradeRecordset.hpp"
 #include "utilities/settings/settings.hpp"
 
-#define TRADE_BUFFER_SIZE 5000
+#define TRADE_BUFFER_SIZE 10
 
 void tradeImport(const std::string & data_) {
 

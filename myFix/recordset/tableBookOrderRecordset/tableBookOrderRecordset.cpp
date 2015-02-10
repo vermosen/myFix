@@ -66,12 +66,18 @@ namespace myFix {
 
 			try{
 
-				fieldStr.append("INSTRUMENT_ID,");						// contract id
-				fieldStr.append("TRADE_DATETIME,");						// barStart
-				fieldStr.append("TRADE_PRICE,");						// open
-				fieldStr.append("TRADE_VOLUME");						// close
+				fieldStr.append("INSTRUMENT_ID,"		);				// instrument id
+				fieldStr.append("ORDER_DATETIME,"		);				// order date/time
+				fieldStr.append("ORDER_TYPE,"			);				// order type
+				fieldStr.append("ORDER_PRICE,"			);				// order price
+				fieldStr.append("ORDER_VOLUME,"			);				// order volume
+				fieldStr.append("ORDER_ACTION,"			);				// order action
+				fieldStr.append("ORDER_COUNT,"			);				// order count
+				fieldStr.append("ORDER_MD_PRICE_LEVEL,"	);				// order md price level
+				fieldStr.append("ORDER_SEQUENCE_NUMBER,");				// order sequence number
+				fieldStr.append("ORDER_SENDER_ID"		);				// order sender id
 
-				std::string insertStatement("INSERT INTO table_trade (");
+				std::string insertStatement("INSERT INTO table_marketOrder (");
 				insertStatement.append(fieldStr).append(") VALUES ");
 
 				for (std::vector <thOth::bookOrderMessage>::const_iterator It =
@@ -83,11 +89,22 @@ namespace myFix {
 						valueStr.append(",");
 					SQL_INSERT_DATE(valueStr, It->time(), true)
 						valueStr.append(",");
+					SQL_INSERT_NUM(valueStr, It->order().type())
+						valueStr.append(",");
 					SQL_INSERT_NUM(valueStr, It->order().price())
 						valueStr.append(",");
 					SQL_INSERT_NUM(valueStr, It->order().quantity())
+						valueStr.append(",");
+					SQL_INSERT_NUM(valueStr, It->action())
+						valueStr.append(",");
+					SQL_INSERT_NUM(valueStr, It->order_count())
+						valueStr.append(",");
+					SQL_INSERT_NUM(valueStr, It->level())
+						valueStr.append(",");
+					SQL_INSERT_NUM(valueStr, It->seq_number())
+						valueStr.append(",");
+					SQL_INSERT_NUM(valueStr, 1)
 						valueStr.append("),");
-
 				}
 
 				valueStr.pop_back();						// suppress the last colon

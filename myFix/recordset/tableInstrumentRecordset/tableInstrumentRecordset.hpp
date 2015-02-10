@@ -16,10 +16,10 @@ namespace myFix {
 
 	namespace dataBase {
 
-		class tableInstrumentRecordset 
-			: public recordset<thOth::bigInt,
-							   std::string,
-							   std::map> {
+		class tableInstrumentRecordset
+			: public recordset <thOth::bigInt,
+								std::string,
+								std::map> {
 
 			public:
 
@@ -32,6 +32,8 @@ namespace myFix {
 				// specific interface
 				bool insert(const std::vector<std::string> &);			// bulk insert
 				bool insert(const std::string &				);			// single insert
+
+				void update();											// observer interface
 				
 		};
 	}

@@ -36,6 +36,10 @@ namespace myFix {
 
 		};
 
+		// recordset class<Key, T, Container>
+		// TODO: inherits from boost::signal2
+		// to allow update when the instrument 
+		// recordset load a new element.
 		template<
 			typename Key, 
 			typename T, 

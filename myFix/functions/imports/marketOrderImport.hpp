@@ -61,12 +61,12 @@ void marketOrderImport(const std::string & data_) {
 
 			ps.parse(line);								// tries to parse the current line
 
-			if (ps.size() >= TRADE_BUFFER_SIZE) {		// is the buffer full ?
+			if (ps.size() >= ORDER_BUFFER_SIZE) {		// is the buffer full ?
 
 				if (rs.insert(ps.messages())) {			// bulk insert successfull ?
 
 					std::cout
-						<< n_valid
+						<< ps.size()
 						<< " records inserted"
 						<< std::endl;
 

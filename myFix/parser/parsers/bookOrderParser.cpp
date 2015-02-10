@@ -8,93 +8,129 @@ namespace myFix {
 
 	void bookOrderParser::parse(const std::string & msg) {
 
-		FIX::Message fixMsg(msg, *dict_, false);
+		FIX::Message	fixMsg(msg, *dict_, false)	;
+		std::string		dateVal						;								// the current date string
+		std::string		sender						;
+		size_t			groups_count = 0			;
+		thOth::bigInt	sequenceNumber				;
 
-		std::string		dateVal			;
-		size_t			groups_count = 0;
-
-		// for debug
-		//std::string messageType = fixMsg.getHeader().getField(35);
-		//
-
-		// Try to get the number of groups in the message. If not available, discard the message.
-		try {
-
-			groups_count = boost::lexical_cast<size_t>(fixMsg.getField(268));	// convert group 268 "group count"
-			dateVal = fixMsg.getHeader().getField(75);							// get date string
-
-		} catch (...)	{
-
+		// accept only messages of type "X"
+		if (fixMsg.getHeader().getField(35) != "X") {
+		
 			return;
 
 		}
 
-		FIX::SecurityDesc description;
-		FIX50SP2::MarketDataIncrementalRefresh::NoMDEntries group;
-		std::string value;
+		// attempt to translate the header
+		try {
 
-		for (size_t i = 1; i <= groups_count; ++i) {
+			groups_count	= boost::lexical_cast<size_t>(fixMsg.getField(268))						;
+			sequenceNumber	= boost::lexical_cast<thOth::bigInt>(fixMsg.getHeader().getField(34))	;
+			dateVal			= fixMsg.getField(75)													;
+			sender			= fixMsg.getHeader().getField(49)										;
+			
+		} catch (...)	{
+
+			std::cout << "uncoherent header detected" << std::endl;					// debug
+			return;
+
+		}
+
+		std::string description										;							
+		FIX50SP2::MarketDataIncrementalRefresh::NoMDEntries group	;
+		
+		for (size_t i = 1; i <= groups_count; ++i) {								// iterate over the group messages
 
 			fixMsg.getGroup(i, group);
 
 			try	{
 
-				value = group.getField(description).getString();
+				// 0 - validity check
+				if (group.getField(22) != "8")										// contract identifier type
 
-				if (symbolMap_.size() != 0 &&										// test on the contract
-					symbolMap_.right.find(value) == symbolMap_.right.end())
+					throw unsupportedIdentifierException();
 
-					throw undefinedInstrumentException(value);						// undefined instrument
+				// 1 - get the instrument optional id
+				description = group.getField(107);
 
+				if (symbolMap_.size() != 0 &&										// try to find the symbol in the table
+					symbolMap_.right.find(description) == symbolMap_.right.end())
+
+					throw undefinedInstrumentException(description);				// undefined instrument
+
+				thOth::instrument instrument(										// create the instrument
+					symbolMap_.right.find(description)->second, 
+					description);
+
+				// 2 - get the arrival date/time and build the date
 				std::string arrivalTime = dateVal;									// compute the arrival time
-				arrivalTime.append(fixMsg.getField(273));
-
-				// build date from string
+				arrivalTime.append(group.getField(273));
+				
 				thOth::dateTime time = thOth::dateTime::strToDate(arrivalTime, stream_) +
 					thOth::dateTime::milliSeconds(boost::lexical_cast<int>(
 					arrivalTime.substr(14, 3)));
+				
+				// 3 - update action, convert from int
+				thOth::bookOrderMessage::update_action action =
+					(thOth::bookOrderMessage::update_action)
+					boost::lexical_cast<int>(group.getField(279));
 
-				//unsigned int		order_count,
-				//unsigned int		level,	// level ?
-				//unsigned long		seq_number,
-				//std::string		sender_id
+				// 4 - bid, offer
+				thOth::bookOrder::orderType type = 
+					(thOth::bookOrder::orderType)
+					boost::lexical_cast<char>(group.getField(269));
 
-				// update action
-				thOth::bookOrderMessage::update_action act =
-					boost::lexical_cast<thOth::bookOrderMessage::update_action>(group.getField(279));
+				// only keep track of the bid and offers
+				if (type == thOth::bookOrder::bid_ || type == thOth::bookOrder::ask_) {
+				
+					// 5 - price and volume
+					thOth::real		price		= boost::lexical_cast<thOth::real>	(group.getField(270));
+					thOth::volume	quantity	= boost::lexical_cast<thOth::volume>(group.getField(271));
 
-				if (group.getField(269) == "0") {			// is an offer ?
+					// 6 - create the book order
+					thOth::bookOrder order(
+						type	,
+						price	,
+						quantity);
+
+					// 7 - order count (field 83)
+					unsigned int	order_count	= boost::lexical_cast<unsigned int>	(group.getField(83));
+
+					// 8 - level (field 1023)
+					unsigned int	level		= boost::lexical_cast<unsigned int>	(group.getField(1023));
 
 					messages_.push_back(
 						thOth::bookOrderMessage(
-							thOth::instrument(symbolMap_.right.find(value)->second, value),
-								time, thOth::bookOrder(
-									thOth::bookOrder::ask_,
-									boost::lexical_cast<thOth::volume>(group.getField(271)),	// volume
-									boost::lexical_cast<thOth::real>(group.getField(270))),		// price
-							act, 0, 0, 0, ""));
-
-				} else if (group.getField(269) == "1") {	// is a bid
-
-					messages_.push_back(
-						thOth::bookOrderMessage(
-							thOth::instrument(symbolMap_.right.find(value)->second, value),
-								time, thOth::bookOrder(
-									thOth::bookOrder::bid_,
-									boost::lexical_cast<thOth::volume>(group.getField(271)),	// volume
-									boost::lexical_cast<thOth::real>(group.getField(270))),		// price
-							act, 0, 0, 0, ""));
+							instrument		,
+							time			,
+							order			,
+							action			,
+							order_count		,
+							level			,
+							sequenceNumber	,
+							sender			));
 				
 				}
-			} 
-			catch (undefinedInstrumentException & e) {
 
-				throw e;															// throw outside of the class
+			// exceptions management
+			} catch (unsupportedIdentifierException & e) {
 
-			}
-			catch (...) {															// continue on other exceptions
+				throw e;															// interrupt message read 
 
+			} catch (undefinedInstrumentException & e) {
+
+				throw e;															// interrupt message read 
+
+			} catch (std::exception & e) {
+			
+				std::cout << e.what() << std::endl;									// log and continue
 				continue;
+
+			} catch (...) {															// continue on other exceptions
+
+				std::cout << "unknown error occured" << std::endl;
+				continue;
+
 			}
 		}
 	}

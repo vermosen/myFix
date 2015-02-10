@@ -78,6 +78,14 @@ namespace myFix {
 
 			return true;
 					
-		};		
+		};
+
+		// on update, reload the instrument list
+		void update() {
+		
+
+		
+		};
+
 	}
 }
