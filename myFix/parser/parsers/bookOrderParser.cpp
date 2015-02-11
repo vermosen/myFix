@@ -71,8 +71,8 @@ namespace myFix {
 					arrivalTime.substr(14, 3)));
 				
 				// 3 - update action, convert from int
-				thOth::bookOrderMessage::update_action action =
-					(thOth::bookOrderMessage::update_action)
+				thOth::bookOrder::actionType act =
+					(thOth::bookOrder::actionType)
 					boost::lexical_cast<int>(group.getField(279));
 
 				// 4 - bid, offer
@@ -90,6 +90,7 @@ namespace myFix {
 					// 6 - create the book order
 					thOth::bookOrder order(
 						type	,
+						act		,
 						price	,
 						quantity);
 
@@ -104,7 +105,6 @@ namespace myFix {
 							instrument		,
 							time			,
 							order			,
-							action			,
 							order_count		,
 							level			,
 							sequenceNumber	,

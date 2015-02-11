@@ -21,12 +21,12 @@ namespace myFix {
 			MYSQL_ROW row_;												// current row
 
 			// todo: get the instrument details on the instrument table
-			thOth::instrument	dummy_(0, "")	;
-			std::string			exchange		;
-			//thOth::bigInt		id_				;						// the id of the record to insert
-			thOth::dateTime		time_			;
-			thOth::real			price_			;
-			thOth::volume		volume_			;
+			thOth::instrument				instrument_	;
+			thOth::dateTime					time_		;
+			thOth::bookOrder::orderType		type_		;
+			thOth::bookOrder::actionType	action_		;
+			thOth::real						price_		;
+			thOth::volume					volume_		;
 
 			while (row_ = mysql_fetch_row(reception_)) {				// loop over the results
 
@@ -35,23 +35,38 @@ namespace myFix {
 					// drops the bar Id
 					// drops the instrument id (already recorded)
 					if (std::string(reception_->fields[i].name)
-						== "MARKET_ORDER_DATETIME" && row_[i] != NULL)
+						== "INSTRUMENT_ID" && row_[i] != NULL) {
+
+						instrument_.first = boost::lexical_cast<thOth::bigInt>(row_[i]);
+						instrument_.second = "DUMMY";					// TODO: return the correct identifier
+					
+					}
+
+					else if (std::string(reception_->fields[i].name)
+						== "ORDER_DATETIME" && row_[i] != NULL)
 						time_ = thOth::dateTime::convertSqlDateTime(std::string(row_[i]));
 
 					else if (std::string(reception_->fields[i].name)
-						== "MARKET_ORDER_PRICE" && row_[i] != NULL)
+						== "ORDER_TYPE" && row_[i] != NULL)
+						type_ = (thOth::bookOrder::orderType)row_[i][0];
+
+					else if (std::string(reception_->fields[i].name)
+						== "ORDER_PRICE" && row_[i] != NULL)
 						price_ = boost::lexical_cast<thOth::real>(row_[i]);
 
 					else if (std::string(reception_->fields[i].name)
-						== "MARKET_ORDER_VOLUME" && row_[i] != NULL)
+						== "ORDER_VOLUME" && row_[i] != NULL)
 						volume_ = boost::lexical_cast<thOth::volume>(row_[i]);
+
+					else if (std::string(reception_->fields[i].name)
+						== "ORDER_ACTION" && row_[i] != NULL)
+						action_ = (thOth::bookOrder::actionType)boost::lexical_cast<int>(row_[i]);
 
 				}
 
-				std::pair<thOth::dateTime, thOth::bookOrder> temp(
-					time_, thOth::bookOrder(thOth::bookOrder::bid_, volume_, price_));
-
-				records_.insert(temp);
+				records_.insert(
+					std::pair<thOth::dateTime, thOth::bookOrder>(
+						time_, thOth::bookOrder(type_, action_, price_, volume_)));
 
 			}
 
@@ -95,7 +110,7 @@ namespace myFix {
 						valueStr.append(",");
 					SQL_INSERT_NUM(valueStr, It->order().quantity())
 						valueStr.append(",");
-					SQL_INSERT_NUM(valueStr, It->action())
+					SQL_INSERT_NUM(valueStr, It->order().action())
 						valueStr.append(",");
 					SQL_INSERT_NUM(valueStr, It->order_count())
 						valueStr.append(",");
@@ -129,7 +144,7 @@ namespace myFix {
 
 		// object interface
 		bool tableBookOrderRecordset::insert(
-			const std::pair<thOth::bigInt, std::string> & contract_,
+			const thOth::instrument & contract_,
 			const thOth::timeSeries<thOth::dateTime, thOth::bookOrderMessage> & records_) {
 
 			std::string fieldStr, valueStr;

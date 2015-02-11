@@ -32,13 +32,14 @@ void marketOrderImport(const std::string & data_) {
 	long								nline = 1	;	// line counter
 	std::string							line("")	;	// current line
 
-	myFix::bookOrderParser ps(								// create the file parser
+	myFix::bookOrderParser ps(							// create the file parser
 		myFix::settings::instance().dictionary());
 
-	// instrument rs
+	// instrument recordset
 	myFix::dataBase::tableInstrumentRecordset instrumentRs(
 		myFix::settings::instance().connection());
 
+	// book order recordset
 	myFix::dataBase::tableBookOrderRecordset rs(
 		myFix::settings::instance().connection());
 

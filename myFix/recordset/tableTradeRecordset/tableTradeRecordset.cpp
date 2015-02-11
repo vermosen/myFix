@@ -23,7 +23,6 @@ namespace myFix {
 			// todo: get the instrument details on the instrument table
 			thOth::instrument	dummy_(0, "")	;
 			std::string			exchange		;
-			//thOth::bigInt		id_				;						// the id of the record to insert
 			thOth::dateTime		time_			;
 			thOth::real			price_			;
 			thOth::volume		volume_			;
@@ -112,7 +111,7 @@ namespace myFix {
 
 		// object interface
 		bool tableTradeRecordset::insert(
-			const std::pair<thOth::bigInt, std::string> & contract_,
+			const thOth::instrument & contract_,
 			const thOth::timeSeries<thOth::dateTime, thOth::tradeMessage> & records_) {
 
 			std::string fieldStr, valueStr;

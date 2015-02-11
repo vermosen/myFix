@@ -29,7 +29,7 @@ namespace myFix {
 				bool insert(const std::vector <thOth::tradeMessage> &);	// message vector
 					
 				bool insert(											// object vector
-					const std::pair<thOth::bigInt, std::string> &, 
+					const thOth::instrument & contract_,
 					const thOth::timeSeries<thOth::dateTime, thOth::tradeMessage> &);
 				
 		};

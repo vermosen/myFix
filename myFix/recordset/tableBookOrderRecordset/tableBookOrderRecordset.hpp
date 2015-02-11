@@ -25,11 +25,10 @@ namespace myFix {
 
 				// recordset interface
 				bool selectStr(const std::string &);					// run a select statement
-
-				bool insert(const std::vector <thOth::bookOrderMessage> &);	// message vector
+				bool insert(const std::vector <thOth::bookOrderMessage> &);	
 					
 				bool insert(											// object vector
-					const std::pair<thOth::bigInt, std::string> &, 
+					const thOth::instrument &, 
 					const thOth::timeSeries<thOth::dateTime, thOth::bookOrderMessage> &);
 				
 		};
