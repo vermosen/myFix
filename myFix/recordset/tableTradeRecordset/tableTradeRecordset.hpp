@@ -32,6 +32,11 @@ namespace myFix {
 					const thOth::instrument & contract_,
 					const thOth::timeSeries<thOth::dateTime, thOth::tradeMessage> &);
 				
+				bool select(	
+					const thOth::instrument &,
+					const thOth::dateTime	&,
+					const thOth::dateTime	&);
+
 		};
 	}
 }

@@ -99,6 +99,7 @@ int main(int argc, char** argv) {
 					<< std::endl << "5 - debug test"
 					<< std::endl << "6 - date facet test		"
 					<< std::endl << "7 - single trade insert"
+					<< std::endl << "8 - simple trading rule"
 					<< std::endl
 					<< std::endl << "#### Miscellaneous ####"
 					<< std::endl << "0 - exit"
@@ -149,6 +150,11 @@ int main(int argc, char** argv) {
 			case 7:
 
 				singleTradeInsert();								// single insert test
+				break;
+
+			case 8:
+
+				simpleTradingRule();								// trading rule test
 				break;
 
 			case 0:

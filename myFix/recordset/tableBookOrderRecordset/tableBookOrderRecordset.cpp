@@ -89,7 +89,6 @@ namespace myFix {
 				fieldStr.append("ORDER_ACTION,"			);				// order action
 				fieldStr.append("ORDER_COUNT,"			);				// order count
 				fieldStr.append("ORDER_MD_PRICE_LEVEL,"	);				// order md price level
-				fieldStr.append("ORDER_SEQUENCE_NUMBER,");				// order sequence number
 				fieldStr.append("ORDER_SENDER_ID"		);				// order sender id
 
 				std::string insertStatement("INSERT INTO table_marketOrder (");
@@ -115,8 +114,6 @@ namespace myFix {
 					SQL_INSERT_NUM(valueStr, It->order_count())
 						valueStr.append(",");
 					SQL_INSERT_NUM(valueStr, It->level())
-						valueStr.append(",");
-					SQL_INSERT_NUM(valueStr, It->seq_number())
 						valueStr.append(",");
 					SQL_INSERT_NUM(valueStr, 1)
 						valueStr.append("),");

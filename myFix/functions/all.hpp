@@ -13,4 +13,7 @@
 #include "functions/unitaryTest/singleTradeInsert.hpp"
 #include "functions/unitaryTest/boostFacetTest.hpp"
 #include "functions/unitaryTest/debug.hpp"
+#include "functions/unitaryTest/simpleTradingRule.hpp"
+
+// algorithms
 #endif
