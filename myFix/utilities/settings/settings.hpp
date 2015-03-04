@@ -25,7 +25,7 @@
 // default setup
 #define DB_SERVER   "mac"										
 #define DB_USER     "admin"
-#define DB_PASSWORD "DIAle050580$"
+#define DB_PASSWORD "test01"
 #define DB_ID       "fixdb"
 #define DB_PORT     3306
 #define LOGPATH		"C://Temp/"
@@ -65,8 +65,9 @@ namespace myFix {
 			std::string password   () const;
 			std::string dataBase   () const;
 
-			inline logger & log                     () { return log_      ;  };
-			inline MYSQL * connection               () { return connect_  ;  };
+			inline logger & log         () { return log_      ;  };
+			inline MYSQL * connection   () { return connect_  ;  };
+
 			inline std::shared_ptr<FIX::DataDictionary> dictionary () { return dictionary_; };
 
 
@@ -76,6 +77,7 @@ namespace myFix {
 			unsigned int          verbosity_ ;					// verbosity settings				
 			logger                log_       ;					// log file
 			MYSQL *               connect_   ;					// mysql connection object
+
 			std::shared_ptr<FIX::DataDictionary> dictionary_;	// quickfix dictionary
 
 			// dataBase settings

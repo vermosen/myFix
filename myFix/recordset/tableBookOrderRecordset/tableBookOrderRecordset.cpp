@@ -111,7 +111,7 @@ namespace myFix {
 						valueStr.append(",");
 					SQL_INSERT_NUM(valueStr, It->order().action())
 						valueStr.append(",");
-					SQL_INSERT_NUM(valueStr, It->order_count())
+					SQL_INSERT_NUM(valueStr, It->orderCount())
 						valueStr.append(",");
 					SQL_INSERT_NUM(valueStr, It->level())
 						valueStr.append(",");

@@ -14,37 +14,17 @@
 #include <fstream>
 
 #include <boost/lexical_cast.hpp>
-
 #include <quickfix/FileStore.h>
 #include <quickfix/ThreadedSocketAcceptor.h>
 #include <quickfix/Log.h>
 #include <quickfix/SessionSettings.h>
 
-//#include "Application.hpp"
 #include "utilities/settings/settings.hpp"
 #include "functions/all.hpp"
 
 #define PATH     "C://Temp/dropbox/"
 #define SETTINGS "C://Users/vermosen/Documents/GitHub/myFix/myFix/settings.txt"
 
-// SPY
-//#define DATA  "XCME_MD_ES_20140303_20140307" -> done
-//#define DATA  "XCME_MD_ES_20140310_20140314" -> done
-//#define DATA  "XCME_MD_ES_20140317_20140321" -> done
-//#define DATA  "XCME_MD_ES_20140324_20140328" -> done
-//#define DATA  "XCME_MD_ES_20140331_20140404" -> done
-
-// NASDAQ
-//#define DATA	"XCME_MD_NQ_20140303_20140307" -> done
-//#define DATA	"XCME_MD_NQ_20140310_20140314" -> done
-//#define DATA	"XCME_MD_NQ_20140317_20140321" -> done
-//#define DATA	"XCME_MD_NQ_20140324_20140328" -> done
-//#define DATA	"XCME_MD_NQ_20140331_20140404" -> done
-
-// gold contracts
-//#define DATA "XCEC_MD_GC_20140303_20140307" -> done
-//#define DATA "XCEC_MD_GC_20140310_20140314" -> done
-//#define DATA "XCEC_MD_GC_20140317_20140321" -> done
 //#define DATA "XCEC_MD_GC_20140324_20140328" -> done
 #define DATA "XCME_MD_SMC_20140324_20140328"
 

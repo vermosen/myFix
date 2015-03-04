@@ -29,15 +29,15 @@ void simpleTradingRule() {
 
 		if (rs.select(inst, startDate, endDate) == true) {
 		
-			for (auto It = rs.cbegin(); It != rs.cend(); It++) {
-			
+			for (myFix::dataBase::tableTradeRecordset::const_iterator It = rs.cbegin(); It != rs.cend(); It++) {
+
 				std::cout
 					<< "trade time: "
 					<< It->first
 					<< "trade price: "
-					<< (double)It->second.price()
+					<< It->second.price()
 					<< ", trade volume: "
-					<< (double)It->second.quantity()
+					<< It->second.quantity()
 					<< std::endl;
 				
 			}
