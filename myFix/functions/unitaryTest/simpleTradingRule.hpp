@@ -20,8 +20,11 @@ void simpleTradingRule() {
 	try {
 
 		thOth::instrument	inst		(2, "ESM3"	);
-		thOth::dateTime		startDate	(2014, 3, 2	);
-		thOth::dateTime		endDate		(2014, 3, 2	);
+		
+		thOth::dateTime endDate, startDate (2014, 3, 2); 
+
+		startDate += thOth::dateTime::hours(16);
+		endDate = startDate + thOth::dateTime::minutes(15);
 
 		// step 1: fetch the data
 		myFix::dataBase::tableTradeRecordset rs(					// a tableTradeRecordset
